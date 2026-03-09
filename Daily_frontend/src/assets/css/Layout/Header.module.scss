@@ -1,0 +1,151 @@
+/* =========================
+   HEADER WRAPPER
+   ========================= */
+
+.Header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: var(--space-md);
+}
+
+/* =========================
+   HEADER CONTAINER
+   ========================= */
+
+.Header_container {
+    width: 95%;
+    height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 var(--space-lg);
+
+    background: var(--color-header-bg);
+
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+
+    box-shadow: var(--shadow-sm);
+
+    backdrop-filter: blur(10px);
+
+    transition: var(--transition-base);
+}
+
+/* =========================
+   LEFT SECTION
+   ========================= */
+
+.Header_left {
+    display: flex;
+    align-items: center;
+}
+
+.Header_title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+
+    h1 {
+        font-size: var(--font-lg);
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+}
+
+/* ROLE BADGE */
+
+.role {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+
+    font-size: var(--font-xs);
+    font-weight: 600;
+
+    padding: 4px 10px;
+
+    border-radius: var(--radius-md);
+
+    text-transform: capitalize;
+
+    animation: fadeIn 0.4s ease;
+}
+
+/* =========================
+   RIGHT SECTION
+   ========================= */
+
+.Header_right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+}
+
+/* USER BLOCK */
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* EMAIL */
+
+.email {
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+}
+
+/* =========================
+   AVATAR
+   ========================= */
+
+.avatar {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        var(--color-primary),
+        #5b8cff
+    );
+
+    color: white;
+
+    font-weight: 700;
+    font-size: var(--font-sm);
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

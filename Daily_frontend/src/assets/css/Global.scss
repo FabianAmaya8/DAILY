@@ -1,0 +1,337 @@
+/* ======================================================
+    GLOBAL DESIGN SYSTEM
+    Sistema de Visibilidad - Corporate UI
+   ====================================================== */
+
+/* =========================
+    BASE RESET
+   ========================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* =========================
+   THEME VARIABLES
+   ========================= */
+
+/* ---------- claro ---------- */
+body[data-theme="claro"] {
+    /* Backgrounds */
+    --color-bg: #eeeeee;
+    --color-bg-secondary: #ffffff;
+    --color-bg-tertiary: #f1f5f9;
+    --color-bg-hover: #e2e8f0;
+
+    /* Text */
+    --color-text-primary: #020617;
+    --color-text-secondary: #334155;
+    --color-text-muted: #64748b;
+    --color-text-disabled: #94a3b8;
+    --color-text-inverse: #ffffff;
+
+    /* Brand */
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-primary-soft: #dbeafe;
+
+    --color-secondary: #0f172a;
+    --color-secondary-soft: #e2e8f0;
+
+    /* Status */
+    --color-success: #16a34a;
+    --color-success-soft: #dcfce7;
+
+    --color-warning: #ca8a04;
+    --color-warning-soft: #fef9c3;
+
+    --color-danger: #dc2626;
+    --color-danger-soft: #fee2e2;
+
+    --color-info: #0284c7;
+    --color-info-soft: #e0f2fe;
+
+    /* Borders */
+    --color-border: #e2e8f0;
+    --color-border-strong: #cbd5f5;
+    --color-divider: #f1f5f9;
+
+    /* Inputs */
+    --color-input-bg: #ffffff;
+    --color-input-border: #cbd5e1;
+    --color-input-focus: #2563eb;
+
+    /* Sidebar / Header */
+    --color-sidebar-bg: #020617;
+    --color-sidebar-text: #f8fafc;
+    --color-sidebar-active: #2563eb;
+
+    --color-header-bg: #d8d9e6;
+
+    /* Tables */
+    --color-table-header: #f1f5f9;
+    --color-table-row-hover: #f8fafc;
+
+    /* Overlays */
+    --color-overlay: rgba(15, 23, 42, 0.5);
+
+    /* Charts */
+    --color-chart-1: #2563eb;
+    --color-chart-2: #16a34a;
+    --color-chart-3: #ca8a04;
+    --color-chart-4: #dc2626;
+    --color-chart-5: #0284c7;
+}
+
+/* ---------- oscuro ---------- */
+body[data-theme="oscuro"] {
+    /* Backgrounds */
+    --color-bg: #020617;
+    --color-bg-secondary: #020617;
+    --color-bg-tertiary: #020617;
+    --color-bg-hover: #020617;
+
+    /* Text */
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #cbd5f5;
+    --color-text-muted: #94a3b8;
+    --color-text-disabled: #64748b;
+    --color-text-inverse: #020617;
+
+    /* Brand */
+    --color-primary: #60a5fa;
+    --color-primary-hover: #3b82f6;
+    --color-primary-soft: #1e293b;
+
+    --color-secondary: #e5e7eb;
+    --color-secondary-soft: #1e293b;
+
+    /* Status */
+    --color-success: #22c55e;
+    --color-success-soft: #052e16;
+
+    --color-warning: #facc15;
+    --color-warning-soft: #422006;
+
+    --color-danger: #f87171;
+    --color-danger-soft: #450a0a;
+
+    --color-info: #38bdf8;
+    --color-info-soft: #082f49;
+
+    /* Borders */
+    --color-border: #1e293b;
+    --color-border-strong: #334155;
+    --color-divider: #020617;
+
+    /* Inputs */
+    --color-input-bg: #020617;
+    --color-input-border: #1e293b;
+    --color-input-focus: #60a5fa;
+
+    /* Sidebar / Header */
+    --color-sidebar-bg: #020617;
+    --color-sidebar-text: #f8fafc;
+    --color-sidebar-active: #60a5fa;
+
+    --color-header-bg: #111224;
+
+    /* Tables */
+    --color-table-header: #020617;
+    --color-table-row-hover: #020617;
+
+    /* Overlays */
+    --color-overlay: rgba(2, 6, 23, 0.7);
+
+    /* Charts */
+    --color-chart-1: #60a5fa;
+    --color-chart-2: #22c55e;
+    --color-chart-3: #facc15;
+    --color-chart-4: #f87171;
+    --color-chart-5: #38bdf8;
+}
+
+/* =========================
+   SPACING SYSTEM
+   ========================= */
+
+:root {
+    --space-xxs: 0.25rem;
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+}
+
+/* =========================
+   TYPOGRAPHY
+   ========================= */
+
+:root {
+    --font-xs: 0.75rem;
+    --font-sm: 0.875rem;
+    --font-md: 1rem;
+    --font-lg: 1.125rem;
+    --font-xl: 1.25rem;
+    --font-2xl: 1.5rem;
+    --font-3xl: 1.875rem;
+}
+
+/* =========================
+   RADIUS & SHADOWS
+   ========================= */
+
+:root {
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   TRANSITIONS
+   ========================= */
+
+:root {
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.25s ease;
+    --transition-slow: 0.4s ease;
+}
+
+/* =========================
+   Z-INDEX
+   ========================= */
+
+:root {
+    --z-dropdown: 50;
+    --z-modal: 100;
+    --z-toast: 200;
+    --z-tooltip: 300;
+}
+
+/* =========================
+    COMMON COMPONENT STYLES
+   ========================= */
+
+.card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+    font-size: var(--font-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.divider {
+    height: 1px;
+    background: var(--color-divider);
+}
+
+/* =========================
+   FORMS
+   ========================= */
+
+input,
+select,
+textarea {
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm) var(--space-md);
+    transition: var(--transition-fast);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-input-focus);
+    box-shadow: 0 0 0 2px var(--color-primary-soft);
+}
+
+/* =========================
+   TABLES
+   ========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: var(--color-table-header);
+}
+
+tr:hover {
+    background: var(--color-table-row-hover);
+}
+
+/* =========================
+   SCROLLBAR
+   ========================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 10px;
+}
+
+/* =========================
+   THEME TRANSITION
+   ========================= */
+
+/* Activa transición suave en todo el layout */
+body {
+    transition:
+        background-color 0.35s ease,
+        color 0.35s ease;
+}
+
+/* Elementos que dependen del tema */
+* {
+    transition:
+        background-color 0.35s ease,
+        color 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        fill 0.35s ease,
+        stroke 0.35s ease;
+}
