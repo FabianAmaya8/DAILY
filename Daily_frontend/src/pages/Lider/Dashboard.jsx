@@ -1,39 +1,42 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../../utils/supabaseClient";
+import { useLiderDashboard } from "../../hooks/useLiderDashboard";
+import styles from "../../assets/css/Lider/LiderDashboard.module.scss";
 
-export default function LeaderDashboard() {
-    const [data, setData] = useState([]);
+import MemberCard from "../../components/Lider/Dashboard/MemberCard";
+import MemberModal from "../../components/Lider/Dashboard/MemberModal";
 
-    useEffect(() => {
-        const fetch = async () => {
-            const { data } = await supabase
-                .from("daily_updates")
-                .select("*, people(display_name)");
+export default function LiderDashboard() {
+    const {
+        members,
+        selectedMember,
+        calendar,
+        loading,
+        selectMember,
+        setSelectedMember,
+    } = useLiderDashboard();
 
-            setData(data);
-        };
-        fetch();
-    }, []);
+    if (loading) return <p>Cargando...</p>;
 
     return (
-        <div>
-            <h2>Visión global</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Persona</th>
-                        <th>Hoy</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data?.map((d) => (
-                        <tr key={d.id}>
-                            <td>{d.people.display_name}</td>
-                            <td>{d.today_text}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className={styles.page}>
+            <h2 className={styles.title}>Dashboard Líder</h2>
+
+            <div className={styles.grid}>
+                {members?.map((m) => (
+                    <MemberCard
+                        key={m.id}
+                        member={m}
+                        onClick={() => selectMember(m)}
+                    />
+                ))}
+            </div>
+
+            {selectedMember && (
+                <MemberModal
+                    member={selectedMember}
+                    calendar={calendar}
+                    onClose={() => setSelectedMember(null)}
+                />
+            )}
         </div>
     );
 }

@@ -1,0 +1,212 @@
+/* =========================
+   PAGE
+   ========================= */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: var(--font-2xl);
+    font-weight: 600;
+}
+
+.createButton {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    padding: var(--space-sm) var(--space-lg);
+    cursor: pointer;
+
+    font-size: var(--font-sm);
+}
+
+.createButton:hover {
+    background: var(--color-primary-hover);
+}
+
+/* =========================
+   TABLE
+   ========================= */
+
+.tableContainer {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow-x: auto;;
+}
+
+.table {
+    width: 100%;
+}
+
+th {
+    text-align: left;
+    padding: var(--space-sm);
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+}
+
+td {
+    padding: var(--space-sm);
+    font-size: var(--font-sm);
+}
+
+.name {
+    font-weight: 600;
+}
+
+.priority {
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-size: var(--font-xs);
+}
+
+.actions {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.editButton {
+    background: var(--color-info);
+    color: var(--color-text-inverse);
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.editButton:hover {
+    background: var(--color-info-soft);
+    color: var(--color-info);
+}
+
+.deleteButton {
+    background: var(--color-danger);
+    color: var(--color-text-inverse);
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+/* =========================
+   MODAL
+   ========================= */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+
+    background: var(--color-overlay);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: var(--z-modal);
+}
+
+.modal {
+    width: 420px;
+    max-width: 95%;
+
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+
+    padding: var(--space-xl);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.closeButton {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: var(--font-lg);
+    color: var(--color-text-muted);
+}
+
+.closeButton:hover {
+    color: var(--color-danger);
+}
+
+/* =========================
+   FORM
+   ========================= */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xxs);
+    font-size: var(--font-sm);
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+}
+
+.cancelButton {
+    background: var(--color-secondary-soft);
+    border: none;
+    border-radius: var(--radius-sm);
+
+    padding: var(--space-xs) var(--space-md);
+    cursor: pointer;
+}
+
+.saveButton {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    padding: var(--space-xs) var(--space-md);
+    cursor: pointer;
+}
+
+.saveButton:hover {
+    background: var(--color-primary-hover);
+}

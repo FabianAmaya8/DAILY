@@ -20,6 +20,7 @@
     "react-dom": "^19.x",
     "react-hook-form": "^7.x",
     "react-router-dom": "^7.x",
+    "react-select": "^5.10.2",
     "recharts": "^2.x",
     "sweetalert2": "^11.26.21",
     "zod": "^3.x"

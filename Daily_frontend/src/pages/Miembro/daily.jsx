@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { dailySchema } from "../../types/daily.types";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../../utils/supabaseClient";
 import { useToast } from "../../hooks/useToast";
 
 export default function DailyForm() {
@@ -18,10 +18,10 @@ export default function DailyForm() {
     const onSubmit = async (values) => {
         const user = (await supabase.auth.getUser()).data.user;
 
-        const { error } = await supabase.from("daily_updates").upsert({
+        const { error } = await supabase.from("dailys").upsert({
             ...values,
-            person_id: user.id,
-            date: new Date().toISOString().split("T")[0],
+            persona_id: user.id,
+            fecha: new Date().toISOString().split("T")[0],
         });
 
         if (error) {
@@ -29,15 +29,13 @@ export default function DailyForm() {
             return;
         }
 
-        await fetch("/api/notify-teams", { method: "POST" });
-
         toast("Daily registrado correctamente", "success");
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <textarea {...register("yesterday_text")} />
-            <textarea {...register("today_text")} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <textarea {...register("que_hice_ayer")} />
+            <textarea {...register("que_hare_hoy")} />
             <button type="submit">Guardar</button>
         </form>
     );

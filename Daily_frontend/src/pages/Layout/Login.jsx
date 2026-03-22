@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../../utils/types/auth.types";
 import { authService } from "../../utils/contexts/auth/authService";
+import { useUser } from "../../utils/contexts/UserContext";
 import { Card } from "../../components/ui/Card";
 import { Loader2 } from "lucide-react";
 import styles from "../../assets/css/login.module.scss";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { rol } = useUser();
+
     const [serverError, setServerError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -26,20 +29,20 @@ export default function Login() {
             setServerError(null);
             setLoading(true);
 
-            const { user } = await authService.login(
-                values.email,
-                values.password,
-            );
+            await authService.login(values.email, values.password);
 
-            const role = user.user_metadata.role;
-
-            navigate(`/${role}/dashboard`);
         } catch (error) {
             setServerError("Credenciales inválidas");
         } finally {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (rol) {
+            navigate(`/${rol}/dashboard`);
+        }
+    }, [rol, navigate]);
 
     return (
         <div className={styles.wrapper}>

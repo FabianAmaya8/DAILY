@@ -1,0 +1,421 @@
+/* =========================
+   PAGE
+   ========================= */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+.title {
+    font-size: var(--font-2xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* =========================
+   GRID MEMBERS
+   ========================= */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-lg);
+}
+
+/* =========================
+   MEMBER CARD
+   ========================= */
+
+.card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+
+    padding: var(--space-lg);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-lg);
+    font-weight: 600;
+    font-size: var(--font-md);
+}
+
+.meta {
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+}
+
+.highlight {
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-left: var(--space-xs);
+}
+
+/* estados */
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-xs);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+.blocker {
+    color: var(--color-danger);
+    font-size: var(--font-sm);
+    font-weight: 500;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: var(--color-overlay);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: var(--z-modal);
+}
+
+.modal {
+    width: 900px;
+    max-width: 95%;
+
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+
+    padding: var(--space-xl);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+/* =========================
+   MODAL HEADER
+   ========================= */
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalTitle {
+    font-size: var(--font-xl);
+    font-weight: 600;
+}
+
+.closeButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    font-size: var(--font-lg);
+    color: var(--color-text-muted);
+}
+
+.closeButton:hover {
+    color: var(--color-danger);
+}
+
+/* =========================
+   DAILY LIST
+   ========================= */
+
+.dailyList {
+    max-height: 400px;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* =========================
+   DAILY ITEM
+   ========================= */
+
+.dailyItem {
+    border-bottom: 1px solid var(--color-divider);
+    padding-bottom: var(--space-sm);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xxs);
+}
+
+.date {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.dailyText {
+    font-size: var(--font-sm);
+    color: var(--color-text-primary);
+}
+
+.blockerText {
+    color: var(--color-danger);
+    font-size: var(--font-sm);
+}
+
+/* =========================
+   MODAL ACTIONS
+   ========================= */
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.closeBtn {
+    background: var(--color-secondary-soft);
+    border: none;
+
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-sm);
+
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    background: var(--color-bg-hover);
+}
+
+/* =========================
+   MEMBER INFO
+   ========================= */
+.memberInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* =========================
+   BOTÓN PRINCIPAL
+   ========================= */
+.primaryBtn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.primaryBtn:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   CALENDAR (MEJORADO)
+   ========================= */
+
+.calendar {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-lg);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .calendar {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   GRID DÍAS
+   ========================= */
+
+.calendarGrid {
+    max-height: 150px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
+    gap: var(--space-sm);
+    overflow-y: auto;
+}
+
+/* =========================
+   DAY CARD
+   ========================= */
+
+.calendarDay {
+    position: relative;
+
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-sm);
+    padding: var(--space-sm);
+
+    cursor: pointer;
+    text-align: center;
+
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+
+    transition: var(--transition-fast);
+}
+
+.calendarDay:hover {
+    background: var(--color-bg-hover);
+    transform: translateY(-2px);
+}
+
+/* día activo */
+.activeDay {
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* fecha */
+.dayDate {
+    display: block;
+}
+
+/* badge (bloqueo) */
+.dayBadge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    font-size: 10px;
+    background: var(--color-danger);
+    color: white;
+
+    padding: 2px 5px;
+    border-radius: 999px;
+}
+
+/* =========================
+   DETALLE
+   ========================= */
+
+.dayDetail {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* estado vacío */
+.emptyDetail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder {
+    font-size: var(--font-sm);
+    color: var(--color-text-muted);
+}
+
+/* =========================
+   DETAIL CONTENT
+   ========================= */
+
+.detailTitle {
+    font-size: var(--font-lg);
+    font-weight: 600;
+}
+
+.detailContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* =========================
+   MOBILE DETAIL
+   ========================= */
+
+@media (max-width: 768px) {
+    .dayDetail {
+        order: -1; /* lo pone arriba en móvil */
+    }
+}
+
+/* =========================
+   FILTERS
+   ========================= */
+
+.filters {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    label {
+        font-size: var(--font-xs);
+        color: var(--color-text-muted);
+    }
+
+    input {
+        padding: 4px 8px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        background: var(--color-bg-tertiary);
+    }
+}
+
+.clearFilter {
+    grid-column: 1 / 3;
+    color: var(--color-text-inverse);
+    background: var(--color-danger);
+    border: 1px solid var(--color-border);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+
+    font-size: var(--font-xs);
+}
+
+.clearFilter:hover {
+    background: var(--color-bg-hover);
+}

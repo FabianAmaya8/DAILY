@@ -1,63 +1,83 @@
-import { useEffect, useState } from "react";
-import { supabase } from "../../utils/supabaseClient";
-import { Card } from "../../components/ui/Card";
+import { useMiDashboard } from "../../hooks/useMiDashboard";
+import styles from "../../assets/css/Miembro/Dashboard.module.scss";
+
+import { User, CalendarDays, AlertTriangle } from "lucide-react";
 
 export default function MemberDashboard() {
-    const [stats, setStats] = useState(null);
+    const { user, today, calendar, loading } = useMiDashboard();
+    console.log("🚀 ~ MemberDashboard ~ calendar:", calendar)
 
-    useEffect(() => {
-        const load = async () => {
-            const user = (await supabase.auth.getUser()).data.user;
-
-            const { data: occupancy } = await supabase.rpc(
-                "calculate_weekly_occupancy",
-                {
-                    person_uuid: user.id,
-                    year: new Date().getFullYear(),
-                    week_number: 10,
-                },
-            );
-
-            const { data: blockers } = await supabase
-                .from("blockers")
-                .select("*")
-                .eq("person_id", user.id)
-                .eq("status", "Abierto");
-
-            const { data: workItems } = await supabase
-                .from("work_items")
-                .select("*")
-                .eq("assigned_to_person_id", user.id)
-                .neq("canonical_state", "Done");
-
-            setStats({
-                occupancy,
-                blockers: blockers?.length,
-                workItems: workItems?.length,
-            });
-        };
-
-        load();
-    }, []);
-
-    if (!stats) return <div>Cargando...</div>;
+    if (loading) return <p>Cargando...</p>;
 
     return (
-        <div className="grid grid-cols-3 gap-6">
-            <Card>
-                <h3>Ocupación semanal</h3>
-                <p className="text-2xl font-bold">{stats.occupancy}%</p>
-            </Card>
+        <div className={styles.page}>
+            <h2 className={styles.title}>Mi Dashboard</h2>
 
-            <Card>
-                <h3>Bloqueos abiertos</h3>
-                <p className="text-2xl font-bold">{stats.blockers}</p>
-            </Card>
+            {/* INFO USUARIO */}
+            <div className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <User size={18} />
+                    <h3>{user?.nombre}</h3>
+                </div>
 
-            <Card>
-                <h3>Work Items activos</h3>
-                <p className="text-2xl font-bold">{stats.workItems}</p>
-            </Card>
+                <p>Email: {user?.correo}</p>
+                <p>Capacidad semanal: {user?.capacidad_horas_semana} h</p>
+            </div>
+
+            {/* HOY */}
+            <div className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <CalendarDays size={18} />
+                    <h3>Hoy</h3>
+                </div>
+
+                {today ? (
+                    <>
+                        <p>
+                            <strong>Ayer:</strong> {today.que_hice_ayer}
+                        </p>
+
+                        <p>
+                            <strong>Hoy:</strong> {today.que_hare_hoy}
+                        </p>
+
+                        {today.bloqueos_texto && (
+                            <p className={styles.blocker}>
+                                <AlertTriangle size={14} />{" "}
+                                {today.bloqueos_texto}
+                            </p>
+                        )}
+                    </>
+                ) : (
+                    <p className={styles.placeholder}>
+                        No has registrado tu daily hoy
+                    </p>
+                )}
+            </div>
+
+            {/* HISTORIAL */}
+            <div className={styles.card}>
+                <div className={styles.cardHeader}>
+                    <CalendarDays size={18} />
+                    <h3>Últimos días</h3>
+                </div>
+
+                <div className={styles.history}>
+                    {calendar.map((d) => (
+                        <div key={d.id} className={styles.historyItem}>
+                            <span className={styles.date}>{d.fecha}</span>
+
+                            <p>{d.que_hare_hoy}</p>
+
+                            {d.bloqueos_texto && (
+                                <span className={styles.badge}>
+                                    <AlertTriangle size={12} />
+                                </span>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

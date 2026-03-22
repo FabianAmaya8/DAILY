@@ -5,13 +5,24 @@ import router from "./router";
 import { AuthProvider } from "./utils/contexts/auth/AuthProvider";
 import { ColorContexts } from "./utils/contexts/ColorContexts";
 import "./assets/css/Global.scss";
+import { UserProvider } from "./utils/contexts/UserContext";
+
+function ProvidersWrap({ children }) {
+    return (
+        <AuthProvider>
+            <UserProvider>
+                <ColorContexts>
+                    {children}
+                </ColorContexts>
+            </UserProvider>
+        </AuthProvider>
+    );
+}
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <AuthProvider>
-            <ColorContexts>
-                <RouterProvider router={router} />
-            </ColorContexts>
-        </AuthProvider>
+        <ProvidersWrap>
+            <RouterProvider router={router} />
+        </ProvidersWrap>
     </StrictMode>,
 );

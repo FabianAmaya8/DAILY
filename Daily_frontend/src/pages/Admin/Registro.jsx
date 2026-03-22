@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
-import styles from "../../assets/css/login.module.scss";
+import styles from "../../assets/css/Admin/Registro.module.scss";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { personSchema } from "../../utils/types/person.schema";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useRegisterPerson } from "../../hooks/useRegisterPerson";
-import { useAuth } from "../../utils/contexts/auth/AuthProvider";
+import { useUser } from "../../utils/contexts/UserContext";
 
 export default function RegisterPerson() {
-
+    const { rol } = useUser();
     const navigate = useNavigate();
     const { registerPerson } = useRegisterPerson();
 
@@ -23,7 +23,7 @@ export default function RegisterPerson() {
             display_name: "",
             email: "",
             password: "usuario123",
-            role: "member",
+            role: "miembro",
             capacity_hours_week: 40,
             timezone: "America/Bogota",
             active: true,
@@ -122,46 +122,10 @@ export default function RegisterPerson() {
                             className={styles.select + " " + styles.input}
                             {...register("role")}
                         >
-                            <option value="member">Miembro</option>
-                            <option value="leader">Líder</option>
-                            <option value="admin">Administrador</option>
+                            <option value="miembro">Miembro</option>
+                            <option value="lider">Líder</option>
+                            {rol === "admin" && <option value="admin">Administrador</option>}
                         </select>
-                    </div>
-
-                    {/* Capacidad */}
-                    <div className={styles.fieldGroup}>
-                        <label className={styles.label}>
-                            Capacidad semanal
-                        </label>
-                        <input
-                            type="number"
-                            className={styles.input}
-                            {...register("capacity_hours_week", {
-                                valueAsNumber: true,
-                            })}
-                        />
-                    </div>
-
-                    {/* Timezone */}
-                    <div className={styles.fieldGroup}>
-                        <label className={styles.label}>Zona Horaria</label>
-                        <input
-                            type="text"
-                            className={styles.input}
-                            {...register("timezone")}
-                        />
-                    </div>
-
-                    {/* Activo */}
-                    <div className={styles.checkboxGroup}>
-                        <input
-                            type="checkbox"
-                            className={styles.checkbox}
-                            {...register("active")}
-                        />
-                        <label className={styles.checkboxLabel}>
-                            Usuario activo
-                        </label>
                     </div>
 
                     <button
@@ -169,10 +133,14 @@ export default function RegisterPerson() {
                         className={styles.button}
                         disabled={isSubmitting}
                     >
-                        {isSubmitting && (
-                            <span className={styles.loader}></span>
+                        {isSubmitting ? (
+                            <>
+                                <span className={styles.loader}></span>
+                                Guardando...
+                            </>
+                        ) : (
+                            "Registrar Persona"
                         )}
-                        {isSubmitting ? "Guardando..." : "Registrar Persona"}
                     </button>
                 </form>
             </div>

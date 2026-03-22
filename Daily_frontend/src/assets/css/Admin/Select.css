@@ -1,0 +1,99 @@
+.reactSelect {
+    flex: 1;
+}
+
+/* =========================
+   REACT SELECT
+   ========================= */
+
+.reactSelect {
+    flex: 1;
+}
+
+/* Control (input principal) */
+
+.react-select__control {
+    background: var(--color-bg-primary) !important;
+    border: 1px solid var(--color-border) !important;
+
+    border-radius: var(--radius-sm) !important;
+
+    min-height: 38px;
+
+    box-shadow: none !important;
+
+    transition: var(--transition-fast);
+}
+
+.react-select__control:hover {
+    border-color: var(--color-primary);
+}
+
+.react-select__control--is-focused {
+    border-color: var(--color-primary) !important;
+}
+
+/* Input */
+
+.react-select__input-container {
+    color: var(--color-text-primary);
+}
+
+/* Placeholder */
+
+.react-select__placeholder {
+    color: var(--color-text-muted);
+    font-size: var(--font-sm);
+}
+
+/* Menu */
+
+.react-select__menu {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+
+    box-shadow: var(--shadow-md);
+}
+
+/* Opciones */
+
+.react-select__option {
+    font-size: var(--font-sm);
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.react-select__option--is-focused {
+    background: var(--color-bg-hover);
+}
+
+.react-select__option--is-selected {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+/* Single value */
+
+.react-select__single-value {
+    color: var(--color-text-primary);
+}
+
+/* Dropdown indicator */
+
+.react-select__dropdown-indicator {
+    color: var(--color-text-muted);
+}
+
+.react-select__dropdown-indicator:hover {
+    color: var(--color-primary);
+}
+
+/* Clear button */
+
+.react-select__clear-indicator {
+    color: var(--color-text-muted);
+}
+
+.react-select__clear-indicator:hover {
+    color: var(--color-danger);
+}

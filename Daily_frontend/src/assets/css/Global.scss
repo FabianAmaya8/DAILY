@@ -81,7 +81,7 @@ body[data-theme="claro"] {
     --color-input-focus: #2563eb;
 
     /* Sidebar / Header */
-    --color-sidebar-bg: #020617;
+    --color-sidebar-bg: #4858a7;
     --color-sidebar-text: #f8fafc;
     --color-sidebar-active: #2563eb;
 
@@ -92,7 +92,7 @@ body[data-theme="claro"] {
     --color-table-row-hover: #f8fafc;
 
     /* Overlays */
-    --color-overlay: rgba(15, 23, 42, 0.5);
+    --color-overlay: #0f172aaa;
 
     /* Charts */
     --color-chart-1: #2563eb;
@@ -149,7 +149,7 @@ body[data-theme="oscuro"] {
     --color-input-focus: #60a5fa;
 
     /* Sidebar / Header */
-    --color-sidebar-bg: #020617;
+    --color-sidebar-bg: #000c3f;
     --color-sidebar-text: #f8fafc;
     --color-sidebar-active: #60a5fa;
 
@@ -334,4 +334,50 @@ body {
         box-shadow 0.35s ease,
         fill 0.35s ease,
         stroke 0.35s ease;
+}
+
+/* =========================
+   THEME TRANSITIONS
+   ========================= */
+
+:root {
+    --transition-theme: 1s ease;
+}
+
+/* transición base del layout */
+html,
+body {
+    transition:
+        background-color var(--transition-theme),
+        color var(--transition-theme);
+}
+
+/* componentes principales del sistema */
+.card, header, aside, nav, section, table, thead, tbody, tr, td, th, button, input, select, textarea, .divider {
+    transition:
+        background-color var(--transition-theme),
+        color var(--transition-theme),
+        border-color var(--transition-theme),
+        box-shadow var(--transition-theme);
+}
+
+/* transición para SVG e iconos */
+svg {
+    transition:
+        fill var(--transition-theme),
+        stroke var(--transition-theme);
+}
+
+/* pequeño fade al cambiar el tema */
+body[data-theme] {
+    animation: themeFade 1s ease;
+}
+
+@keyframes themeFade {
+    from {
+        opacity: 0.9;
+    }
+    to {
+        opacity: 1;
+    }
 }
