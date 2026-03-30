@@ -2,12 +2,12 @@ import { useMiDashboard } from "../../hooks/useMiDashboard";
 import styles from "../../assets/css/Miembro/Dashboard.module.scss";
 
 import { User, CalendarDays, AlertTriangle } from "lucide-react";
+import Cargando from "../../components/Depen/Cargando";
 
 export default function MemberDashboard() {
     const { user, today, calendar, loading } = useMiDashboard();
-    console.log("🚀 ~ MemberDashboard ~ calendar:", calendar)
 
-    if (loading) return <p>Cargando...</p>;
+    if (loading) return <Cargando />;
 
     return (
         <div className={styles.page}>

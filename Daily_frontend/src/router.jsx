@@ -11,6 +11,11 @@ import Inicio from "./pages/Layout/Inicio";
 import EquiposPage from "./pages/Admin/Equipos";
 import Auditorias from "./pages/Admin/auditorias";
 import Proyectos from "./pages/Admin/Proyectos";
+import DailyForm from "./pages/Miembro/RegistrarDaily";
+import RegistrarBloqueo from "./pages/Miembro/RegistrarBloqueo";
+import Bloqueos from "./pages/Miembro/Bloqueos";
+import Certificaciones from "./pages/Miembro/Certificaciones";
+import CertificacionesLider from "./pages/Lider/CertificacionesLider";
 
 const router = createBrowserRouter([
     { path: "/login", element: <Login /> },
@@ -30,11 +35,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "/miembro/RegistrarDaily",
-                element: (<RegisterPerson />),
+                element: (<DailyForm />),
             },
             {
                 path: "/miembro/RegistrarBloqueos",
-                element: (<RegisterPerson />),
+                element: (<RegistrarBloqueo />),
+            },
+            {
+                path: "/miembro/Bloqueos",
+                element: (<Bloqueos />),
+            },
+            {
+                path: "/miembro/Certificaciones",
+                element: (<Certificaciones />),
             }
         ],
     },
@@ -52,6 +65,14 @@ const router = createBrowserRouter([
             {
                 path: "/lider/equipos",
                 element: (<EquiposPage />),
+            },
+            {
+                path: "/lider/bloqueos",
+                element: (<Bloqueos />),
+            },
+            {
+                path: "/lider/certificaciones",
+                element: (<CertificacionesLider />),
             }
         ],
     },

@@ -1,0 +1,141 @@
+/* =========================
+   CONTAINER
+   ========================= */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.title {
+    font-size: var(--font-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* =========================
+   GRID
+   ========================= */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-lg);
+}
+
+/* =========================
+   CARD
+   ========================= */
+
+.card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* =========================
+   ESTADOS
+   ========================= */
+
+.tiene {
+    border-color: var(--color-success);
+    background: var(--color-success-soft);
+}
+
+.noTiene {
+    opacity: 0.75;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* código tipo tag */
+.codigo {
+    font-size: var(--font-xs);
+    font-weight: 600;
+
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+}
+
+/* badge obtenido */
+.badge {
+    font-size: var(--font-xs);
+    font-weight: 600;
+
+    background: var(--color-success);
+    color: white;
+
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+}
+
+/* =========================
+   CONTENT
+   ========================= */
+
+.nombre {
+    font-size: var(--font-md);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.entidad {
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+}
+
+/* =========================
+   PENDING
+   ========================= */
+
+.pending {
+    margin-top: auto;
+
+    font-size: var(--font-xs);
+    font-weight: 500;
+
+    color: var(--color-warning);
+
+    background: var(--color-warning-soft);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+
+    width: fit-content;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

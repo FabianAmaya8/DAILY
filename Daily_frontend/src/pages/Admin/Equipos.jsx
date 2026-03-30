@@ -5,6 +5,7 @@ import EquipoCard from "../../components/Admin/Equipos/EquipoCard";
 import FormAddEquipos from "../../components/Admin/Equipos/FormAddEquipos";
 import ModalEquipo from "../../components/Admin/Equipos/ModalEquipo";
 import styles from "../../assets/css/Admin/Equipos.module.scss";
+import Cargando from "../../components/Depen/Cargando";
 
 export default function EquiposPage() {
     const {
@@ -24,7 +25,7 @@ export default function EquiposPage() {
     const equipoActivo = equipos.find((e) => e.id === equipoActivoID);
     const [equipoEditar, setEquipoEditar] = useState(null);
 
-    if (loading) return <p>Cargando...</p>;
+    if (loading) return <Cargando />;
 
     return (
         <div className={styles.page}>

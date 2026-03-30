@@ -1,10 +1,34 @@
-import styles from "../../assets/css/Layout/MainLayout.module.scss";
+import styles from "../../assets/css/Layout/Avatar.module.scss";
+import { UserProfileModal } from "./UserProfileModal";
+import { useState } from "react";
 
+export default function Avatar({ userId, Nombre }) {
 
-export default function Avatar({Nombre}) {
-    const letter = Nombre.charAt(0).toUpperCase();
-    
+    const [open, setOpen] = useState(false);
+
+    const letter = Nombre?.charAt(0)?.toUpperCase() || "?";
+
+    const handleClick = (e) => {
+        e.stopPropagation();
+        setOpen(true);
+    };
+
     return (
-        <div className={styles.avatar}>{letter}</div>
-    )
+        <>
+            <button
+                type="button"
+                className={styles.avatar}
+                onClick={handleClick}
+            >
+                {letter}
+            </button>
+
+            {open && (
+                <UserProfileModal
+                    userId={userId}
+                    onClose={() => setOpen(false)}
+                />
+            )}
+        </>
+    );
 }

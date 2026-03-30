@@ -3,6 +3,7 @@ import styles from "../../assets/css/Lider/LiderDashboard.module.scss";
 
 import MemberCard from "../../components/Lider/Dashboard/MemberCard";
 import MemberModal from "../../components/Lider/Dashboard/MemberModal";
+import Cargando from "../../components/Depen/Cargando";
 
 export default function LiderDashboard() {
     const {
@@ -14,7 +15,7 @@ export default function LiderDashboard() {
         setSelectedMember,
     } = useLiderDashboard();
 
-    if (loading) return <p>Cargando...</p>;
+    if (loading) return <Cargando />;
 
     return (
         <div className={styles.page}>

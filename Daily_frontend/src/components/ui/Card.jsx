@@ -14,14 +14,7 @@ import clsx from "clsx";
 export function Card({ children, className, title, description, footer }) {
     return (
         <div
-            className={clsx(
-                "bg-[var(--color-bg-secondary)]",
-                "border border-[var(--color-border)]",
-                "rounded-xl shadow-sm",
-                "p-6",
-                "transition hover:shadow-md",
-                className,
-            )}
+            className={clsx( className,)}
         >
             {(title || description) && (
                 <div className="mb-4">

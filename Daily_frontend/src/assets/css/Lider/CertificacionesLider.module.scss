@@ -1,0 +1,171 @@
+/* =========================
+   CONTAINER
+   ========================= */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.title {
+    font-size: var(--font-2xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.subtitle {
+    font-size: var(--font-sm);
+    color: var(--color-text-muted);
+}
+
+/* =========================
+   WRAPPER
+   ========================= */
+
+.tableWrapper {
+    overflow: auto;
+
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+/* =========================
+   TABLE
+   ========================= */
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 700px;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.th {
+    position: sticky;
+    top: 0;
+
+    background: var(--color-secondary);
+    color: var(--color-text-inverse);
+
+    padding: var(--space-sm);
+    font-size: var(--font-xs);
+    text-transform: uppercase;
+
+    border-bottom: 1px solid var(--color-border);
+    z-index: 2;
+}
+
+/* código */
+.certCode {
+    font-weight: 600;
+}
+
+/* =========================
+   ROW
+   ========================= */
+
+.row {
+    transition: var(--transition-fast);
+}
+
+
+/* =========================
+   PERSONA (STICKY)
+   ========================= */
+
+.nombre {
+    position: sticky;
+    left: 0;
+
+    background: var(--color-bg-secondary);
+
+    padding: var(--space-sm) var(--space-md);
+    font-weight: 500;
+
+    border-right: 1px solid var(--color-border);
+    z-index: 1;
+}
+
+/* =========================
+   CELDAS
+   ========================= */
+
+.cell {
+    text-align: center;
+    padding: var(--space-sm);
+
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-divider);
+
+    transition: var(--transition-fast);
+}
+
+.cell:hover {
+    transform: scale(1.08);
+    background: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}
+
+/* icon */
+.icon {
+    font-size: var(--font-sm);
+    font-weight: 600;
+}
+
+/* =========================
+   ESTADOS
+   ========================= */
+
+/* activa */
+.activa {
+    background: linear-gradient(135deg, var(--color-success), #15803d);
+
+    color: var(--color-text-inverse);
+}
+
+/* hover activa */
+.activa:hover {
+    filter: brightness(1.05);
+}
+
+/* inactiva */
+.inactiva {
+    color: var(--color-text-muted);
+}
+
+/* =========================
+   SCROLL
+   ========================= */
+
+.tableWrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 10px;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+    .table {
+        min-width: 900px;
+    }
+}

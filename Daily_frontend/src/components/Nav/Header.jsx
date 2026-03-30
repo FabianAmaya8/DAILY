@@ -4,10 +4,9 @@ import { useUser } from "../../utils/contexts/UserContext";
 import Avatar from "../Depen/Avatar";
 
 export default function Header({ toggleSidebar }) {
-    const { nombre, rol } = useUser();
+    const { nombre, rol, user } = useUser();
 
     const userName = !nombre ? "Usuario" : nombre;
-    const letter = userName.charAt(0).toUpperCase();
 
     return (
         <header className={styles.Header}>
@@ -29,7 +28,10 @@ export default function Header({ toggleSidebar }) {
                     <div className={styles.user}>
                         <span className={styles.userName}>{userName}</span>
 
-                        <Avatar Nombre={userName} />
+                        <Avatar 
+                            userId={user.id} 
+                            Nombre={userName} 
+                        />
                     </div>
                 </div>
             </div>

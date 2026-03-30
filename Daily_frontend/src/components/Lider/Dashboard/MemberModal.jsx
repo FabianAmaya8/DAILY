@@ -24,24 +24,25 @@ export default function MemberModal({ member, calendar, onClose }) {
 
                     {/* INFO GENERAL */}
                     <div className={styles.memberInfo}>
-                        <p>
+                        <p className={styles.subtitle}>
                             <strong>Proyecto:</strong>{" "}
                             {member.proyecto || "Sin asignar"}
                         </p>
 
-                        <p>
+                        <p className={styles.subtitle}>
                             <strong>Ocupación:</strong>{" "}
                             {member.ocupacion_porcentaje || 0}%
                         </p>
 
-                        <p>
+                        <p className={styles.subtitle}>
                             <strong>Hoy:</strong>{" "}
                             {member.que_hare_hoy || "—"}
                         </p>
 
                         {member.bloqueos_texto && (
-                            <p className={styles.blocker}>
-                                🚨 {member.bloqueos_texto}
+                            <p className={styles.blocker + " " + styles.subtitle}>
+                                <strong>Bloqueos:</strong>{" "}
+                                {member.bloqueos_texto}
                             </p>
                         )}
                     </div>

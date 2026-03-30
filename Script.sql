@@ -165,6 +165,34 @@ create table if not exists auditoria (
   creado_en timestamptz default now()
 );
 
+---------------------------------------------------------------
+-- CERTIFICACIONES (CATÁLOGO)
+---------------------------------------------------------------
+create table if not exists certificaciones (
+  id uuid primary key default gen_random_uuid(),
+  codigo text not null unique,
+  nombre text not null,
+  entidad text,
+  descripcion text,
+  activo boolean default true,
+  creado_en timestamptz default now()
+);
+
+---------------------------------------------------------------
+-- RELACIÓN PERSONA - CERTIFICACIONES (N:M)
+---------------------------------------------------------------
+create table if not exists persona_certificaciones (
+  id uuid primary key default gen_random_uuid(),
+  persona_id uuid not null references personas(id) on delete cascade,
+  certificacion_id uuid not null references certificaciones(id) on delete cascade,
+  fecha_obtencion date,
+  fecha_expiracion date,
+  credencial_url text,
+  creado_en timestamptz default now(),
+
+  unique(persona_id, certificacion_id)
+);
+
 -- FK PARA RELACIÓN CON PERSONAS
 alter table auditoria
 add constraint if not exists auditoria_actor_id_fkey
@@ -189,6 +217,68 @@ alter table proyectos enable row level security;
 alter table tareas enable row level security;
 alter table equivalencias_carga enable row level security;
 alter table auditoria enable row level security;
+alter table certificaciones enable row level security;
+alter table persona_certificaciones enable row level security;
+
+---------------------------------------------------------------
+-- CERTIFICACIONES
+---------------------------------------------------------------
+create policy certificaciones_select on certificaciones
+for select using (true);
+
+create policy certificaciones_admin on certificaciones
+for all using (
+  exists (
+    select 1 from personas 
+    where id = auth.uid() and rol = 'admin'
+  )
+);
+
+---------------------------------------------------------------
+-- PERSONA CERTIFICACIONES
+---------------------------------------------------------------
+create policy persona_certificaciones_select on persona_certificaciones
+for select using (
+  persona_id = auth.uid()
+  OR exists (
+    select 1 from personas 
+    where id = auth.uid() and rol in ('admin','lider')
+  )
+);
+
+create policy persona_certificaciones_insert
+on persona_certificaciones
+for insert
+with check (
+    -- Caso 1: se asigna a sí mismo
+    persona_id = auth.uid()
+
+    OR
+
+    -- Caso 2: es admin o líder
+    exists (
+        select 1
+        from personas
+        where id = auth.uid()
+        and rol in ('admin', 'lider')
+    )
+);
+
+create policy persona_certificaciones_delete
+on persona_certificaciones
+for delete
+using (
+    persona_id = auth.uid()
+
+    OR
+
+    exists (
+        select 1
+        from personas
+        where id = auth.uid()
+        and rol in ('admin', 'lider')
+    )
+);
 
 ---------------------------------------------------------------
 -- POLÍTICAS EQUIPOS
@@ -359,6 +449,30 @@ values
 ('tshirt','L',8),
 ('tshirt','XL',10)
 on conflict do nothing;
+
+---------------------------------------------------------------
+-- CERTIFICACIONES MICROSOFT - POWER PLATFORM
+---------------------------------------------------------------
+insert into certificaciones (codigo, nombre, entidad, descripcion)
+values
+('PL-900', 'Power Platform Fundamentals', 'Microsoft', 'Fundamentos de Power Platform'),
+('PL-100', 'Power Platform App Maker', 'Microsoft', 'Creación de aplicaciones'),
+('PL-200', 'Power Platform Functional Consultant', 'Microsoft', 'Consultor funcional'),
+('PL-400', 'Power Platform Developer', 'Microsoft', 'Desarrollador Power Platform'),
+('PL-600', 'Power Platform Solution Architect', 'Microsoft', 'Arquitecto de soluciones')
+on conflict (codigo) do nothing;
+
+---------------------------------------------------------------
+-- CERTIFICACIONES MICROSOFT - AZURE
+---------------------------------------------------------------
+insert into certificaciones (codigo, nombre, entidad, descripcion)
+values
+('AZ-900', 'Azure Fundamentals', 'Microsoft', 'Fundamentos de Azure'),
+('AZ-104', 'Azure Administrator', 'Microsoft', 'Administrador de Azure'),
+('AZ-204', 'Azure Developer', 'Microsoft', 'Desarrollador en Azure'),
+('AZ-305', 'Azure Solutions Architect', 'Microsoft', 'Arquitecto de soluciones'),
+('AZ-400', 'Azure DevOps Engineer', 'Microsoft', 'DevOps Engineer')
+on conflict (codigo) do nothing;
 
 /* ============================================================
    MEJORAS PARA DASHBOARD LÍDER Y VISIBILIDAD

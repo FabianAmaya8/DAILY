@@ -30,7 +30,6 @@ export default function CalendarModal({ calendar, onClose }) {
         });
     }, [calendar, startDate, endDate]);
 
-                        console.log("🚀 ~ CalendarModal ~ filteredCalendar:", filteredCalendar)
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -124,21 +123,22 @@ export default function CalendarModal({ calendar, onClose }) {
                                 </h4>
 
                                 <div className={styles.detailContent}>
-                                    <p>
+                                    <p className={styles.subtitle}>
                                         <CheckCircle2 size={20} />{" "}
                                         <strong>Ayer:</strong>{" "}
                                         {selectedDay.que_hice_ayer}
                                     </p>
 
-                                    <p>
+                                    <p className={styles.subtitle}>
                                         <Rocket size={20} />{" "}
                                         <strong>Hoy:</strong>{" "}
                                         {selectedDay.que_hare_hoy}
                                     </p>
 
                                     {selectedDay.bloqueos_texto && (
-                                        <p className={styles.blockerText}>
+                                        <p className={styles.blockerText + " " + styles.subtitle}>
                                             <AlertTriangle size={20} />{" "}
+                                            <strong>Bloqueos:</strong>{" "}
                                             {selectedDay.bloqueos_texto}
                                         </p>
                                     )}

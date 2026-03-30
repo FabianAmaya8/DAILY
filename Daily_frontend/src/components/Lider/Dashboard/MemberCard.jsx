@@ -5,10 +5,16 @@ export default function MemberCard({ member, onClick }) {
 
     return (
         <div onClick={onClick} className={styles.card}>
+
             <div className={styles.name}>
+
                 {member.nombre}
 
-                <Avatar Nombre={member.nombre} />
+                <Avatar
+                    Nombre={member.nombre}
+                    userId={member.id}
+                />
+
             </div>
 
             <p className={styles.meta}>
@@ -39,6 +45,7 @@ export default function MemberCard({ member, onClick }) {
                     🚨 {member.bloqueos_texto}
                 </p>
             )}
+
         </div>
     );
 }

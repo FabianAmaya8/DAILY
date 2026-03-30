@@ -8,6 +8,8 @@ import {
     FileSearchCorner,
     UsersRound,
     FolderKanban ,
+    ListTodo ,
+    ShieldCheck ,
     ArrowLeftToLine 
 } from "lucide-react";
 import { supabase } from "../../utils/supabaseClient";
@@ -33,14 +35,17 @@ export default function Sidebar({ open }) {
         { to: "/miembro/dashboard", label: "Dashboard", icon: LayoutDashboard },
         { to: "/miembro/RegistrarDaily", label: "Registrar Daily", icon: ClipboardList },
         { to: "/miembro/RegistrarBloqueos", label: "Mis Bloqueos", icon: AlertTriangle },
+        { to: "/miembro/Bloqueos", label: "Historial de Bloqueos", icon: ListTodo  },
+        { to: "/miembro/Certificaciones", label: "Certificaciones", icon: ShieldCheck },
     ];
 
     const liderLinks = [
         { to: "/lider/dashboard", label: "Panel Lider", icon: LayoutDashboard },
         { to: "/miembro/dashboard", label: "Panel Miembro", icon: UsersRound },
-        { to: "/lider/blockers", label: "Bloqueos", icon: AlertTriangle },
+        { to: "/lider/bloqueos", label: "Lista de Bloqueos", icon: ListTodo },
         { to: "/lider/registrar", label: "Registrar", icon: ClipboardList },
         { to: "/lider/equipos", label: "Equipos", icon: UserRoundSearch },
+        { to: "/lider/certificaciones", label: "Certificaciones", icon: ShieldCheck },
     ];
 
     const adminLinks = [
