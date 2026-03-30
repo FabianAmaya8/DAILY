@@ -9,7 +9,7 @@ import UsersManagement from "./pages/Admin/UsersManagement";
 import Error404 from "./pages/Layout/Error404";
 import Inicio from "./pages/Layout/Inicio";
 import EquiposPage from "./pages/Admin/Equipos";
-import Auditorias from "./pages/Admin/auditorias";
+import Auditorias from "./pages/Admin/Auditorias";
 import Proyectos from "./pages/Admin/Proyectos";
 import DailyForm from "./pages/Miembro/RegistrarDaily";
 import RegistrarBloqueo from "./pages/Miembro/RegistrarBloqueo";
