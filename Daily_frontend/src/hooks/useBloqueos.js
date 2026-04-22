@@ -27,7 +27,7 @@ export function useBloqueos() {
                 fecha_limite,
                 notas,
                 creado_en,
-                persona:personas!bloqueos_persona_id_fkey(nombre),
+                persona:personas!bloqueos_persona_id_fkey(nombre, id ),
                 responsable:personas!bloqueos_responsable_id_fkey(nombre),
                 dailys(fecha)
             `)

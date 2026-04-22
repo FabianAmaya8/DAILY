@@ -88,6 +88,10 @@
    ========================= */
 
 .nombre {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+
     position: sticky;
     left: 0;
 

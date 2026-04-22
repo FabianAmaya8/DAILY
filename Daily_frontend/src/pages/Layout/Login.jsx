@@ -6,7 +6,7 @@ import { loginSchema } from "../../utils/types/auth.types";
 import { authService } from "../../utils/contexts/auth/authService";
 import { useUser } from "../../utils/contexts/UserContext";
 import { Card } from "../../components/ui/Card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import styles from "../../assets/css/login.module.scss";
 
 export default function Login() {
@@ -14,6 +14,7 @@ export default function Login() {
     const { rol } = useUser();
 
     const [serverError, setServerError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const {
@@ -55,6 +56,7 @@ export default function Login() {
                     onSubmit={handleSubmit(onSubmit)}
                     className={styles.form}
                 >
+                    {/* EMAIL */}
                     <div className={styles.inputGroup}>
                         <input
                             type="email"
@@ -69,13 +71,29 @@ export default function Login() {
                         )}
                     </div>
 
+                    {/* PASSWORD */}
                     <div className={styles.inputGroup}>
-                        <input
-                            type="password"
-                            placeholder="Contraseña"
-                            {...register("password")}
-                            className={styles.input}
-                        />
+                        <div className={styles.inputWrapper}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Contraseña"
+                                {...register("password")}
+                                className={styles.input}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className={styles.eyeButton}
+                            >
+                                {showPassword ? (
+                                    <EyeOff size={18} />
+                                ) : (
+                                    <Eye size={18} />
+                                )}
+                            </button>
+                        </div>
+
                         {errors.password && (
                             <p className={styles.errorText}>
                                 {errors.password.message}
@@ -95,7 +113,10 @@ export default function Login() {
                         className={styles.button}
                     >
                         {loading && (
-                            <Loader2 size={16} className={styles.loader} />
+                            <Loader2
+                                size={16}
+                                className={styles.loader}
+                            />
                         )}
                         {loading ? "Ingresando..." : "Ingresar"}
                     </button>

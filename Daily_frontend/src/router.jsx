@@ -16,11 +16,11 @@ import RegistrarBloqueo from "./pages/Miembro/RegistrarBloqueo";
 import Bloqueos from "./pages/Miembro/Bloqueos";
 import Certificaciones from "./pages/Miembro/Certificaciones";
 import CertificacionesLider from "./pages/Lider/CertificacionesLider";
+import RegistrarDaily from "./pages/Lider/RegistrarDaily";
 
 const router = createBrowserRouter([
     { path: "/login", element: <Login /> },
     { path: "/", element: <Inicio /> },
-    { path: "/registro", element: <RegisterPerson /> },
 
     {
         element: <MainLayout Roles={["miembro", "lider", "admin"]} />,
@@ -59,6 +59,10 @@ const router = createBrowserRouter([
                 element: (<LiderDashboard />),
             },
             {
+                path: "/lider/RegistroDaily",
+                element: (<RegistrarDaily />),
+            },
+            {
                 path: "/lider/registrar",
                 element: (<RegisterPerson />),
             },
@@ -86,10 +90,6 @@ const router = createBrowserRouter([
             {
                 path: "/admin/users",
                 element: (<UsersManagement />),
-            },
-            {
-                path: "/admin/registrar",
-                element: (<RegisterPerson />),
             },
             {
                 path: "/admin/equipos",

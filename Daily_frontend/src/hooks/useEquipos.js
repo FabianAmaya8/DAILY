@@ -138,7 +138,7 @@ export function useEquipos() {
 
         if (error) {
             setError(error);
-            console.log(error);
+            console.error(error);
             return;
         }
 

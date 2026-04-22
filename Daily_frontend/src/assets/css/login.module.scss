@@ -1,3 +1,6 @@
+/* =========================
+   WRAPPER
+========================= */
 .wrapper {
     display: flex;
     align-items: center;
@@ -7,49 +10,111 @@
     height: 100dvh;
 }
 
+/* =========================
+   CARD
+========================= */
 .cardContainer {
     width: 100%;
     max-width: 420px;
 }
 
+/* =========================
+   FORM
+========================= */
 .form {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
 }
 
+/* =========================
+   INPUT GROUP
+========================= */
 .inputGroup {
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
 }
 
+/* =========================
+   INPUT BASE
+========================= */
 .input {
     width: 100%;
     font-size: var(--font-md);
 }
 
+/* =========================
+   PASSWORD INPUT WRAPPER
+========================= */
+.inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* espacio para icono */
+.inputWrapper .input {
+    padding-right: 40px;
+}
+
+/* botón ojo */
+.eyeButton {
+    position: absolute;
+    right: var(--space-xs);
+    top: 50%;
+    transform: translateY(-50%);
+
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color-text-muted);
+    transition: var(--transition-fast);
+}
+
+.eyeButton:hover {
+    color: var(--color-primary);
+}
+
+/* =========================
+   ERRORES
+========================= */
 .errorText {
     font-size: var(--font-sm);
     color: var(--color-danger);
 }
 
+/* error servidor */
 .serverError {
     font-size: var(--font-sm);
     color: var(--color-danger);
+
     background: var(--color-danger-soft);
     padding: var(--space-sm);
+
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-danger);
 }
 
+/* =========================
+   BUTTON
+========================= */
 .button {
     width: 100%;
+
     background: var(--color-primary);
     color: var(--color-text-inverse);
+
     border: none;
-    padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius-md);
+
+    padding: var(--space-sm) var(--space-md);
+
     font-weight: 500;
     font-size: var(--font-md);
 
@@ -75,11 +140,16 @@
     box-shadow: none;
 }
 
+/* =========================
+   LOADER
+========================= */
 .loader {
     animation: spin 1s linear infinite;
 }
 
-/* Animación spinner */
+/* =========================
+   ANIMACIONES
+========================= */
 @keyframes spin {
     from {
         transform: rotate(0deg);

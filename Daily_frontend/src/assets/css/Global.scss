@@ -27,7 +27,6 @@ body,
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
 }
 
 /* =========================
@@ -37,138 +36,142 @@ body,
 /* ---------- claro ---------- */
 body[data-theme="claro"] {
     /* Backgrounds */
-    --color-bg: #eeeeee;
+    --color-bg: #f4fff7;
     --color-bg-secondary: #ffffff;
-    --color-bg-tertiary: #f1f5f9;
-    --color-bg-hover: #e2e8f0;
+    --color-bg-tertiary: #ecfff1;
+    --color-bg-hover: #e0fbe8;
 
     /* Text */
-    --color-text-primary: #020617;
-    --color-text-secondary: #334155;
-    --color-text-muted: #64748b;
-    --color-text-disabled: #94a3b8;
+    --color-text-primary: #212121;
+    --color-text-secondary: #3a4a4a;
+    --color-text-muted: #6b7c7c;
+    --color-text-disabled: #a0b3b3;
     --color-text-inverse: #ffffff;
 
     /* Brand */
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-primary-soft: #dbeafe;
+    --color-primary: #15601d;
+    --color-primary-hover: #0f4d17;
+    --color-primary-soft: #ccffd6;
 
-    --color-secondary: #0f172a;
-    --color-secondary-soft: #e2e8f0;
+    --color-secondary: #063635;
+    --color-secondary-soft: #e6f4f3;
 
     /* Status */
-    --color-success: #16a34a;
-    --color-success-soft: #dcfce7;
+    --color-success: #15601d;
+    --color-success-soft: #ccffd6;
 
-    --color-warning: #ca8a04;
-    --color-warning-soft: #fef9c3;
+    --color-warning: #b08900;
+    --color-warning-soft: #fff6cc;
 
-    --color-danger: #dc2626;
-    --color-danger-soft: #fee2e2;
+    --color-danger: #b42318;
+    --color-danger-soft: #fdecea;
 
-    --color-info: #0284c7;
-    --color-info-soft: #e0f2fe;
+    --color-info: #2f7a78;
+    --color-info-soft: #e6f4f3;
 
     /* Borders */
-    --color-border: #e2e8f0;
-    --color-border-strong: #cbd5f5;
-    --color-divider: #f1f5f9;
+    --color-border: #d6efe2;
+    --color-border-strong: #bfe3cf;
+    --color-divider: #ecfff1;
 
     /* Inputs */
     --color-input-bg: #ffffff;
-    --color-input-border: #cbd5e1;
-    --color-input-focus: #2563eb;
+    --color-input-border: #bfe3cf;
+    --color-input-focus: #15601d;
 
     /* Sidebar / Header */
-    --color-sidebar-bg: #4858a7;
-    --color-sidebar-text: #f8fafc;
-    --color-sidebar-active: #2563eb;
+    --color-sidebar-bg: #063635;
+    --color-sidebar-text: #dffaf3;
+    --color-sidebar-active: #15601d;
+    --color-sidebar-logo: #ccffd6;
 
-    --color-header-bg: #d8d9e6;
+    --color-header-bg: #ecfff1;
 
     /* Tables */
-    --color-table-header: #f1f5f9;
-    --color-table-row-hover: #f8fafc;
+    --color-table-header: #ecfff1;
+    --color-table-row-hover: #f4fff7;
 
     /* Overlays */
-    --color-overlay: #0f172aaa;
+    --color-overlay: #063635aa;
 
     /* Charts */
-    --color-chart-1: #2563eb;
-    --color-chart-2: #16a34a;
-    --color-chart-3: #ca8a04;
-    --color-chart-4: #dc2626;
-    --color-chart-5: #0284c7;
+    --color-chart-1: #15601d;
+    --color-chart-2: #2f7a78;
+    --color-chart-3: #6dfd8c;
+    --color-chart-4: #b42318;
+    --color-chart-5: #b08900;
 }
 
 /* ---------- oscuro ---------- */
 body[data-theme="oscuro"] {
     /* Backgrounds */
-    --color-bg: #020617;
-    --color-bg-secondary: #020617;
-    --color-bg-tertiary: #020617;
-    --color-bg-hover: #020617;
+    --color-bg: #333;
+    --color-bg-secondary: #2a4731;
+    --color-bg-tertiary: #0b4a49;
+    --color-bg-hover: #0f5c5b;
 
     /* Text */
-    --color-text-primary: #f8fafc;
-    --color-text-secondary: #cbd5f5;
-    --color-text-muted: #94a3b8;
-    --color-text-disabled: #64748b;
-    --color-text-inverse: #020617;
+    --color-text-primary: #eafff5;
+    --color-text-secondary: #b7d6cf;
+    --color-text-muted: #7fa6a0;
+    --color-text-disabled: #5c7a76;
+    --color-text-inverse: #021f1e;
 
     /* Brand */
-    --color-primary: #60a5fa;
-    --color-primary-hover: #3b82f6;
-    --color-primary-soft: #1e293b;
+    --color-primary: #6dfd8c;
+    --color-primary-hover: #4be172;
+    --color-primary-soft: #0f4d17;
 
-    --color-secondary: #e5e7eb;
-    --color-secondary-soft: #1e293b;
+    --color-secondary: #ccffd6;
+    --color-secondary-soft: #0b4a49;
 
     /* Status */
-    --color-success: #22c55e;
-    --color-success-soft: #052e16;
+    --color-success: #6dfd8c;
+    --color-success-soft: #0f4d17;
 
     --color-warning: #facc15;
-    --color-warning-soft: #422006;
+    --color-warning-soft: #4a3a00;
 
     --color-danger: #f87171;
     --color-danger-soft: #450a0a;
 
-    --color-info: #38bdf8;
-    --color-info-soft: #082f49;
+    --color-info: #4fd1c5;
+    --color-info-soft: #083a39;
 
     /* Borders */
-    --color-border: #1e293b;
-    --color-border-strong: #334155;
-    --color-divider: #020617;
+    --color-border: #0f4d4c;
+    --color-border-strong: #15601d;
+    --color-divider: #021f1e;
 
     /* Inputs */
-    --color-input-bg: #020617;
-    --color-input-border: #1e293b;
-    --color-input-focus: #60a5fa;
+    --color-input-bg: #063635;
+    --color-input-border: #0f4d4c;
+    --color-input-focus: #6dfd8c;
 
     /* Sidebar / Header */
-    --color-sidebar-bg: #000c3f;
-    --color-sidebar-text: #f8fafc;
-    --color-sidebar-active: #60a5fa;
+    --color-sidebar-bg: #021f1e;
+    --color-sidebar-text: #ccffd6;
+    --color-sidebar-active: #45a75a;
+    --color-sidebar-logo: #ccffd6;
 
-    --color-header-bg: #111224;
+
+    --color-header-bg: #063635;
 
     /* Tables */
-    --color-table-header: #020617;
-    --color-table-row-hover: #020617;
+    --color-table-header: #063635;
+    --color-table-row-hover: #0b4a49;
 
     /* Overlays */
-    --color-overlay: rgba(2, 6, 23, 0.7);
+    --color-overlay: rgba(2, 31, 30, 0.7);
 
     /* Charts */
-    --color-chart-1: #60a5fa;
-    --color-chart-2: #22c55e;
-    --color-chart-3: #facc15;
+    --color-chart-1: #6dfd8c;
+    --color-chart-2: #4fd1c5;
+    --color-chart-3: #ccffd6;
     --color-chart-4: #f87171;
-    --color-chart-5: #38bdf8;
+    --color-chart-5: #facc15;
 }
+
 
 /* =========================
    SPACING SYSTEM

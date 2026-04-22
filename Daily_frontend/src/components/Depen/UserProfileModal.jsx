@@ -1,13 +1,17 @@
+import { useState } from "react";
 import styles from "../../assets/css/Layout/Avatar.module.scss";
 import { useUserProfile } from "../../hooks/useUserProfile";
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
 import Cargando from "./Cargando";
+import { ChangePasswordModal } from "./ChangePasswordModal";
 
-export function UserProfileModal({ userId, onClose }) {
+
+export function UserProfileModal({ userId, onClose, editable }) {
+
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
 
     const { profile, loading, error } = useUserProfile(userId);
-    console.log("🚀 ~ UserProfileModal ~ profile:", profile)
 
     // cerrar con ESC
     useEffect(() => {
@@ -60,7 +64,13 @@ export function UserProfileModal({ userId, onClose }) {
     const ultimoDaily = profile.ultimo_daily?.[0];
 
     return createPortal(
-        <div className={styles.modalOverlay} onClick={onClose}>
+        <div
+            className={styles.modalOverlay}
+            onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+            }}
+        >
 
             <div
                 className={styles.modal}
@@ -73,6 +83,16 @@ export function UserProfileModal({ userId, onClose }) {
                 </div>
 
                 <div className={styles.modalBody}>
+                    {editable && 
+                    <>
+                        <h4>Información personal</h4>
+                        <button
+                            onClick={() => setShowPasswordModal(true)}
+                        >Cambiar contraseña</button>
+
+                        <hr />
+                    </>}
+                    
 
                     <p><b>Correo:</b> {profile.correo}</p>
                     <p><b>Rol:</b> {profile.rol}</p>
@@ -80,6 +100,7 @@ export function UserProfileModal({ userId, onClose }) {
                     <p><b>Ocupación:</b> {profile.ocupacion}%</p>
 
                     <hr />
+
 
                     <h4>Último Daily</h4>
                     <p><b>Ayer:</b> {ultimoDaily?.que_hice_ayer || "-"}</p>
@@ -100,10 +121,13 @@ export function UserProfileModal({ userId, onClose }) {
                             : <li>No tiene certificaciones</li>
                         }
                     </ul>
-
                 </div>
-
             </div>
+            {showPasswordModal && (
+                <ChangePasswordModal
+                    onClose={() => setShowPasswordModal(false)}
+                />
+            )}
         </div>,
         document.body
     );

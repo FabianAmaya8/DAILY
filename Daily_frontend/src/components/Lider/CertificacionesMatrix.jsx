@@ -2,6 +2,7 @@ import { useCertificaciones } from "../../hooks/useCertificaciones";
 import styles from "../../assets/css/Lider/CertificacionesLider.module.scss";
 import Cargando from "../Depen/Cargando";
 import Swal from "sweetalert2";
+import Avatar from "../Depen/Avatar";
 
 export default function CertificacionesMatrix() {
     const {
@@ -72,6 +73,7 @@ export default function CertificacionesMatrix() {
                     {personas.map((persona) => (
                         <tr key={persona.id} className={styles.row}>
                             <td className={styles.nombre}>
+                                <Avatar userId={persona.id} Nombre={persona.nombre} />
                                 {persona.nombre}
                             </td>
 

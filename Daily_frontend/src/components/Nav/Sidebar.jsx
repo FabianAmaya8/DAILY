@@ -17,6 +17,8 @@ import styles from "../../assets/css/Layout/Sidebar.module.scss";
 import { useUser } from "../../utils/contexts/UserContext";
 import Color from "../Depen/Color";
 
+import LOGO from "../../assets/icono_grande_menu_lateral.png";
+
 export default function Sidebar({ open }) {
     const { rol } = useUser();
     const location = useLocation();
@@ -42,6 +44,7 @@ export default function Sidebar({ open }) {
     const liderLinks = [
         { to: "/lider/dashboard", label: "Panel Lider", icon: LayoutDashboard },
         { to: "/miembro/dashboard", label: "Panel Miembro", icon: UsersRound },
+        { to: "/lider/RegistroDaily", label: "Registrar Daily", icon: ClipboardList },
         { to: "/lider/bloqueos", label: "Lista de Bloqueos", icon: ListTodo },
         { to: "/lider/registrar", label: "Registrar", icon: ClipboardList },
         { to: "/lider/equipos", label: "Equipos", icon: UserRoundSearch },
@@ -54,7 +57,7 @@ export default function Sidebar({ open }) {
         { to: "/admin/proyectos", label: "Proyectos", icon: FolderKanban },
         { to: "/admin/equipos", label: "Equipos", icon: UserRoundSearch },
         { to: "/admin/users", label: "Usuarios", icon: Users },
-        { to: "/admin/registrar", label: "Registrar", icon: ClipboardList },
+        { to: "/lider/registrar", label: "Registrar", icon: ClipboardList },
         { to: "/admin/auditorias", label: "Auditorias", icon: FileSearchCorner, },
     ];
 
@@ -101,7 +104,9 @@ export default function Sidebar({ open }) {
 
     return (
         <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
-            <div className={styles.logo}>DAILY</div>
+            <div className={styles.logo}>
+                <img src={LOGO} alt="Logo" />
+            </div>
 
             <nav className={styles.nav}>
                 {links.map(({ to, label, icon: Icon }) => (

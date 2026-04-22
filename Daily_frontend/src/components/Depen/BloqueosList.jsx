@@ -27,7 +27,7 @@ export default function BloqueosList() {
 
                     <p className={styles.meta + " " + styles.author}>
                         {b.persona?.nombre || "—"}
-                        <Avatar Nombre={b.persona?.nombre} /> 
+                        <Avatar Nombre={b.persona?.nombre} userId={b.persona?.id} /> 
                     </p>
 
                     <p className={styles.meta}>
