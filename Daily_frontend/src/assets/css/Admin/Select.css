@@ -1,99 +1,153 @@
-.reactSelect {
-    flex: 1;
-}
-
 /* =========================
-   REACT SELECT
+   REACT SELECT (MEJORADO)
    ========================= */
 
 .reactSelect {
     flex: 1;
+    width: 100%;
+    min-width: 0;
 }
 
-/* Control (input principal) */
-
+/* Control principal */
 .react-select__control {
-    background: var(--color-bg-primary) !important;
-    border: 1px solid var(--color-border) !important;
-
+    background: var(--color-input-bg) !important;
+    border: 1px solid var(--color-input-border) !important;
     border-radius: var(--radius-sm) !important;
 
-    min-height: 38px;
-
-    box-shadow: none !important;
+    min-height: 40px;
+    box-shadow: var(--shadow-sm);
 
     transition: var(--transition-fast);
 }
 
+/* Hover */
 .react-select__control:hover {
-    border-color: var(--color-primary);
-}
-
-.react-select__control--is-focused {
     border-color: var(--color-primary) !important;
 }
 
-/* Input */
-
-.react-select__input-container {
-    color: var(--color-text-primary);
+/* Focus (muy importante para UX) */
+.react-select__control--is-focused {
+    border-color: var(--color-input-focus) !important;
+    box-shadow: 0 0 0 2px var(--color-primary-soft) !important;
 }
 
-/* Placeholder */
-
-.react-select__placeholder {
-    color: var(--color-text-muted);
+/* Input */
+.react-select__input-container {
+    color: var(--color-text-primary) !important;
     font-size: var(--font-sm);
 }
 
-/* Menu */
+/* Placeholder */
+.react-select__placeholder {
+    color: var(--color-text-muted) !important;
+    font-size: var(--font-sm);
+}
+
+/* Valor seleccionado */
+.react-select__single-value {
+    color: var(--color-text-primary) !important;
+    font-size: var(--font-sm);
+}
+
+/* =========================
+   MENÚ DESPLEGABLE
+   ========================= */
 
 .react-select__menu {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
+    background: var(--color-bg-secondary) !important;
+    border: 1px solid var(--color-border) !important;
     border-radius: var(--radius-sm);
 
     box-shadow: var(--shadow-md);
+    overflow: hidden;
+    z-index: var(--z-dropdown);
 }
 
-/* Opciones */
+/* Lista */
+.react-select__menu-list {
+    padding: var(--space-xs);
+}
+
+/* =========================
+   OPCIONES
+   ========================= */
 
 .react-select__option {
     font-size: var(--font-sm);
     padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+
+    cursor: pointer;
+    transition: var(--transition-fast);
+
+    color: var(--color-text-primary) !important;
 }
 
+/* Hover opción */
 .react-select__option--is-focused {
-    background: var(--color-bg-hover);
+    background: var(--color-bg-hover) !important;
 }
 
+/* Seleccionado */
 .react-select__option--is-selected {
-    background: var(--color-primary);
-    color: var(--color-text-inverse);
+    background: var(--color-primary) !important;
+    color: var(--color-text-inverse) !important;
 }
 
-/* Single value */
-
-.react-select__single-value {
-    color: var(--color-text-primary);
+/* Activo (click mantenido) */
+.react-select__option:active {
+    background: var(--color-primary-hover) !important;
+    color: var(--color-text-inverse) !important;
 }
 
-/* Dropdown indicator */
+/* =========================
+   INDICADORES
+   ========================= */
 
+/* Flecha */
 .react-select__dropdown-indicator {
-    color: var(--color-text-muted);
+    color: var(--color-text-muted) !important;
+    transition: var(--transition-fast);
 }
 
 .react-select__dropdown-indicator:hover {
-    color: var(--color-primary);
+    color: var(--color-primary) !important;
 }
 
-/* Clear button */
-
+/* Botón limpiar */
 .react-select__clear-indicator {
-    color: var(--color-text-muted);
+    color: var(--color-text-muted) !important;
+    transition: var(--transition-fast);
 }
 
 .react-select__clear-indicator:hover {
-    color: var(--color-danger);
+    color: var(--color-danger) !important;
+}
+
+/* Separador */
+.react-select__indicator-separator {
+    background: var(--color-border) !important;
+}
+
+/* =========================
+   MULTI SELECT (por si lo usas)
+   ========================= */
+
+.react-select__multi-value {
+    background: var(--color-primary-soft) !important;
+    border-radius: var(--radius-sm);
+}
+
+.react-select__multi-value__label {
+    color: var(--color-primary) !important;
+    font-size: var(--font-xs);
+}
+
+.react-select__multi-value__remove {
+    color: var(--color-primary) !important;
+}
+
+.react-select__multi-value__remove:hover {
+    background: var(--color-danger-soft) !important;
+    color: var(--color-danger) !important;
 }

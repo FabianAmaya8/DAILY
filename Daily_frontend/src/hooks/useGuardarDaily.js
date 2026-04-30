@@ -27,7 +27,7 @@ export const useGuardarDaily = () => {
     };
 
     // =========================
-    // CARGAR PERSONAS POR EQUIPO 🔥
+    // CARGAR PERSONAS POR EQUIPO
     // =========================
     const fetchPersonasByEquipo = async (equipoId) => {
         if (!equipoId) return;
@@ -59,7 +59,7 @@ export const useGuardarDaily = () => {
     }, [equipoSeleccionado]);
 
     // =========================
-    // SETEAR EQUIPO DESDE UI
+    // SETEAR EQUIPO
     // =========================
     const seleccionarEquipo = (teamName) => {
         const equipo = equipos.find(
@@ -71,52 +71,7 @@ export const useGuardarDaily = () => {
     };
 
     // =========================
-    // BUSCAR O CREAR PERSONA
-    // =========================
-    const getOrCreatePersona = async (personaFlow) => {
-        const nombreNormalizado = normalize(personaFlow.nombre);
-
-        let persona = personas.find(
-            (p) => normalize(p.nombre) === nombreNormalizado
-        );
-
-        if (persona) return persona;
-
-        // ⚠️ crear si no existe
-        const { data, error } = await supabase
-            .from("personas")
-            .insert([
-                {
-                    id: crypto.randomUUID(),
-                    nombre: personaFlow.nombre,
-                    correo:
-                        personaFlow.correo ||
-                        `${personaFlow.nombre.replace(/\s/g, "").toLowerCase()}@temp.com`,
-                    rol: "miembro",
-                },
-            ])
-            .select()
-            .single();
-
-        if (error) throw error;
-
-        // 🔥 agregar al equipo automáticamente
-        if (equipoSeleccionado) {
-            await supabase.from("miembros_equipo").insert([
-                {
-                    equipo_id: equipoSeleccionado.id,
-                    persona_id: data.id,
-                },
-            ]);
-        }
-
-        setPersonas((prev) => [...prev, data]);
-
-        return data;
-    };
-
-    // =========================
-    // GUARDAR TODO
+    // GUARDAR TODO (OPTIMIZADO 🔥)
     // =========================
     const guardarDailyCompleto = async (response) => {
         setLoading(true);
@@ -130,12 +85,17 @@ export const useGuardarDaily = () => {
             }
 
             for (const person of response.people) {
-                // 1. persona
-                const persona = await getOrCreatePersona(
-                    person.persona
-                );
+                const persona = person.persona;
 
-                // 2. UPSERT DAILY
+                // ⚠️ VALIDACIÓN HARD
+                if (!persona?.id) {
+                    console.warn("Persona sin ID, se omite:", persona);
+                    continue;
+                }
+
+                // =========================
+                // 1. UPSERT DAILY
+                // =========================
                 const { data: daily, error: dailyError } =
                     await supabase
                         .from("dailys")
@@ -147,25 +107,24 @@ export const useGuardarDaily = () => {
                                     equipo_id: equipo.id,
 
                                     que_hice_ayer:
-                                        person.daily.que_hice_ayer,
+                                        person.daily?.que_hice_ayer || null,
                                     que_hare_hoy:
-                                        person.daily.que_hare_hoy,
+                                        person.daily?.que_hare_hoy || null,
                                     bloqueos_texto:
-                                        person.bloqueo.descripcion,
+                                        person.bloqueo?.descripcion || null,
 
                                     modelo_carga:
-                                        person.daily.modelo_carga,
+                                        person.daily?.modelo_carga || null,
                                     valor_carga:
-                                        person.daily.valor_carga,
+                                        person.daily?.valor_carga || null,
                                     confianza:
-                                        person.daily.confianza,
+                                        person.daily?.confianza || null,
 
                                     fuente: "power_automate",
                                 },
                             ],
                             {
-                                onConflict:
-                                    "persona_id,fecha",
+                                onConflict: "persona_id,fecha",
                             }
                         )
                         .select()
@@ -173,8 +132,18 @@ export const useGuardarDaily = () => {
 
                 if (dailyError) throw dailyError;
 
-                // 3. BLOQUEO
-                if (person.bloqueo.tiene_bloqueo) {
+                // =========================
+                // 2. LIMPIAR BLOQUEOS ANTERIORES (🔥 CLAVE)
+                // =========================
+                await supabase
+                    .from("bloqueos")
+                    .delete()
+                    .eq("daily_id", daily.id);
+
+                // =========================
+                // 3. INSERT BLOQUEO
+                // =========================
+                if (person.bloqueo?.tiene_bloqueo) {
                     const { error: blockError } =
                         await supabase
                             .from("bloqueos")
@@ -182,12 +151,11 @@ export const useGuardarDaily = () => {
                                 {
                                     daily_id: daily.id,
                                     persona_id: persona.id,
-                                    tipo: person.bloqueo.tipo,
+                                    tipo: person.bloqueo?.tipo || null,
                                     severidad:
-                                        person.bloqueo.severidad ||
-                                        "medio",
+                                        person.bloqueo?.severidad || "medio",
                                     notas:
-                                        person.bloqueo.descripcion,
+                                        person.bloqueo?.descripcion || null,
                                 },
                             ]);
 
@@ -197,7 +165,7 @@ export const useGuardarDaily = () => {
 
             return true;
         } catch (err) {
-            console.error(err);
+            console.error("Error guardando daily:", err);
             setError(err.message);
             return false;
         } finally {
@@ -208,6 +176,7 @@ export const useGuardarDaily = () => {
     return {
         equipos,
         personas,
+        equipoSeleccionado,
         seleccionarEquipo,
         guardarDailyCompleto,
         loading,

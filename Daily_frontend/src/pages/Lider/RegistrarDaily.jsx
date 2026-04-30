@@ -12,6 +12,7 @@ export default function RegistrarDaily() {
     const { 
         equipos,
         personas,
+        equipoSeleccionado,
         seleccionarEquipo,
         guardarDailyCompleto,
         loading : loadingGuardar,
@@ -41,7 +42,7 @@ export default function RegistrarDaily() {
         }
     };
 
-    if (loadingGuardar) {
+    if (loadingGuardar || loading ) {
         return <Cargando />;
     }
 
@@ -51,6 +52,7 @@ export default function RegistrarDaily() {
                 <DailyForm 
                     equipos={equipos}
                     seleccionarEquipo={seleccionarEquipo}
+                    personas={personas}
                     onSubmit={handleSubmit} 
                     loading={loading} 
                 />

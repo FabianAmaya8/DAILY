@@ -41,13 +41,15 @@ export function useEquipos() {
             lider:personas!equipos_lider_id_fkey (
                 id,
                 nombre,
-                correo
+                correo,
+                rol
             ),
             miembros:miembros_equipo (
                 persona:personas (
                 id,
                 nombre,
-                correo
+                correo,
+                rol
                 )
             )
         `);
@@ -188,19 +190,57 @@ export function useEquipos() {
     /* ---------------------------
     Cambiar líder
     --------------------------- */
+    const cambiarLider = async (equipoId, nuevoLiderId) => {
+        try {
+            // 🔹 0. VALIDAR ROL REAL
+            const { data: persona, error: errorPersona } = await supabase
+                .from("personas")
+                .select("rol")
+                .eq("id", nuevoLiderId)
+                .single();
 
-    const cambiarLider = async (equipoId, personaId) => {
-        const { error } = await supabase
-            .from("equipos")
-            .update({ lider_id: personaId })
-            .eq("id", equipoId);
+            if (errorPersona) throw errorPersona;
 
-        if (error) {
-            setError(error);
-            return;
+            if (!["lider", "admin"].includes(persona.rol)) {
+                throw new Error("Esta persona no tiene rol de líder");
+            }
+
+            // 🔹 1. Obtener líder actual
+            const { data: equipo, error: errorEquipo } = await supabase
+                .from("equipos")
+                .select("lider_id")
+                .eq("id", equipoId)
+                .single();
+
+            if (errorEquipo) throw errorEquipo;
+
+            const liderAnteriorId = equipo.lider_id;
+
+            // 🔹 2. Cambiar líder
+            await supabase
+                .from("equipos")
+                .update({ lider_id: nuevoLiderId })
+                .eq("id", equipoId);
+
+            // 🔹 3. Actualizar roles en miembros_equipo
+            await supabase
+                .from("miembros_equipo")
+                .update({ rol: "lider" })
+                .eq("equipo_id", equipoId)
+                .eq("persona_id", nuevoLiderId);
+
+            if (liderAnteriorId && liderAnteriorId !== nuevoLiderId) {
+                await supabase
+                    .from("miembros_equipo")
+                    .update({ rol: "miembro" })
+                    .eq("equipo_id", equipoId)
+                    .eq("persona_id", liderAnteriorId);
+            }
+
+            fetchEquipos();
+        } catch (error) {
+            setError(error.message || error);
         }
-
-        fetchEquipos();
     };
 
     /* ---------------------------

@@ -3,6 +3,7 @@ import Select from "react-select";
 import { supabase } from "../../../utils/supabaseClient";
 import styles from "../../../assets/css/Admin/Equipos.module.scss";
 import "../../../assets/css/Admin/Select.css";
+import Avatar from "../../Depen/Avatar";
 
 export default function ModalEquipo({
     equipo,
@@ -12,6 +13,7 @@ export default function ModalEquipo({
     quitarMiembro,
     cambiarLider,
 }) {
+    console.log("🚀 ~ ModalEquipo ~ equipo:", equipo)
     const [personas, setPersonas] = useState([]);
     const [personaSeleccionada, setPersonaSeleccionada] = useState("");
     const [loading, setLoading] = useState(false);
@@ -92,54 +94,10 @@ export default function ModalEquipo({
                     </span>
                 </p>
 
-                {/* Miembros */}
-
-                <h3>Miembros</h3>
-
-                <div className={styles.membersList}>
-                    {(equipo.miembros || []).map((m) => (
-                        <div key={m.persona.id} className={styles.memberRow}>
-                            <span>{m.persona.nombre}</span>
-
-                            {puedeGestionar && (
-                                <div className={styles.memberActions}>
-                                    {usuario?.rol === "admin" && (
-                                        <button
-                                            onClick={() =>
-                                                cambiarLider(
-                                                    equipo.id,
-                                                    m.persona.id,
-                                                )
-                                            }
-                                            className={styles.viewButton}
-                                        >
-                                            Hacer líder
-                                        </button>
-                                    )}
-
-                                    <button
-                                        onClick={() =>
-                                            quitarMiembro(
-                                                equipo.id,
-                                                m.persona.id,
-                                            )
-                                        }
-                                        className={styles.deleteButton}
-                                    >
-                                        Quitar
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
-
                 {/* Agregar miembro */}
                 {puedeGestionar && (
-                    <>
-                        <h3>Agregar miembro</h3>
-
-                        <div className={styles.addMember}>
+                    <div className={styles.addMemberWrapper}>
+                        <div className={styles.addMemberGroup}>
                             <Select
                                 className={styles.reactSelect}
                                 classNamePrefix="react-select"
@@ -155,29 +113,68 @@ export default function ModalEquipo({
                                             value: p.id,
                                             label: p.nombre,
                                         }))
-                                        .find(
-                                            (opt) =>
-                                                opt.value ===
-                                                personaSeleccionada,
-                                        ) || null
+                                        .find((opt) => opt.value === personaSeleccionada) || null
                                 }
                                 onChange={(selected) =>
-                                    setPersonaSeleccionada(
-                                        selected?.value || "",
-                                    )
+                                    setPersonaSeleccionada(selected?.value || "")
                                 }
                             />
 
                             <button
                                 onClick={handleAgregar}
                                 disabled={!personaSeleccionada || loading}
-                                className={styles.createButton}
+                                className={styles.addButton}
                             >
-                                {loading ? "Agregando..." : "Agregar"}
+                                {loading ? "..." : "Agregar"}
                             </button>
                         </div>
-                    </>
+                    </div>
                 )}
+
+                {/* Miembros */}
+                <div>
+                    <h3>Miembros</h3>
+
+                    <div className={styles.membersList}>
+                        {(equipo.miembros || []).map((m) => (
+                            <div key={m.persona.id} className={styles.memberRow}>
+                                <div className={styles.memberInfo}>
+                                    <Avatar userId={m.persona.id} Nombre={m.persona.nombre} />
+                                    <span>{m.persona.nombre}</span>
+                                </div>
+
+                                {puedeGestionar && (
+                                    <div className={styles.memberActions}>
+                                        {usuario?.rol === "admin" &&
+                                            m.persona.rol === "lider" &&
+                                            m.persona.id !== equipo.lider.id && (
+                                                <button
+                                                    onClick={() =>
+                                                        cambiarLider(equipo.id, m.persona.id)
+                                                    }
+                                                    className={styles.viewButton}
+                                                >
+                                                    Hacer líder
+                                                </button>
+                                            )}
+
+                                        <button
+                                            onClick={() =>
+                                                quitarMiembro(
+                                                    equipo.id,
+                                                    m.persona.id
+                                                )
+                                            }
+                                            className={styles.deleteButton}
+                                        >
+                                            Quitar
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

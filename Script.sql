@@ -586,3 +586,78 @@ to anon, authenticated;
 alter default privileges in schema public
 grant select, insert, update, delete on tables 
 to anon, authenticated;
+
+create policy dailys_full_access
+on dailys
+for all
+using (
+    -- Puede ver
+    persona_id = auth.uid()
+    OR exists (
+        select 1 from personas
+        where id = auth.uid()
+        and rol in ('lider','admin')
+    )
+)
+with check (
+    -- Puede insertar / actualizar
+    persona_id = auth.uid()
+    OR exists (
+        select 1 from personas
+        where id = auth.uid()
+        and rol in ('lider','admin')
+    )
+);
+create policy "solo lider puede ser lider"
+on equipos
+for update
+using (
+  exists (
+    select 1 from personas
+    where id = lider_id
+    and rol in ('lider','admin')
+  )
+);
+
+
+create or replace view vista_dashboard_lider_full as
+select
+  p.id,
+  p.nombre,
+  p.correo,
+  p.rol,
+
+  pr.nombre as proyecto,
+
+  d.fecha,
+  d.que_hice_ayer,
+  d.que_hare_hoy,
+  d.bloqueos_texto,
+
+  vo.ocupacion_porcentaje,
+
+  e.id as equipo_id,
+  e.nombre as equipo_nombre,
+  e.lider_id
+
+from personas p
+
+left join miembros_equipo me
+  on me.persona_id = p.id
+
+left join equipos e
+  on e.id = me.equipo_id
+
+left join proyectos pr
+  on pr.id = p.proyecto_principal_id
+
+left join lateral (
+  select *
+  from dailys d
+  where d.persona_id = p.id
+  order by d.fecha desc
+  limit 1
+) d on true
+
+left join vista_ocupacion_semanal vo
+  on vo.persona_id = p.id;

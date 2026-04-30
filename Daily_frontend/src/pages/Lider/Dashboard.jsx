@@ -8,9 +8,12 @@ import Cargando from "../../components/Depen/Cargando";
 export default function LiderDashboard() {
     const {
         members,
+        teams,
+        selectedTeam,
         selectedMember,
         calendar,
         loading,
+        setSelectedTeam,
         selectMember,
         setSelectedMember,
     } = useLiderDashboard();
@@ -20,6 +23,25 @@ export default function LiderDashboard() {
     return (
         <div className={styles.page}>
             <h2 className={styles.title}>Dashboard Líder</h2>
+
+            <div className={styles.filters}>
+                <select
+                    value={selectedTeam}
+                    onChange={(e) => setSelectedTeam(e.target.value)}
+                >
+                    <option value="all">Todos</option>
+
+                    {teams.map((t) => (
+                        <option key={t.id} value={t.id}>
+                            {t.nombre}
+                        </option>
+                    ))}
+                </select>
+
+                <p className={styles.title}>
+                    total de miembros: {members.length}
+                </p>
+            </div>
 
             <div className={styles.grid}>
                 {members?.map((m) => (

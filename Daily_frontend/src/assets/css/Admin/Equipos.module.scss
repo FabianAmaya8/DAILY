@@ -180,7 +180,7 @@
 }
 
 .modal {
-    width: 420px;
+    width: 70%;
     max-width: 95%;
 
     background: var(--color-bg-secondary);
@@ -326,6 +326,13 @@
     color: var(--color-text-primary);
 }
 
+/* Informacion del miembro */
+.memberInfo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
 /* Acciones */
 .memberActions {
     display: flex;
@@ -342,9 +349,96 @@
     border-radius: var(--radius-sm);
 }
 
-.addMember {
-    display: flex;
-    gap: var(--space-sm);
-    align-items: center;
+/* Contenedor general */
+.addMemberWrapper {
+    width: 100%;
 }
 
+/* Grupo tipo Stripe */
+.addMemberGroup {
+    display: flex;
+    align-items: center;
+
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
+    border-radius: var(--radius-md);
+
+    padding: 4px;
+    gap: 4px;
+
+    transition: var(--transition-fast);
+}
+
+/* Hover elegante */
+.addMemberGroup:hover {
+    border-color: var(--color-primary);
+}
+
+/* Focus dentro (🔥 UX pro) */
+.addMemberGroup:focus-within {
+    border-color: var(--color-input-focus);
+    box-shadow: 0 0 0 2px var(--color-primary-soft);
+}
+
+/* Select ocupa todo */
+.reactSelect {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Quitamos estilos internos para que se integre */
+.reactSelect .react-select__control {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Botón integrado */
+.addButton {
+    border: none;
+    border-radius: calc(var(--radius-md) - 4px);
+
+    padding: 0 var(--space-md);
+    height: 36px;
+
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+
+    font-size: var(--font-sm);
+    font-weight: 500;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: var(--transition-fast);
+}
+
+/* Hover */
+.addButton:hover {
+    background: var(--color-primary-hover);
+}
+
+/* Disabled elegante */
+.addButton:disabled {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+/* Active (click) */
+.addButton:active {
+    transform: scale(0.97);
+}
+
+/* =========================
+    MEDIA QUERIES
+========================= */
+
+@media (max-width: 768px) {
+    .modal {
+        width: 90%;
+    }
+}

@@ -360,6 +360,54 @@
 }
 
 /* =========================
+   PREVIEW MIEMBROS EQUIPO 🔥
+========================= */
+.membersPreview {
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-tertiary);
+    border: 1px dashed var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    animation: fadeIn 0.2s ease;
+}
+
+.membersPreview h4 {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.membersPreview ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.membersPreview li {
+    font-size: var(--font-xs);
+    color: var(--color-text-secondary);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+/* hover tipo "tag pro" */
+.membersPreview li:hover {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* =========================
     MEDIA QUERIES
 ========================= */
 
