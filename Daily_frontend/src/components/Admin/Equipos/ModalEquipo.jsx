@@ -13,7 +13,6 @@ export default function ModalEquipo({
     quitarMiembro,
     cambiarLider,
 }) {
-    console.log("🚀 ~ ModalEquipo ~ equipo:", equipo)
     const [personas, setPersonas] = useState([]);
     const [personaSeleccionada, setPersonaSeleccionada] = useState("");
     const [loading, setLoading] = useState(false);

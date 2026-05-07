@@ -8,7 +8,6 @@ export default function DailyForm({
     onSubmit, 
     loading 
 }) {
-    console.log("🚀 ~ DailyForm ~ personas:", personas)
     const [form, setForm] = useState({
         content: "",
         source_type: "teams",

@@ -661,3 +661,141 @@ left join lateral (
 
 left join vista_ocupacion_semanal vo
   on vo.persona_id = p.id;
+
+/* ============================================================
+   CERTIFICACIONES - REDISEÑO COMPLETO
+   ============================================================ */
+
+---------------------------------------------------------------
+-- CATEGORÍAS (NUEVO)
+---------------------------------------------------------------
+create table if not exists categorias_certificacion (
+  id uuid primary key default gen_random_uuid(),
+  nombre text not null,
+  descripcion text,
+  parent_id uuid references categorias_certificacion(id), -- jerarquía
+  activo boolean default true,
+  creado_en timestamptz default now()
+);
+
+---------------------------------------------------------------
+-- CERTIFICACIONES (MODIFICADO)
+---------------------------------------------------------------
+create table if not exists certificaciones (
+  id uuid primary key default gen_random_uuid(),
+  codigo text not null unique,
+  nombre text not null,
+  entidad text,
+  descripcion text,
+  categoria_id uuid references categorias_certificacion(id),
+  activo boolean default true,
+  creado_en timestamptz default now()
+);
+
+---------------------------------------------------------------
+-- RELACIÓN PERSONA - CERTIFICACIONES (MEJORADA)
+---------------------------------------------------------------
+create table if not exists persona_certificaciones (
+  id uuid primary key default gen_random_uuid(),
+  persona_id uuid not null references personas(id) on delete cascade,
+  certificacion_id uuid not null references certificaciones(id) on delete cascade,
+
+  fecha_obtencion date,
+  fecha_expiracion date,
+  credencial_url text,
+
+  -- 🔥 NUEVO
+  estado text check (
+    estado in ('vigente','expirada','por_vencer','pendiente')
+  ) default 'pendiente',
+
+  validado boolean default false,
+  nivel text, -- associate, expert, etc.
+
+  creado_en timestamptz default now(),
+
+  unique(persona_id, certificacion_id)
+);
+
+---------------------------------------------------------------
+-- ACTIVAR RLS
+---------------------------------------------------------------
+alter table categorias_certificacion enable row level security;
+alter table certificaciones enable row level security;
+alter table persona_certificaciones enable row level security;
+
+---------------------------------------------------------------
+-- POLÍTICAS CATEGORÍAS
+---------------------------------------------------------------
+create policy categorias_select on categorias_certificacion
+for select using (true);
+
+create policy categorias_admin on categorias_certificacion
+for all using (
+  exists (
+    select 1 from personas
+    where id = auth.uid() and rol = 'admin'
+  )
+);
+
+---------------------------------------------------------------
+-- POLÍTICAS CERTIFICACIONES
+---------------------------------------------------------------
+create policy certificaciones_select on certificaciones
+for select using (true);
+
+create policy certificaciones_admin on certificaciones
+for all using (
+  exists (
+    select 1 from personas
+    where id = auth.uid() and rol = 'admin'
+  )
+);
+
+---------------------------------------------------------------
+-- POLÍTICAS PERSONA_CERTIFICACIONES
+---------------------------------------------------------------
+create policy persona_certificaciones_select on persona_certificaciones
+for select using (
+  persona_id = auth.uid()
+  OR exists (
+    select 1 from personas
+    where id = auth.uid() and rol in ('admin','lider')
+  )
+);
+
+create policy persona_certificaciones_insert
+on persona_certificaciones
+for insert
+with check (
+  persona_id = auth.uid()
+  OR exists (
+    select 1 from personas
+    where id = auth.uid()
+    and rol in ('admin','lider')
+  )
+);
+
+create policy persona_certificaciones_update
+on persona_certificaciones
+for update
+using (
+  persona_id = auth.uid()
+  OR exists (
+    select 1 from personas
+    where id = auth.uid()
+    and rol in ('admin','lider')
+  )
+);
+
+create policy persona_certificaciones_delete
+on persona_certificaciones
+for delete
+using (
+  persona_id = auth.uid()
+  OR exists (
+    select 1 from personas
+    where id = auth.uid()
+    and rol in ('admin','lider')
+  )
+);
