@@ -1,95 +1,64 @@
-import React, { useState } from "react";
-import { MessageSquareWarning } from "lucide-react";
+import { useState } from "react";
+import { ShieldAlert, Plus } from "lucide-react";
+import { Card } from "../../ui/Card";
+import { Button } from "../../ui/Button";
+import { Badge } from "../../ui/Badge";
 import Avatar from "../../Depen/Avatar";
 import InlineEdit from "./InlineEdit";
 import styles from "../../../assets/css/Lider/RegistrarDaily.module.scss";
 
+const SEVERIDADES = [
+    { value: "bajo", label: "Baja" },
+    { value: "medio", label: "Media" },
+    { value: "alto", label: "Alta" },
+];
+
 export default function PersonCard({ data, onChange, personas }) {
     const [person, setPerson] = useState(data);
 
-    // =========================
-    // UPDATE GENERAL
-    // =========================
     const update = (updated) => {
         setPerson(updated);
         onChange(updated);
     };
 
-    // =========================
-    // EDITAR CAMPOS
-    // =========================
-    const handleChange = (section, field, value) => {
-        const updated = {
-            ...person,
-            [section]: {
-                ...person[section],
-                [field]: value,
-            },
-        };
-
-        update(updated);
-    };
-
-    // =========================
-    // CAMBIAR PERSONA 🔥
-    // =========================
-    const handleSelectPersona = (personaId) => {
-        const personaSeleccionada = personas.find(
-            (p) => p.id === personaId
-        );
-
-        if (!personaSeleccionada) return;
-
+    const handleField = (section, field, value) => {
         update({
             ...person,
-            persona: personaSeleccionada,
+            [section]: { ...person[section], [field]: value },
         });
     };
 
-    // =========================
-    // TOGGLE BLOQUEO
-    // =========================
-    const toggleBloqueo = () => {
-        handleChange(
-            "bloqueo",
-            "tiene_bloqueo",
-            !person.bloqueo?.tiene_bloqueo
-        );
+    const handleSelectPersona = (personaId) => {
+        const personaSeleccionada = personas.find((p) => p.id === personaId);
+        if (!personaSeleccionada) return;
+        update({ ...person, persona: personaSeleccionada });
     };
 
-    const severidades = [
-        { value: "bajo", label: "Bajo" },
-        { value: "medio", label: "Medio" },
-        { value: "alto", label: "Alto" },
-    ];
+    const tieneBloqueo = !!person.bloqueo?.tiene_bloqueo;
+
+    const toggleBloqueo = () => {
+        handleField("bloqueo", "tiene_bloqueo", !tieneBloqueo);
+    };
 
     return (
-        <div className={styles.card}>
-            {/* HEADER */}
-            <div className={styles.cardTop}>
-                <Avatar Nombre={person.persona?.nombre} />
-
-                <div className={styles.headerInfo}>
-                    <h4 className={styles.name}>
-                        {person.persona?.nombre}
+        <Card padding="md" className={styles.personCard}>
+            <header className={styles.personHeader}>
+                <Avatar
+                    Nombre={person.persona?.nombre}
+                    userId={person.persona?.id}
+                    size="md"
+                />
+                <div className={styles.personHeaderText}>
+                    <h4 className={styles.personName}>
+                        {person.persona?.nombre || "Sin asignar"}
                     </h4>
-
-                    <span className={styles.subtle}>
-                        Edita el daily directamente
-                    </span>
-
-                    {/* 🔥 SELECT PERSONA REAL */}
                     <select
                         className={styles.select}
                         value={person.persona?.id || ""}
-                        onChange={(e) =>
-                            handleSelectPersona(e.target.value)
-                        }
+                        onChange={(e) => handleSelectPersona(e.target.value)}
+                        aria-label="Cambiar persona"
                     >
-                        <option value="">
-                            Seleccionar persona
-                        </option>
-
+                        <option value="">Cambiar persona…</option>
                         {personas?.map((p) => (
                             <option key={p.id} value={p.id}>
                                 {p.nombre}
@@ -97,127 +66,107 @@ export default function PersonCard({ data, onChange, personas }) {
                         ))}
                     </select>
                 </div>
-            </div>
+            </header>
 
-            {/* =========================
-                DAILY
-            ========================= */}
-            <div className={styles.section}>
-                <span className={styles.sectionTitle}>Ayer</span>
+            <section className={styles.personSection}>
+                <span className={styles.fieldLabel}>Ayer</span>
                 <InlineEdit
                     value={person.daily?.que_hice_ayer}
-                    onChange={(val) =>
-                        handleChange("daily", "que_hice_ayer", val)
-                    }
+                    onChange={(v) => handleField("daily", "que_hice_ayer", v)}
                     multiline
-                    placeholder="¿Qué hiciste ayer?"
+                    placeholder="¿Qué hizo ayer?"
                 />
+            </section>
 
-                <span className={styles.sectionTitle}>Hoy</span>
+            <section className={styles.personSection}>
+                <span className={styles.fieldLabel}>Hoy</span>
                 <InlineEdit
                     value={person.daily?.que_hare_hoy}
-                    onChange={(val) =>
-                        handleChange("daily", "que_hare_hoy", val)
-                    }
+                    onChange={(v) => handleField("daily", "que_hare_hoy", v)}
                     multiline
-                    placeholder="¿Qué harás hoy?"
+                    placeholder="¿Qué hará hoy?"
                 />
-            </div>
+            </section>
 
-            {/* =========================
-                BLOQUEO
-            ========================= */}
-            <div className={styles.section}>
-                <div
-                    className={`${styles.blockToggle} ${
-                        person.bloqueo?.tiene_bloqueo
-                            ? styles.active
-                            : ""
-                    }`}
+            <section className={styles.personSection}>
+                <button
+                    type="button"
+                    className={`${styles.blockToggle} ${tieneBloqueo ? styles.blockActive : ""}`}
                     onClick={toggleBloqueo}
+                    aria-pressed={tieneBloqueo}
                 >
-                    <div className={styles.checkbox}>
-                        {person.bloqueo?.tiene_bloqueo && (
-                            <MessageSquareWarning strokeWidth={3} />
-                        )}
-                    </div>
+                    {tieneBloqueo ? (
+                        <ShieldAlert size={14} aria-hidden="true" />
+                    ) : (
+                        <Plus size={14} aria-hidden="true" />
+                    )}
+                    <span>
+                        {tieneBloqueo ? "Tiene bloqueo" : "Marcar bloqueo"}
+                    </span>
+                    {tieneBloqueo && (
+                        <Badge variant="warning" size="sm" dot>
+                            Activo
+                        </Badge>
+                    )}
+                </button>
 
-                    <span>Bloqueo</span>
-                </div>
-
-                {person.bloqueo?.tiene_bloqueo && (
-                    <>
-                        <div className={styles.blockContent}>
-                            <span className={styles.sectionTitle}>
-                                Descripción
-                            </span>
-
+                {tieneBloqueo && (
+                    <div className={styles.blockContent}>
+                        <div className={styles.formGroup}>
+                            <span className={styles.fieldLabel}>Descripción</span>
                             <InlineEdit
                                 value={person.bloqueo?.descripcion}
-                                onChange={(val) =>
-                                    handleChange(
-                                        "bloqueo",
-                                        "descripcion",
-                                        val
-                                    )
+                                onChange={(v) =>
+                                    handleField("bloqueo", "descripcion", v)
                                 }
                                 multiline
-                                placeholder="Describe el bloqueo..."
+                                placeholder="Describe el bloqueo…"
                             />
                         </div>
 
-                        <div className={styles.blockContent}>
-                            <span className={styles.sectionTitle}>
-                                Tipo
-                            </span>
+                        <div className={styles.row2}>
+                            <div className={styles.formGroup}>
+                                <span className={styles.fieldLabel}>Tipo</span>
+                                <InlineEdit
+                                    value={person.bloqueo?.tipo}
+                                    onChange={(v) =>
+                                        handleField("bloqueo", "tipo", v)
+                                    }
+                                    placeholder="Tipo (API, QA…)"
+                                />
+                            </div>
 
-                            <InlineEdit
-                                value={person.bloqueo?.tipo}
-                                onChange={(val) =>
-                                    handleChange(
-                                        "bloqueo",
-                                        "tipo",
-                                        val
-                                    )
-                                }
-                                multiline
-                                placeholder="Tipo de bloqueo..."
-                            />
+                            <div className={styles.formGroup}>
+                                <label
+                                    htmlFor={`severidad-${person.persona?.id}`}
+                                    className={styles.fieldLabel}
+                                >
+                                    Severidad
+                                </label>
+                                <select
+                                    id={`severidad-${person.persona?.id}`}
+                                    className={styles.select}
+                                    value={person.bloqueo?.severidad || ""}
+                                    onChange={(e) =>
+                                        handleField(
+                                            "bloqueo",
+                                            "severidad",
+                                            e.target.value,
+                                        )
+                                    }
+                                >
+                                    <option value="">Selecciona…</option>
+                                    {SEVERIDADES.map((s) => (
+                                        <option key={s.value} value={s.value}>
+                                            {s.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-
-                        <div className={styles.blockContent}>
-                            <span className={styles.sectionTitle}>
-                                Severidad
-                            </span>
-
-                            <select
-                                className={styles.select}
-                                value={person.bloqueo?.severidad || ""}
-                                onChange={(e) =>
-                                    handleChange(
-                                        "bloqueo",
-                                        "severidad",
-                                        e.target.value
-                                    )
-                                }
-                            >
-                                <option value="">
-                                    Selecciona severidad
-                                </option>
-
-                                {severidades.map((s) => (
-                                    <option
-                                        key={s.value}
-                                        value={s.value}
-                                    >
-                                        {s.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </>
+                    </div>
                 )}
-            </div>
-        </div>
+            </section>
+        </Card>
     );
 }

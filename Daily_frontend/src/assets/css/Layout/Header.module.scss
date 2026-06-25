@@ -1,139 +1,94 @@
-/* =========================
-   HEADER WRAPPER
-   ========================= */
-
-.Header {
-    width: 100%;
+.header {
+    height: 56px;
     display: flex;
-    justify-content: center;
-    padding: var(--space-md);
-}
-
-/* =========================
-   HEADER CONTAINER
-   ========================= */
-
-.Header_container {
-    width: 100%;
-    height: 70px;
-    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
+    gap: var(--space-md);
     padding: 0 var(--space-lg);
-    background: var(--color-header-bg);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(10px);
-    transition: var(--transition-base);
+    background: color-mix(in oklab, var(--color-header-bg) 80%, transparent);
+    border-bottom: 1px solid var(--color-header-border);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-/* =========================
-   LEFT SECTION
-   ========================= */
-
-.Header_left {
-    display: flex;
-    align-items: center;
-}
-
-.Header_title {
+.left {
     display: flex;
     align-items: center;
     gap: var(--space-md);
+    min-width: 0;
+}
 
-    h1 {
-        font-size: var(--font-lg);
-        font-weight: 600;
+.menuBtn {
+    display: none;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background-color var(--motion-fast) var(--ease-out),
+        color var(--motion-fast) var(--ease-out);
+
+    &:hover {
+        background: var(--color-bg-hover);
         color: var(--color-text-primary);
+    }
+
+    @media (max-width: 900px) {
+        display: inline-flex;
     }
 }
 
-/* ROLE BADGE */
-
-.role {
-    background: var(--color-primary-soft);
-    color: var(--color-primary);
-    font-size: var(--font-xs);
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: var(--radius-md);
-    text-transform: capitalize;
-    animation: fadeIn 0.4s ease;
-}
-
-/* =========================
-   RIGHT SECTION
-   ========================= */
-.Header_right {
+.titleBlock {
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-sm);
+    min-width: 0;
 }
 
-/* USER BLOCK */
+.title {
+    font-size: var(--font-md);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.themeWrap {
+    @media (max-width: 600px) {
+        display: none;
+    }
+}
+
 .user {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
 }
 
-/* EMAIL */
 .userName {
     font-size: var(--font-sm);
     color: var(--color-text-secondary);
+    font-weight: var(--weight-medium);
     text-transform: capitalize;
-}
 
-
-/* =========================
-   ANIMATIONS
-   ========================= */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.menuBtn {
-    display: none;
-    background: none;
-    color: var(--color-text-primary);
-    border: none;
-    cursor: pointer;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-    .Header_container {
-        height: auto;
-        padding: var(--space-md);
-        flex-wrap: wrap;
-        gap: var(--space-sm);
-    }
-    .Header_title {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
-    }
-    .Header_title h1 {
-        font-size: var(--font-md);
-        line-height: 1.2;
-    }
-    .role {
-        font-size: 10px;
-    }
-    .userName {
+    @media (max-width: 600px) {
         display: none;
-    }
-    .menuBtn {
-        display: block;
-        margin-right: var(--space-sm);
     }
 }

@@ -1,444 +1,267 @@
-/* =========================
-   PAGE
-   ========================= */
+/* ===========================================================
+   Admin · Equipos
+   =========================================================== */
 
 .page {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: var(--space-lg);
+    max-width: 1280px;
+    margin-inline: auto;
+    width: 100%;
 }
 
-.header {
+.pageHeader {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
 }
 
 .title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
     font-size: var(--font-2xl);
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
     color: var(--color-text-primary);
+    margin: 0;
 }
 
-.description {
+.subtitle {
     font-size: var(--font-sm);
-    color: var(--color-text-secondary);
-}
-.actualizarButton {
-    background: var(--color-info);
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: var(--space-sm) var(--space-lg);
-    cursor: pointer;
-    font-size: var(--font-sm);
-    transition: var(--transition-fast);
+    color: var(--color-text-muted);
+    margin: 4px 0 0;
 }
 
-.actualizarButton:hover {
-    background: var(--color-success-soft);
-    color: var(--color-success);
+.actions {
+    display: flex;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
 }
 
-.createButton {
-    background: var(--color-success);
-    color: var(--color-text-inverse);
-
-    border: none;
-    border-radius: var(--radius-sm);
-
-    padding: var(--space-sm) var(--space-lg);
-    cursor: pointer;
-
-    font-size: var(--font-sm);
-
-    transition: var(--transition-fast);
-}
-
-.createButton:hover {
-    background: var(--color-success-soft);
-    color: var(--color-success);
-}
-
-/* =========================
-   GRID
-   ========================= */
-
+/* ===== Equipo card ===== */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: var(--space-lg);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
 }
-
-/* =========================
-   TEAM CARD
-   ========================= */
 
 .card {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-
-    padding: var(--space-lg);
-
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-
-    transition: var(--transition-base);
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    gap: var(--space-sm);
 }
 
 .cardHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-divider);
 }
 
 .teamName {
-    font-size: var(--font-lg);
-    font-weight: 600;
+    font-size: var(--font-md);
+    font-weight: var(--weight-semibold);
     color: var(--color-text-primary);
-}
-
-.cardBody {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
 }
 
 .meta {
-    font-size: var(--font-sm);
-    color: var(--color-text-secondary);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.highlight {
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-left: var(--space-xs);
+.metaRow {
+    display: grid;
+    grid-template-columns: auto 80px 1fr;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-xs);
+
+    dt {
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        font-weight: var(--weight-medium);
+        margin: 0;
+    }
+
+    dd {
+        color: var(--color-text-secondary);
+        margin: 0;
+    }
+}
+
+.metaIcon {
+    color: var(--color-text-muted);
 }
 
 .cardActions {
     display: flex;
-    gap: var(--space-sm);
-    margin-top: var(--space-sm);
+    gap: var(--space-xs);
+    padding-top: var(--space-xs);
+    border-top: 1px solid var(--color-divider);
 }
 
-.viewButton {
-    background: var(--color-primary);
-    color: var(--color-text-inverse);
-
-    border: none;
-    border-radius: var(--radius-sm);
-
-    padding: var(--space-xs) var(--space-md);
-    cursor: pointer;
-
-    font-size: var(--font-sm);
-}
-
-.viewButton:hover {
-    background: var(--color-primary-hover);
-}
-
-.deleteButton {
-    background: var(--color-danger);
-    color: var(--color-text-inverse);
-
-    border: none;
-    border-radius: var(--radius-sm);
-
-    padding: var(--space-xs) var(--space-md);
-    cursor: pointer;
-
-    font-size: var(--font-sm);
-}
-
-.deleteButton:hover {
-    background: var(--color-danger-soft);
-    color: var(--color-danger);
-}
-
-/* =========================
-   MODAL
-   ========================= */
-
-.modalOverlay {
-    position: fixed;
-    inset: 0;
-    background: var(--color-overlay);
-    backdrop-filter: blur(2px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-modal);
-}
-
-.modal {
-    width: 70%;
-    max-width: 95%;
-
-    background: var(--color-bg-secondary);
-
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-
-    box-shadow: var(--shadow-lg);
-
-    padding: var(--space-xl);
-
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
-}
-
-.modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.closeButton {
-    background: transparent;
-    border: none;
-
-    font-size: var(--font-lg);
-    cursor: pointer;
-
-    color: var(--color-text-muted);
-}
-
-.closeButton:hover {
-    color: var(--color-danger);
-}
-
-/* =========================
-   FORM
-   ========================= */
-
+/* ===== Form ===== */
 .form {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
 }
 
-.field {
+.formGroup {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xxs);
-
-    font-size: var(--font-sm);
+    gap: 4px;
 }
 
-.input {
-    width: 100%;
+.fieldLabel {
+    font-size: var(--font-xs);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--tracking-tight);
 }
 
-.textarea {
-    resize: none;
-    min-height: 80px;
-    font-family: "Inter", system-ui, sans-serif;
-}
-
+.textarea,
 .select {
     width: 100%;
-}
-
-.actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-sm);
-    margin-top: var(--space-sm);
-}
-
-.cancelButton {
-    background: var(--color-secondary-soft);
+    padding: 10px 12px;
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
     color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: var(--font-md);
+    line-height: var(--line-relaxed);
+    resize: vertical;
+    transition:
+        border-color var(--motion-fast) var(--ease-out),
+        box-shadow var(--motion-fast) var(--ease-out);
 
-    border: none;
-    border-radius: var(--radius-sm);
+    &:hover:not(:disabled) {
+        border-color: var(--color-input-border-hover);
+    }
 
-    padding: var(--space-xs) var(--space-md);
-    cursor: pointer;
+    &:focus-visible {
+        outline: none;
+        border-color: var(--color-input-focus);
+        box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
 
-    font-size: var(--font-sm);
+    &::placeholder {
+        color: var(--color-input-placeholder);
+    }
 }
 
-.cancelButton:hover {
-    background: var(--color-bg-hover);
-}
-
-.createTeamButton {
-    background: var(--color-success);
-    color: var(--color-text-inverse);
-
-    border: none;
-    border-radius: var(--radius-sm);
-
-    padding: var(--space-xs) var(--space-md);
-    cursor: pointer;
-
-    font-size: var(--font-sm);
-}
-
-.createTeamButton:hover {
-    background: var(--color-success-soft);
-    color: var(--color-success);
-}
-
-/* =========================
-   MEMBERS LIST
-   ========================= */
-.membersList {
+/* ===== Modal Equipo body ===== */
+.modalBody {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    max-height: 220px;
-    overflow-y: auto;
-    padding-right: var(--space-xs);
+    gap: var(--space-lg);
 }
 
-/* Cada fila de miembro */
-.memberRow {
-    display: flex;
+.leaderRow {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--space-xs) var(--space-sm);
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
+    gap: var(--space-xs);
+    color: var(--color-text-muted);
     font-size: var(--font-sm);
-    transition: var(--transition-fast);
 }
 
-.memberRow:hover {
-    background: var(--color-bg-hover);
+.leaderLabel {
+    color: var(--color-text-muted);
+    font-size: var(--font-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-weight: var(--weight-medium);
 }
 
-/* Nombre del miembro */
-.memberRow span {
-    font-weight: 500;
-    color: var(--color-text-primary);
+.sectionTitle {
+    font-size: var(--font-xs);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin: 0 0 var(--space-sm);
 }
 
-/* Informacion del miembro */
-.memberInfo {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-}
-
-/* Acciones */
-.memberActions {
-    display: flex;
-    gap: var(--space-xs);
-}
-
-/* Scroll bonito */
-.membersList::-webkit-scrollbar {
-    width: 6px;
-}
-
-.membersList::-webkit-scrollbar-thumb {
-    background: var(--color-border);
-    border-radius: var(--radius-sm);
-}
-
-/* Contenedor general */
+/* ===== Add member ===== */
 .addMemberWrapper {
     width: 100%;
 }
 
-/* Grupo tipo Stripe */
 .addMemberGroup {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-xs);
+    align-items: stretch;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.reactSelect {
+    min-width: 0;
+}
+
+/* ===== Members list ===== */
+.membersList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.memberRow {
     display: flex;
     align-items: center;
-
-    background: var(--color-input-bg);
-    border: 1px solid var(--color-input-border);
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+    transition: background-color var(--motion-fast) var(--ease-out);
 
-    padding: 4px;
-    gap: 4px;
-
-    transition: var(--transition-fast);
+    &:hover {
+        background: var(--color-bg-hover);
+    }
 }
 
-/* Hover elegante */
-.addMemberGroup:hover {
-    border-color: var(--color-primary);
-}
-
-/* Focus dentro (🔥 UX pro) */
-.addMemberGroup:focus-within {
-    border-color: var(--color-input-focus);
-    box-shadow: 0 0 0 2px var(--color-primary-soft);
-}
-
-/* Select ocupa todo */
-.reactSelect {
+.memberInfo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
     flex: 1;
     min-width: 0;
 }
 
-/* Quitamos estilos internos para que se integre */
-.reactSelect .react-select__control {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Botón integrado */
-.addButton {
-    border: none;
-    border-radius: calc(var(--radius-md) - 4px);
-
-    padding: 0 var(--space-md);
-    height: 36px;
-
-    background: var(--color-primary);
-    color: var(--color-text-inverse);
-
+.memberName {
     font-size: var(--font-sm);
-    font-weight: 500;
+    color: var(--color-text-primary);
+    font-weight: var(--weight-medium);
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    cursor: pointer;
-
+.memberActions {
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition: var(--transition-fast);
-}
-
-/* Hover */
-.addButton:hover {
-    background: var(--color-primary-hover);
-}
-
-/* Disabled elegante */
-.addButton:disabled {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-muted);
-    cursor: not-allowed;
-}
-
-/* Active (click) */
-.addButton:active {
-    transform: scale(0.97);
-}
-
-/* =========================
-    MEDIA QUERIES
-========================= */
-
-@media (max-width: 768px) {
-    .modal {
-        width: 90%;
-    }
+    gap: 4px;
+    flex-shrink: 0;
 }

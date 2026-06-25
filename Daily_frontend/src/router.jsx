@@ -1,110 +1,128 @@
-import { createBrowserRouter } from "react-router-dom";
-import Login from "./pages/Layout/Login";
-import MemberDashboard from "./pages/Miembro/Dashboard";
-import LiderDashboard from "./pages/Lider/Dashboard";
-import AdminDashboard from "./pages/Admin/Dashboard";
-import MainLayout from "./pages/Layout/MainLayout";
-import RegisterPerson from "./pages/Admin/Registro";
-import UsersManagement from "./pages/Admin/UsersManagement";
-import Error404 from "./pages/Layout/Error404";
-import Inicio from "./pages/Layout/Inicio";
-import EquiposPage from "./pages/Admin/Equipos";
-import Auditorias from "./pages/Admin/Auditorias";
-import Proyectos from "./pages/Admin/Proyectos";
-import DailyForm from "./pages/Miembro/RegistrarDaily";
-import RegistrarBloqueo from "./pages/Miembro/RegistrarBloqueo";
-import Bloqueos from "./pages/Miembro/Bloqueos";
-import Certificaciones from "./pages/Miembro/Certificaciones";
-import CertificacionesLider from "./pages/Lider/CertificacionesLider";
-import RegistrarDaily from "./pages/Lider/RegistrarDaily";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import Cargando from "./components/Depen/Cargando";
 
+// ---------------------------------------------------------------
+// Eager (rutas iniciales — críticas para TTI)
+// ---------------------------------------------------------------
+import Inicio from "./pages/Layout/Inicio";
+import Login from "./pages/Layout/Login";
+import MainLayout from "./pages/Layout/MainLayout";
+import Error404 from "./pages/Layout/Error404";
+
+// ---------------------------------------------------------------
+// Lazy
+// ---------------------------------------------------------------
+const MemberDashboard = lazy(() => import("./pages/Miembro/Dashboard"));
+const DailyForm = lazy(() => import("./pages/Miembro/RegistrarDaily"));
+const RegistrarBloqueo = lazy(() => import("./pages/Miembro/RegistrarBloqueo"));
+const Bloqueos = lazy(() => import("./pages/Miembro/Bloqueos"));
+const Certificaciones = lazy(() => import("./pages/Miembro/Certificaciones"));
+
+const LiderDashboard = lazy(() => import("./pages/Lider/Dashboard"));
+const RegistrarDailyLider = lazy(() => import("./pages/Lider/RegistrarDaily"));
+const CertificacionesLider = lazy(
+    () => import("./pages/Lider/CertificacionesLider"),
+);
+
+const AdminDashboard = lazy(() => import("./pages/Admin/Dashboard"));
+const RegisterPerson = lazy(() => import("./pages/Admin/Registro"));
+const UsersManagement = lazy(() => import("./pages/Admin/UsersManagement"));
+const EquiposPage = lazy(() => import("./pages/Admin/Equipos"));
+const Auditorias = lazy(() => import("./pages/Admin/Auditorias"));
+const Proyectos = lazy(() => import("./pages/Admin/Proyectos"));
+
+const Lazy = (Component) => (
+    <Suspense fallback={<Cargando />}>
+        <Component />
+    </Suspense>
+);
+
+/**
+ * URLs kebab-case (Fase 3) + retrocompat con las antiguas
+ * via <Navigate replace>. Las viejas siguen funcionando
+ * pero el navegador acaba en la nueva URL canónica.
+ */
 const router = createBrowserRouter([
     { path: "/login", element: <Login /> },
     { path: "/", element: <Inicio /> },
 
+    // --- MIEMBRO + LIDER + ADMIN ---
     {
         element: <MainLayout Roles={["miembro", "lider", "admin"]} />,
         children: [
-            {
-                path: "*",
-                element: (<Error404 />),
-            },
-            {
-                path: "/miembro/dashboard",
-                element: (<MemberDashboard />),
-            },
+            { path: "/miembro/dashboard", element: Lazy(MemberDashboard) },
+            { path: "/miembro/registrar-daily", element: Lazy(DailyForm) },
+            { path: "/miembro/registrar-bloqueo", element: Lazy(RegistrarBloqueo) },
+            { path: "/miembro/bloqueos", element: Lazy(Bloqueos) },
+            { path: "/miembro/certificaciones", element: Lazy(Certificaciones) },
+
+            // Retrocompat URLs antiguas → redirigen a las nuevas
             {
                 path: "/miembro/RegistrarDaily",
-                element: (<DailyForm />),
+                element: <Navigate to="/miembro/registrar-daily" replace />,
             },
             {
                 path: "/miembro/RegistrarBloqueos",
-                element: (<RegistrarBloqueo />),
+                element: <Navigate to="/miembro/registrar-bloqueo" replace />,
             },
             {
                 path: "/miembro/Bloqueos",
-                element: (<Bloqueos />),
+                element: <Navigate to="/miembro/bloqueos" replace />,
             },
             {
                 path: "/miembro/Certificaciones",
-                element: (<Certificaciones />),
-            }
+                element: <Navigate to="/miembro/certificaciones" replace />,
+            },
         ],
     },
+
+    // --- LIDER + ADMIN ---
     {
         element: <MainLayout Roles={["lider", "admin"]} />,
         children: [
-            {
-                path: "/lider/dashboard",
-                element: (<LiderDashboard />),
-            },
+            { path: "/lider/dashboard", element: Lazy(LiderDashboard) },
+            { path: "/lider/registrar-daily", element: Lazy(RegistrarDailyLider) },
+            { path: "/lider/registrar-persona", element: Lazy(RegisterPerson) },
+            { path: "/lider/equipos", element: Lazy(EquiposPage) },
+            { path: "/lider/bloqueos", element: Lazy(Bloqueos) },
+            { path: "/lider/certificaciones", element: Lazy(CertificacionesLider) },
+
+            // Retrocompat
             {
                 path: "/lider/RegistroDaily",
-                element: (<RegistrarDaily />),
+                element: <Navigate to="/lider/registrar-daily" replace />,
             },
             {
                 path: "/lider/registrar",
-                element: (<RegisterPerson />),
+                element: <Navigate to="/lider/registrar-persona" replace />,
             },
-            {
-                path: "/lider/equipos",
-                element: (<EquiposPage />),
-            },
-            {
-                path: "/lider/bloqueos",
-                element: (<Bloqueos />),
-            },
-            {
-                path: "/lider/certificaciones",
-                element: (<CertificacionesLider />),
-            }
         ],
     },
+
+    // --- ADMIN ---
     {
         element: <MainLayout Roles={["admin"]} />,
         children: [
-            {
-                path: "/admin/dashboard",
-                element: (<AdminDashboard />),
-            },
+            { path: "/admin/dashboard", element: Lazy(AdminDashboard) },
+            { path: "/admin/usuarios", element: Lazy(UsersManagement) },
+            { path: "/admin/equipos", element: Lazy(EquiposPage) },
+            { path: "/admin/proyectos", element: Lazy(Proyectos) },
+            { path: "/admin/auditorias", element: Lazy(Auditorias) },
+
+            // Retrocompat
             {
                 path: "/admin/users",
-                element: (<UsersManagement />),
+                element: <Navigate to="/admin/usuarios" replace />,
             },
-            {
-                path: "/admin/equipos",
-                element: (<EquiposPage />),
-            },
-            {
-                path: "/admin/proyectos",
-                element: (<Proyectos />),
-            },
-            {
-                path: "/admin/auditorias",
-                element: (<Auditorias />),
-            }
         ],
-    }
+    },
+
+    // 404 catch-all dentro del layout protegido
+    {
+        element: <MainLayout Roles={["miembro", "lider", "admin"]} />,
+        children: [{ path: "*", element: <Error404 /> }],
+    },
 ]);
 
 export default router;

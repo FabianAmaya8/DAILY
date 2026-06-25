@@ -1,88 +1,39 @@
-.container {
+.page {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+    max-width: 1200px;
+    margin-inline: auto;
+    width: 100%;
+}
+
+.pageHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-2xl);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.subtitle {
+    font-size: var(--font-sm);
+    color: var(--color-text-muted);
+    margin: 4px 0 0;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--space-md);
-}
-
-.card {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.tipo {
-    font-weight: 600;
-}
-
-.badge {
-    font-size: var(--font-xs);
-    padding: 2px 8px;
-    border-radius: var(--radius-sm);
-}
-
-/* severidades */
-.baja {
-    background: #e0f2fe;
-    color: #0284c7;
-}
-
-.media {
-    background: #fef9c3;
-    color: #ca8a04;
-}
-
-.alta {
-    background: #fde68a;
-    color: #b45309;
-}
-
-.crítica {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.meta {
-    font-size: var(--font-xs);
-    color: var(--color-text-secondary);
-    margin: 0;
-}
-
-.author {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-sm);
-;
-}
-
-.notes {
-    font-size: var(--font-sm);
-    margin: 0;
-}
-
-.footer {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.estado {
-    font-size: var(--font-xs);
-    color: var(--color-primary);
 }

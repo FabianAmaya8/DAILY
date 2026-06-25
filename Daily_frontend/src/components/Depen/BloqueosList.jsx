@@ -1,61 +1,123 @@
+import { Calendar, UserCircle, Clock, ShieldOff } from "lucide-react";
 import { useBloqueos } from "../../hooks/useBloqueos";
-import styles from "../../assets/css/Miembro/Bloqueos.module.scss";
+import { Card } from "../ui/Card";
+import { Badge } from "../ui/Badge";
+import { EmptyState } from "../ui/EmptyState";
 import Avatar from "./Avatar";
 import Cargando from "./Cargando";
+import styles from "../../assets/css/Depen/BloqueosList.module.scss";
+
+const SEVERIDAD_VARIANT = {
+    Baja: "info",
+    Media: "warning",
+    Alta: "danger",
+    Crítica: "danger",
+    Critica: "danger",
+};
+
+const ESTADO_VARIANT = {
+    Abierto: "warning",
+    "En curso": "info",
+    Resuelto: "success",
+    Cerrado: "neutral",
+};
 
 export default function BloqueosList() {
     const { bloqueos, loading } = useBloqueos();
 
     if (loading) return <Cargando />;
 
-    if (!bloqueos.length) {
-        return <p>No hay bloqueos registrados</p>;
+    if (!bloqueos || bloqueos.length === 0) {
+        return (
+            <EmptyState
+                icon={ShieldOff}
+                title="Sin bloqueos registrados"
+                description="Cuando alguien registre un bloqueo aparecerá aquí."
+            />
+        );
     }
 
     return (
         <div className={styles.grid}>
             {bloqueos.map((b) => (
-                <div key={b.id} className={styles.card}>
-                    <div className={styles.header}>
-                        <span className={styles.tipo}>{b.tipo}</span>
-                        <span
-                            className={`${styles.badge} ${styles[b.severidad.toLowerCase()]}`}
+                <Card key={b.id} padding="md" className={styles.card}>
+                    <header className={styles.cardHeader}>
+                        <span className={styles.tipo}>{b.tipo || "—"}</span>
+                        <Badge
+                            variant={
+                                SEVERIDAD_VARIANT[b.severidad] || "neutral"
+                            }
+                            size="sm"
+                            dot
                         >
-                            {b.severidad}
-                        </span>
-                    </div>
+                            {b.severidad || "—"}
+                        </Badge>
+                    </header>
 
-                    <p className={styles.meta + " " + styles.author}>
-                        {b.persona?.nombre || "—"}
-                        <Avatar Nombre={b.persona?.nombre} userId={b.persona?.id} /> 
-                    </p>
+                    {b.notas && <p className={styles.notes}>{b.notas}</p>}
 
-                    <p className={styles.meta}>
-                        🧑‍🔧 Responsable: {b.responsable?.nombre || "Sin asignar"}
-                    </p>
+                    <dl className={styles.meta}>
+                        <div className={styles.metaRow}>
+                            <UserCircle
+                                size={14}
+                                aria-hidden="true"
+                                className={styles.metaIcon}
+                            />
+                            <dt>Reportó</dt>
+                            <dd className={styles.metaValueWithAvatar}>
+                                <span>{b.persona?.nombre || "—"}</span>
+                                {b.persona?.id && (
+                                    <Avatar
+                                        Nombre={b.persona.nombre}
+                                        userId={b.persona.id}
+                                        size="sm"
+                                    />
+                                )}
+                            </dd>
+                        </div>
 
-                    <p className={styles.meta}>
-                        📅 {b.dailys?.fecha || "—"}
-                    </p>
+                        <div className={styles.metaRow}>
+                            <UserCircle
+                                size={14}
+                                aria-hidden="true"
+                                className={styles.metaIcon}
+                            />
+                            <dt>Responsable</dt>
+                            <dd>{b.responsable?.nombre || "Sin asignar"}</dd>
+                        </div>
 
-                    {b.fecha_limite && (
-                        <p className={styles.meta}>
-                            ⏳ Límite: {b.fecha_limite}
-                        </p>
-                    )}
+                        <div className={styles.metaRow}>
+                            <Calendar
+                                size={14}
+                                aria-hidden="true"
+                                className={styles.metaIcon}
+                            />
+                            <dt>Reportado</dt>
+                            <dd>{b.dailys?.fecha || "—"}</dd>
+                        </div>
 
-                    {b.notas && (
-                        <p className={styles.notes}>
-                            {b.notas}
-                        </p>
-                    )}
+                        {b.fecha_limite && (
+                            <div className={styles.metaRow}>
+                                <Clock
+                                    size={14}
+                                    aria-hidden="true"
+                                    className={styles.metaIcon}
+                                />
+                                <dt>Vence</dt>
+                                <dd>{b.fecha_limite}</dd>
+                            </div>
+                        )}
+                    </dl>
 
-                    <div className={styles.footer}>
-                        <span className={styles.estado}>
-                            {b.estado}
-                        </span>
-                    </div>
-                </div>
+                    <footer className={styles.footer}>
+                        <Badge
+                            variant={ESTADO_VARIANT[b.estado] || "neutral"}
+                            size="sm"
+                        >
+                            {b.estado || "—"}
+                        </Badge>
+                    </footer>
+                </Card>
             ))}
         </div>
     );

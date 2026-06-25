@@ -1,84 +1,85 @@
-import styles from "../../../assets/css/Lider/CertificacionesLider.module.scss";
+import { Card } from "../../ui/Card";
 import Avatar from "../../Depen/Avatar";
+import styles from "../../../assets/css/Lider/CertificacionesLider.module.scss";
+
+const ESTADO_CLASS = {
+    vigente: "certVigente",
+    pendiente: "certPendiente",
+    expirada: "certExpirada",
+    por_vencer: "certPorVencer",
+};
 
 export default function CertificacionesMatrix({
     categoriasFiltradas = [],
     personas = [],
-    tieneCertificacion,
-    getProgresoPersona,
     abrirModal,
+    getProgresoPersona,
     getRelacion,
 }) {
     const certificaciones = categoriasFiltradas.flatMap(
-        (c) => c.certificaciones || []
+        (c) => c.certificaciones || [],
     );
 
     return (
         <div className={styles.matrixContainer}>
             {personas.map((persona) => {
                 const progreso = getProgresoPersona(persona.id);
-
                 return (
-                    <div key={persona.id} className={styles.cardPersona}>
-                        {/* HEADER */}
-                        <div className={styles.personaHeader}>
+                    <Card
+                        key={persona.id}
+                        padding="md"
+                        className={styles.cardPersona}
+                    >
+                        <header className={styles.personaHeader}>
                             <Avatar
                                 userId={persona.id}
                                 Nombre={persona.nombre}
+                                size="md"
                             />
-
-                            <div>
+                            <div className={styles.personaText}>
                                 <div className={styles.personaNombre}>
                                     {persona.nombre}
                                 </div>
-
                                 <div className={styles.personaStats}>
                                     {progreso.obtenidas} / {progreso.total}
                                 </div>
                             </div>
-                        </div>
+                        </header>
 
-                        {/* PROGRESS */}
-                        <div className={styles.progressBar}>
+                        <div
+                            className={styles.progressBar}
+                            role="progressbar"
+                            aria-valuenow={progreso.porcentaje}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-label={`Progreso de ${persona.nombre}`}
+                        >
                             <div
                                 className={styles.progressFill}
-                                style={{
-                                    width: `${progreso.porcentaje}%`,
-                                }}
+                                style={{ width: `${progreso.porcentaje}%` }}
                             />
                         </div>
 
-                        {/* CERTS */}
                         <div className={styles.certGrid}>
                             {certificaciones.map((cert) => {
                                 const relacion = getRelacion(persona.id, cert.id);
                                 const estado = relacion?.estado || null;
-
+                                const cls = ESTADO_CLASS[estado] || "certInactiva";
                                 return (
                                     <button
                                         key={cert.id}
-                                        className={`${styles.certItem} ${
-                                            estado === "vigente"
-                                                ? styles.certVigente
-                                                : estado === "pendiente"
-                                                ? styles.certPendiente
-                                                : estado === "expirada"
-                                                ? styles.certExpirada
-                                                : estado === "por_vencer"
-                                                ? styles.certPorVencer
-                                                : styles.certInactiva
-                                        }`}
-                                        onClick={() =>
-                                            abrirModal(persona, cert)
-                                        }
-                                        title={`${cert.codigo} - ${cert.nombre}`}
+                                        type="button"
+                                        className={`${styles.certItem} ${styles[cls]}`}
+                                        onClick={() => abrirModal(persona, cert)}
+                                        title={`${cert.codigo} — ${cert.nombre}`}
+                                        aria-label={`${cert.codigo} de ${persona.nombre}, estado ${estado || "no asignada"}`}
                                     >
                                         {cert.codigo}
                                     </button>
                                 );
                             })}
                         </div>
-                    </div>
+                    </Card>
                 );
             })}
         </div>

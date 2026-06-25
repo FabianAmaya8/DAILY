@@ -1,43 +1,48 @@
-import React from "react";
 import clsx from "clsx";
+import styles from "../../assets/css/ui/Card.module.scss";
 
 /**
- * Card - Componente base tipo shadcn
+ * Card — contenedor base reutilizable.
+ *
  * Props:
- * - children
- * - className
- * - title (opcional)
- * - description (opcional)
- * - footer (opcional)
+ *  - title, description (opcionales — header automático)
+ *  - footer (opcional)
+ *  - padding: "none" | "sm" | "md" | "lg" (default md)
+ *  - interactive (boolean) — añade hover sutil
  */
-
-export function Card({ children, className, title, description, footer }) {
+export function Card({
+    children,
+    className,
+    title,
+    description,
+    footer,
+    padding = "md",
+    interactive = false,
+    as: Tag = "div",
+    ...rest
+}) {
     return (
-        <div
-            className={clsx( className,)}
+        <Tag
+            className={clsx(
+                styles.card,
+                styles[`p_${padding}`],
+                interactive && styles.interactive,
+                className,
+            )}
+            {...rest}
         >
             {(title || description) && (
-                <div className="mb-4">
-                    {title && (
-                        <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
-                            {title}
-                        </h3>
-                    )}
+                <div className={styles.header}>
+                    {title && <h3 className={styles.title}>{title}</h3>}
                     {description && (
-                        <p className="text-sm text-[var(--color-text-muted)] mt-1">
-                            {description}
-                        </p>
+                        <p className={styles.description}>{description}</p>
                     )}
                 </div>
             )}
 
-            <div>{children}</div>
+            <div className={styles.body}>{children}</div>
 
-            {footer && (
-                <div className="mt-4 pt-4 border-t border-[var(--color-border)]">
-                    {footer}
-                </div>
-            )}
-        </div>
+            {footer && <div className={styles.footer}>{footer}</div>}
+        </Tag>
     );
 }

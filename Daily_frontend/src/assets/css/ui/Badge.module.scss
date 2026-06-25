@@ -1,0 +1,66 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    white-space: nowrap;
+}
+
+.s_sm {
+    padding: 3px 8px;
+    font-size: var(--font-2xs);
+}
+
+.s_md {
+    padding: 5px 12px;
+    font-size: var(--font-xs);
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+}
+
+/* Variants */
+.v_neutral {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+}
+
+.v_primary {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    border-color: var(--color-primary-border);
+}
+
+.v_success {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+    border-color: color-mix(in oklab, var(--color-success) 35%, transparent);
+}
+
+.v_warning {
+    background: var(--color-warning-soft);
+    color: var(--color-warning);
+    border-color: color-mix(in oklab, var(--color-warning) 35%, transparent);
+}
+
+.v_danger {
+    background: var(--color-danger-soft);
+    color: var(--color-danger);
+    border-color: color-mix(in oklab, var(--color-danger) 35%, transparent);
+}
+
+.v_info {
+    background: var(--color-info-soft);
+    color: var(--color-info);
+    border-color: color-mix(in oklab, var(--color-info) 35%, transparent);
+}

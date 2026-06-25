@@ -1,160 +1,256 @@
-/* =========================
-   WRAPPER
-========================= */
+/* ===========================================================
+   LOGIN · DAILY
+   Centrado, tarjeta limpia, microcopy claro, accesible.
+   =========================================================== */
+
 .wrapper {
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-bg);
     padding: var(--space-lg);
-    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
 }
 
-/* =========================
-   CARD
-========================= */
+/* Fondo decorativo sutil */
+.wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -200px;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(63, 185, 80, 0.18),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(88, 166, 255, 0.14),
+            transparent 45%
+        );
+    filter: blur(40px);
+    opacity: 0.7;
+}
+
 .cardContainer {
     width: 100%;
     max-width: 420px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    box-shadow: var(--shadow-lg);
+    position: relative;
 }
 
-/* =========================
-   FORM
-========================= */
+/* Brand sobre la card */
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    font-weight: var(--weight-semibold);
+    font-size: var(--font-md);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.brandDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: var(--glow-primary);
+}
+
+.title {
+    font-size: var(--font-2xl);
+    font-weight: var(--weight-semibold);
+    text-align: center;
+    color: var(--color-text-primary);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--line-tight);
+}
+
+.description {
+    font-size: var(--font-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: var(--space-xxs);
+    margin-bottom: var(--space-lg);
+}
+
+/* ===== Form ===== */
 .form {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
 }
 
-/* =========================
-   INPUT GROUP
-========================= */
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: var(--space-xxs);
 }
 
-/* =========================
-   INPUT BASE
-========================= */
+.label {
+    font-size: var(--font-xs);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+    letter-spacing: var(--tracking-tight);
+}
+
 .input {
     width: 100%;
     font-size: var(--font-md);
+    padding: 11px 14px;
+    background: var(--color-input-bg);
+    border: 1px solid var(--color-input-border);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    transition:
+        border-color var(--motion-fast) var(--ease-out),
+        box-shadow var(--motion-fast) var(--ease-out);
+
+    &:hover:not(:disabled) {
+        border-color: var(--color-input-border-hover);
+    }
+
+    &:focus-visible {
+        outline: none;
+        border-color: var(--color-input-focus);
+        box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
 }
 
-/* =========================
-   PASSWORD INPUT WRAPPER
-========================= */
 .inputWrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-/* espacio para icono */
 .inputWrapper .input {
-    padding-right: 40px;
+    padding-right: 44px;
 }
 
-/* botón ojo */
 .eyeButton {
     position: absolute;
-    right: var(--space-xs);
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
-
     background: transparent;
     border: none;
     cursor: pointer;
-
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: color var(--motion-fast) var(--ease-out);
 
-    color: var(--color-text-muted);
-    transition: var(--transition-fast);
+    &:hover {
+        color: var(--color-text-primary);
+    }
+
+    &:focus-visible {
+        color: var(--color-text-primary);
+    }
 }
 
-.eyeButton:hover {
-    color: var(--color-primary);
-}
-
-/* =========================
-   ERRORES
-========================= */
+/* ===== Errors ===== */
 .errorText {
-    font-size: var(--font-sm);
+    font-size: var(--font-xs);
     color: var(--color-danger);
+    margin-top: 2px;
 }
 
-/* error servidor */
 .serverError {
     font-size: var(--font-sm);
     color: var(--color-danger);
-
     background: var(--color-danger-soft);
-    padding: var(--space-sm);
-
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-danger);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid color-mix(in oklab, var(--color-danger) 35%, transparent);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
 }
 
-/* =========================
-   BUTTON
-========================= */
+/* ===== Button ===== */
 .button {
     width: 100%;
-
     background: var(--color-primary);
     color: var(--color-text-inverse);
-
-    border: none;
+    border: 1px solid var(--color-primary);
     border-radius: var(--radius-md);
-
-    padding: var(--space-sm) var(--space-md);
-
-    font-weight: 500;
+    padding: 12px var(--space-md);
+    font-weight: var(--weight-semibold);
     font-size: var(--font-md);
-
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--space-xs);
-
     cursor: pointer;
-    transition: var(--transition-base);
+    transition:
+        background-color var(--motion-fast) var(--ease-out),
+        transform var(--motion-fast) var(--ease-out),
+        box-shadow var(--motion-fast) var(--ease-out);
+    margin-top: var(--space-xs);
+
+    &:hover:not(:disabled) {
+        background: var(--color-primary-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--glow-primary);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
 }
 
-.button:hover {
-    background: var(--color-primary-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
-}
-
-.button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* =========================
-   LOADER
-========================= */
 .loader {
-    animation: spin 1s linear infinite;
+    animation: spin 0.8s linear infinite;
 }
 
-/* =========================
-   ANIMACIONES
-========================= */
+/* ===== Footer link ===== */
+.cardFooter {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-divider);
+    text-align: center;
+    font-size: var(--font-xs);
+    color: var(--color-text-muted);
+
+    a, button {
+        color: var(--color-text-secondary);
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: inherit;
+        padding: 0;
+        transition: color var(--motion-fast) var(--ease-out);
+
+        &:hover {
+            color: var(--color-text-primary);
+        }
+    }
+}
+
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

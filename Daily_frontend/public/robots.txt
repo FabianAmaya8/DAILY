@@ -1,0 +1,6 @@
+# DAILY · Sistema de Visibilidad
+# Herramienta interna — sin contenido público para indexar.
+User-agent: *
+Disallow: /
+
+# Si en el futuro publicas una landing pública, abre solo esa ruta.

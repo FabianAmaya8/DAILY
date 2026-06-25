@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
     LayoutDashboard,
     ClipboardList,
@@ -7,138 +7,137 @@ import {
     UserRoundSearch,
     FileSearchCorner,
     UsersRound,
-    FolderKanban ,
-    ListTodo ,
-    ShieldCheck ,
-    ArrowLeftToLine 
+    FolderKanban,
+    ListTodo,
+    ShieldCheck,
+    ArrowLeftToLine,
+    LogOut,
 } from "lucide-react";
-import { supabase } from "../../utils/supabaseClient";
+import { authService } from "../../utils/contexts/auth/authService";
 import styles from "../../assets/css/Layout/Sidebar.module.scss";
 import { useUser } from "../../utils/contexts/UserContext";
-import Color from "../Depen/Color";
-
+import { Button } from "../ui/Button";
 import LOGO from "../../assets/icono_grande_menu_lateral.png";
 
-export default function Sidebar({ open }) {
+const MIEMBRO_LINKS = [
+    { to: "/miembro/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/miembro/registrar-daily", label: "Registrar Daily", icon: ClipboardList },
+    { to: "/miembro/registrar-bloqueo", label: "Mis bloqueos", icon: AlertTriangle },
+    { to: "/miembro/bloqueos", label: "Historial bloqueos", icon: ListTodo },
+    { to: "/miembro/certificaciones", label: "Certificaciones", icon: ShieldCheck },
+];
+
+const LIDER_LINKS = [
+    { to: "/lider/dashboard", label: "Panel Líder", icon: LayoutDashboard },
+    { to: "/miembro/dashboard", label: "Vista Miembro", icon: UsersRound },
+    { to: "/lider/registrar-daily", label: "Registrar Daily", icon: ClipboardList },
+    { to: "/lider/bloqueos", label: "Bloqueos", icon: ListTodo },
+    { to: "/lider/registrar-persona", label: "Registrar persona", icon: ClipboardList },
+    { to: "/lider/equipos", label: "Equipos", icon: UserRoundSearch },
+    { to: "/lider/certificaciones", label: "Certificaciones", icon: ShieldCheck },
+];
+
+const ADMIN_LINKS = [
+    { to: "/admin/dashboard", label: "Panel Admin", icon: LayoutDashboard },
+    { to: "/lider/dashboard", label: "Vista Líder", icon: UsersRound },
+    { to: "/admin/proyectos", label: "Proyectos", icon: FolderKanban },
+    { to: "/admin/equipos", label: "Equipos", icon: UserRoundSearch },
+    { to: "/admin/usuarios", label: "Usuarios", icon: Users },
+    { to: "/lider/registrar-persona", label: "Registrar persona", icon: ClipboardList },
+    { to: "/admin/auditorias", label: "Auditorías", icon: FileSearchCorner },
+];
+
+function getRoleHome(rol) {
+    if (rol === "admin") return "/admin/dashboard";
+    if (rol === "lider") return "/lider/dashboard";
+    return "/miembro/dashboard";
+}
+
+function detectViewFromPath(path) {
+    if (path.startsWith("/admin")) return "admin";
+    if (path.startsWith("/lider")) return "lider";
+    return "miembro";
+}
+
+export default function Sidebar({ open, onClose }) {
     const { rol } = useUser();
     const location = useLocation();
-    const path = location.pathname;
-
-    const logout = async () => {
-        await supabase.auth.signOut();
-        window.location.href = "/login";
-    };
-
-    /* ==============================
-        LINKS POR ROL
-    ============================== */
-
-    const miembroLinks = [
-        { to: "/miembro/dashboard", label: "Dashboard", icon: LayoutDashboard },
-        { to: "/miembro/RegistrarDaily", label: "Registrar Daily", icon: ClipboardList },
-        { to: "/miembro/RegistrarBloqueos", label: "Mis Bloqueos", icon: AlertTriangle },
-        { to: "/miembro/Bloqueos", label: "Historial de Bloqueos", icon: ListTodo  },
-        { to: "/miembro/Certificaciones", label: "Certificaciones", icon: ShieldCheck },
-    ];
-
-    const liderLinks = [
-        { to: "/lider/dashboard", label: "Panel Lider", icon: LayoutDashboard },
-        { to: "/miembro/dashboard", label: "Panel Miembro", icon: UsersRound },
-        { to: "/lider/RegistroDaily", label: "Registrar Daily", icon: ClipboardList },
-        { to: "/lider/bloqueos", label: "Lista de Bloqueos", icon: ListTodo },
-        { to: "/lider/registrar", label: "Registrar", icon: ClipboardList },
-        { to: "/lider/equipos", label: "Equipos", icon: UserRoundSearch },
-        { to: "/lider/certificaciones", label: "Certificaciones", icon: ShieldCheck },
-    ];
-
-    const adminLinks = [
-        { to: "/admin/dashboard", label: "Panel Admin", icon: LayoutDashboard },
-        { to: "/lider/dashboard", label: "Panel Lider", icon: UsersRound },
-        { to: "/admin/proyectos", label: "Proyectos", icon: FolderKanban },
-        { to: "/admin/equipos", label: "Equipos", icon: UserRoundSearch },
-        { to: "/admin/users", label: "Usuarios", icon: Users },
-        { to: "/lider/registrar", label: "Registrar", icon: ClipboardList },
-        { to: "/admin/auditorias", label: "Auditorias", icon: FileSearchCorner, },
-    ];
-
-    /* ==============================
-        DETECTAR VISTA SEGÚN LA RUTA
-    ============================== */
-
-    let currentRoleView = "miembro";
-
-    if (path.startsWith("/admin")) {
-        currentRoleView = "admin";
-    } else if (path.startsWith("/lider")) {
-        currentRoleView = "lider";
-    } else if (path.startsWith("/miembro")) {
-        currentRoleView = "miembro";
-    }
-
-    /* ==============================
-        LINKS SEGÚN LA VISTA
-    ============================== */
+    const navigate = useNavigate();
+    const currentView = detectViewFromPath(location.pathname);
 
     const links =
-        currentRoleView === "miembro"
-            ? miembroLinks
-            : currentRoleView === "lider"
-                ? liderLinks
-                : adminLinks;
+        currentView === "admin"
+            ? ADMIN_LINKS
+            : currentView === "lider"
+              ? LIDER_LINKS
+              : MIEMBRO_LINKS;
 
-    /* ==============================
-        VOLVER A PANEL PRINCIPAL
-    ============================== */
+    const showBackButton = currentView !== rol;
 
-    const getHomeByRole = () => {
-        if (rol === "admin") return "/admin/dashboard";
-        if (rol === "lider") return "/lider/dashboard";
-        return "/miembro/dashboard";
+    const handleLogout = async () => {
+        try {
+            await authService.logout();
+        } finally {
+            navigate("/login", { replace: true });
+        }
     };
 
-    const showBackButton = currentRoleView !== rol;
-
-    /* ==============================
-        RENDER
-    ============================== */
-
     return (
-        <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
+        <aside
+            className={`${styles.sidebar} ${open ? styles.open : ""}`}
+            aria-label="Navegación lateral"
+        >
             <div className={styles.logo}>
-                <img src={LOGO} alt="Logo" />
+                <img src={LOGO} alt="DAILY" />
             </div>
 
-            <nav className={styles.nav}>
-                {links.map(({ to, label, icon: Icon }) => (
-                    <NavLink
-                        key={to}
-                        to={to}
-                        className={({ isActive }) =>
-                            `${styles.link} ${isActive ? styles.active : ""}`
-                        }
-                    >
-                        <Icon size={18} />
-                        {label}
-                    </NavLink>
-                ))}
+            <div className={styles.section}>
+                <div className={styles.sectionLabel}>
+                    {currentView === "admin"
+                        ? "Administración"
+                        : currentView === "lider"
+                          ? "Liderazgo"
+                          : "Miembro"}
+                </div>
+                <nav className={styles.nav}>
+                    {links.map(({ to, label, icon: Icon }) => (
+                        <NavLink
+                            key={to}
+                            to={to}
+                            onClick={onClose}
+                            className={({ isActive }) =>
+                                `${styles.link} ${isActive ? styles.active : ""}`
+                            }
+                            end
+                        >
+                            <Icon size={16} aria-hidden="true" />
+                            <span>{label}</span>
+                        </NavLink>
+                    ))}
+                </nav>
+            </div>
 
-                {showBackButton && (
-                    <NavLink 
-                        to={getHomeByRole()} 
-                        className={styles.link}
-                    >
-                        <ArrowLeftToLine size={18} />
-                        Volver a mi panel
-                    </NavLink>
-                )}
-            </nav>
+            {showBackButton && (
+                <NavLink
+                    to={getRoleHome(rol)}
+                    onClick={onClose}
+                    className={styles.backLink}
+                >
+                    <ArrowLeftToLine size={14} aria-hidden="true" />
+                    Volver a mi panel
+                </NavLink>
+            )}
 
             <div className={styles.footer}>
-                <button onClick={logout} className={styles.logout}>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    fullWidth
+                    leftIcon={LogOut}
+                    onClick={handleLogout}
+                >
                     Cerrar sesión
-                </button>
-
-                <Color />
+                </Button>
             </div>
         </aside>
     );

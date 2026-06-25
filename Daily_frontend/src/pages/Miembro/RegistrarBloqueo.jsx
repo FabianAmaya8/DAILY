@@ -1,13 +1,15 @@
 import { useState } from "react";
+import { ShieldAlert, Save } from "lucide-react";
 import { useRegistrarBloqueo } from "../../hooks/useRegistrarBloqueo";
+import { Card } from "../../components/ui/Card";
+import { Button } from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
 import styles from "../../assets/css/Miembro/RegistrarDaily.module.scss";
 
-export default function RegistrarBloqueo({
-    dailyId,
-    onClose = () => {},
-}) {
-    const { crearBloqueo, loading } = useRegistrarBloqueo();
+const SEVERIDADES = ["Baja", "Media", "Alta", "Crítica"];
 
+export default function RegistrarBloqueo({ dailyId, onClose }) {
+    const { crearBloqueo, loading } = useRegistrarBloqueo();
     const [form, setForm] = useState({
         tipo: "",
         severidad: "Media",
@@ -17,76 +19,89 @@ export default function RegistrarBloqueo({
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const data = await crearBloqueo(form, dailyId);
-
-        if (data) onClose();
+        if (data && onClose) onClose();
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.card}>
-            <h3>Nuevo Bloqueo</h3>
+        <div className={styles.page}>
+            <header className={styles.pageHeader}>
+                <h1 className={styles.pageTitle}>Registrar bloqueo</h1>
+                <p className={styles.pageSubtitle}>
+                    Sube un bloqueo formal a tu líder con severidad y fecha
+                    límite. Aparecerá en su panel inmediatamente.
+                </p>
+            </header>
 
-            {/* TIPO */}
-            <div className={styles.formGroup}>
-                <label>Tipo de bloqueo</label>
-                <input
-                    type="text"
-                    placeholder="Ej: API, QA, Negocio"
+            <Card padding="lg" as="form" onSubmit={handleSubmit}>
+                <Input
+                    label="Tipo de bloqueo"
+                    placeholder="Ej: API, QA, Negocio, Dependencia externa…"
+                    leftIcon={ShieldAlert}
                     value={form.tipo}
-                    onChange={(e) =>
-                        setForm({ ...form, tipo: e.target.value })
-                    }
+                    onChange={(e) => setForm({ ...form, tipo: e.target.value })}
                     required
                 />
-            </div>
 
-            {/* SEVERIDAD */}
-            <div className={styles.formGroup}>
-                <label>Severidad</label>
-                <select
-                    value={form.severidad}
-                    onChange={(e) =>
-                        setForm({ ...form, severidad: e.target.value })
-                    }
-                >
-                    <option>Baja</option>
-                    <option>Media</option>
-                    <option>Alta</option>
-                    <option>Crítica</option>
-                </select>
-            </div>
+                <div className={styles.row2}>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="severidad" className={styles.label}>
+                            Severidad
+                        </label>
+                        <select
+                            id="severidad"
+                            value={form.severidad}
+                            onChange={(e) =>
+                                setForm({ ...form, severidad: e.target.value })
+                            }
+                            className={styles.select}
+                        >
+                            {SEVERIDADES.map((s) => (
+                                <option key={s} value={s}>
+                                    {s}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-            {/* FECHA */}
-            <div className={styles.formGroup}>
-                <label>Fecha límite</label>
-                <input
-                    type="date"
-                    value={form.fecha_limite}
-                    onChange={(e) =>
-                        setForm({
-                            ...form,
-                            fecha_limite: e.target.value,
-                        })
-                    }
-                />
-            </div>
+                    <Input
+                        type="date"
+                        label="Fecha límite"
+                        value={form.fecha_limite}
+                        onChange={(e) =>
+                            setForm({ ...form, fecha_limite: e.target.value })
+                        }
+                    />
+                </div>
 
-            {/* NOTAS */}
-            <div className={styles.formGroup}>
-                <label>Notas</label>
-                <textarea
-                    placeholder="Describe el bloqueo..."
-                    value={form.notas}
-                    onChange={(e) =>
-                        setForm({ ...form, notas: e.target.value })
-                    }
-                />
-            </div>
+                <div className={styles.formGroup}>
+                    <label htmlFor="notas" className={styles.label}>
+                        Notas <span className={styles.optional}>(contexto)</span>
+                    </label>
+                    <textarea
+                        id="notas"
+                        rows={4}
+                        value={form.notas}
+                        onChange={(e) =>
+                            setForm({ ...form, notas: e.target.value })
+                        }
+                        placeholder="Describe el bloqueo, pasos intentados y qué necesitas para desbloquearlo."
+                        className={styles.textarea}
+                    />
+                </div>
 
-            <button disabled={loading}>
-                {loading ? "Guardando..." : "Crear Bloqueo"}
-            </button>
-        </form>
+                <div className={styles.actions}>
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        size="lg"
+                        leftIcon={Save}
+                        loading={loading}
+                    >
+                        {loading ? "Guardando…" : "Crear bloqueo"}
+                    </Button>
+                </div>
+            </Card>
+        </div>
     );
 }

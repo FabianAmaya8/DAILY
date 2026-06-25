@@ -12,6 +12,19 @@ export default function RegisterPerson() {
     const navigate = useNavigate();
     const { registerPerson } = useRegisterPerson();
 
+    /**
+     * Genera una contraseña temporal segura.
+     * El admin la verá en pantalla y debe entregarla al nuevo usuario,
+     * que estará obligado a cambiarla en su primer login.
+     */
+    const generateTemporaryPassword = () => {
+        const chars =
+            "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+        const bytes = new Uint8Array(12);
+        crypto.getRandomValues(bytes);
+        return Array.from(bytes, (b) => chars[b % chars.length]).join("");
+    };
+
     const {
         register,
         handleSubmit,
@@ -22,7 +35,8 @@ export default function RegisterPerson() {
         defaultValues: {
             display_name: "",
             email: "",
-            password: "usuario123",
+            // Generada en runtime → nunca hardcoded en el bundle
+            password: generateTemporaryPassword(),
             role: "miembro",
             capacity_hours_week: 40,
             timezone: "America/Bogota",

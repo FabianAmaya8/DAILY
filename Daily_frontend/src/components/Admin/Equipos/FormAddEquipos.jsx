@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
+import { Save } from "lucide-react";
 import { supabase } from "../../../utils/supabaseClient";
+import { Modal } from "../../ui/Modal";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
 import styles from "../../../assets/css/Admin/Equipos.module.scss";
 
 export default function FormAddEquipos({
@@ -16,10 +20,6 @@ export default function FormAddEquipos({
     const [lideres, setLideres] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    /* ---------------------------
-        Cargar datos si es edición
-    --------------------------- */
-
     useEffect(() => {
         if (mode === "edit" && equipo) {
             setNombre(equipo.nombre || "");
@@ -28,116 +28,124 @@ export default function FormAddEquipos({
         }
     }, [mode, equipo]);
 
-    /* ---------------------------
-        Obtener líderes
-    --------------------------- */
-
     useEffect(() => {
         const fetchLideres = async () => {
             if (usuario?.rol !== "admin") return;
-
             const { data } = await supabase
                 .from("personas")
                 .select("id,nombre")
-                .in("rol", ["lider", "admin"]);
-
+                .in("rol", ["lider", "admin"])
+                .order("nombre");
             setLideres(data || []);
         };
-
         fetchLideres();
     }, [usuario]);
-
-    /* ---------------------------
-        Submit
-    --------------------------- */
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        if (mode === "create") {
-            await crearEquipo({
-                nombre,
-                descripcion,
-                lider_id: liderId || null,
-            });
-        }
+        const payload = {
+            nombre,
+            descripcion,
+            lider_id: liderId || null,
+        };
 
-        if (mode === "edit") {
-            await editarEquipo(equipo.id, {
-                nombre,
-                descripcion,
-                lider_id: liderId || null,
-            });
+        if (mode === "create") {
+            await crearEquipo(payload);
+        } else {
+            await editarEquipo(equipo.id, payload);
         }
 
         setLoading(false);
         onClose();
     };
 
+    const isEdit = mode === "edit";
+
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-                <h2 className={styles.modalTitle}>
-                    {mode === "edit" ? "Editar equipo" : "Crear equipo"}
-                </h2>
+        <Modal
+            open
+            onClose={onClose}
+            title={isEdit ? "Editar equipo" : "Nuevo equipo"}
+            description={
+                isEdit
+                    ? "Modifica los datos del equipo."
+                    : "Crea un equipo y asigna su líder."
+            }
+            size="md"
+            footer={
+                <>
+                    <Button variant="ghost" onClick={onClose} disabled={loading}>
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="submit"
+                        form="equipo-form"
+                        variant="primary"
+                        leftIcon={Save}
+                        loading={loading}
+                    >
+                        {isEdit ? "Guardar cambios" : "Crear equipo"}
+                    </Button>
+                </>
+            }
+        >
+            <form
+                id="equipo-form"
+                onSubmit={handleSubmit}
+                className={styles.form}
+                noValidate
+            >
+                <Input
+                    label="Nombre"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
+                    placeholder="Ej: Plataforma · Squad de pagos"
+                />
 
-                <form className={styles.form} onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Nombre del equipo"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        className={styles.input}
-                        required
-                    />
-
+                <div className={styles.formGroup}>
+                    <label
+                        htmlFor="equipo-desc"
+                        className={styles.fieldLabel}
+                    >
+                        Descripción
+                    </label>
                     <textarea
-                        placeholder="Descripción"
+                        id="equipo-desc"
+                        rows={3}
                         value={descripcion}
                         onChange={(e) => setDescripcion(e.target.value)}
                         className={styles.textarea}
+                        placeholder="Misión y alcance del equipo (opcional)"
                     />
+                </div>
 
-                    {usuario?.rol === "admin" && (
+                {usuario?.rol === "admin" && (
+                    <div className={styles.formGroup}>
+                        <label
+                            htmlFor="equipo-lider"
+                            className={styles.fieldLabel}
+                        >
+                            Líder
+                        </label>
                         <select
+                            id="equipo-lider"
                             value={liderId}
                             onChange={(e) => setLiderId(e.target.value)}
                             className={styles.select}
                         >
-                            <option value="">Seleccionar líder</option>
-
+                            <option value="">Sin líder asignado</option>
                             {lideres.map((l) => (
                                 <option key={l.id} value={l.id}>
                                     {l.nombre}
                                 </option>
                             ))}
                         </select>
-                    )}
-
-                    <div className={styles.actions}>
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className={styles.cancelButton}
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className={styles.createButton}
-                        >
-                            {loading
-                                ? "Guardando..."
-                                : mode === "edit"
-                                    ? "Guardar cambios"
-                                    : "Crear equipo"}
-                        </button>
                     </div>
-                </form>
-            </div>
-        </div>
+                )}
+            </form>
+        </Modal>
     );
 }

@@ -1,17 +1,19 @@
-import styles from "../../assets/css/Miembro/Certificaciones.module.scss";
+import { ShieldCheck, AlertOctagon } from "lucide-react";
 import MisCertificaciones from "../../components/Miembro/Certificaciones/MisCertificaciones";
 import { useCertificaciones } from "../../hooks/useCertificaciones";
 import Cargando from "../../components/Depen/Cargando";
+import { EmptyState } from "../../components/ui/EmptyState";
+import styles from "../../assets/css/Miembro/Certificaciones.module.scss";
 
 export default function Certificaciones() {
-    const { 
+    const {
         userId,
-        categorias, 
+        categorias,
         categoriaActiva,
         setCategoriaActiva,
-        getRelacion, 
-        loading, 
-        error 
+        getRelacion,
+        loading,
+        error,
     } = useCertificaciones();
 
     if (loading) return <Cargando />;
@@ -19,14 +21,26 @@ export default function Certificaciones() {
     if (error) {
         return (
             <div className={styles.container}>
-                <p>Error: {error}</p>
+                <EmptyState
+                    icon={AlertOctagon}
+                    title="No se pudieron cargar las certificaciones"
+                    description={error.message || error}
+                />
             </div>
         );
     }
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Mis Certificaciones</h2>
+            <header className={styles.pageHeader}>
+                <h1 className={styles.title}>
+                    <ShieldCheck size={20} aria-hidden="true" />
+                    Mis certificaciones
+                </h1>
+                <p className={styles.subtitle}>
+                    Catálogo, estado y vencimientos de tus certificaciones.
+                </p>
+            </header>
 
             <MisCertificaciones
                 userId={userId}

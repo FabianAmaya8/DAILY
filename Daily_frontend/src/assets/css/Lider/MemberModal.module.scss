@@ -1,0 +1,56 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.sectionTitle {
+    font-size: var(--font-xs);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin: 0;
+}
+
+.text {
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-relaxed);
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.muted {
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.blocker {
+    font-size: var(--font-sm);
+    color: var(--color-warning);
+    background: var(--color-warning-soft);
+    border: 1px solid color-mix(in oklab, var(--color-warning) 35%, transparent);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    line-height: var(--line-relaxed);
+    margin: 0;
+}

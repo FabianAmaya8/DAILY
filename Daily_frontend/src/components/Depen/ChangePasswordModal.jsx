@@ -1,160 +1,117 @@
-import { createPortal } from "react-dom";
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import styles from "../../assets/css/Layout/Avatar.module.scss";
-import Swal from "sweetalert2";
-import { supabase } from "../../utils/supabaseClient";
+import { Eye, EyeOff, KeyRound } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
-/* =========================
-   SCHEMA
-========================= */
+import Swal from "sweetalert2";
+import { supabase } from "../../utils/supabaseClient";
+import { Modal } from "../ui/Modal";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 
 const passwordSchema = z
     .object({
-        password: z.string().min(6, "Mínimo 6 caracteres"),
+        password: z.string().min(8, "Mínimo 8 caracteres"),
         confirmPassword: z.string(),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine((d) => d.password === d.confirmPassword, {
         message: "Las contraseñas no coinciden",
         path: ["confirmPassword"],
     });
 
 export function ChangePasswordModal({ onClose }) {
-
     const [showPassword, setShowPassword] = useState(false);
+    const ToggleIcon = showPassword ? EyeOff : Eye;
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
         reset,
-    } = useForm({
-        resolver: zodResolver(passwordSchema),
-    });
+    } = useForm({ resolver: zodResolver(passwordSchema) });
 
     const onSubmit = async (data) => {
         try {
-
             const { error } = await supabase.auth.updateUser({
                 password: data.password,
             });
-
             if (error) throw error;
-
-            Swal.fire({
+            await Swal.fire({
                 icon: "success",
                 title: "Contraseña actualizada",
                 timer: 2000,
                 showConfirmButton: false,
             });
-
             reset();
             onClose();
-
         } catch (err) {
-
             Swal.fire({
                 icon: "error",
-                title: "Error",
+                title: "Error al cambiar contraseña",
                 text: err.message,
             });
-
         }
     };
 
-    return createPortal(
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div
-                className={styles.modal}
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* HEADER */}
-                <div className={styles.modalHeader}>
-                    <h3>Cambiar contraseña</h3>
-                    <button
-                        className={styles.closeButton}
-                        onClick={onClose}
+    return (
+        <Modal
+            open
+            onClose={onClose}
+            title="Cambiar contraseña"
+            description="La contraseña debe tener al menos 8 caracteres."
+            size="sm"
+            footer={
+                <>
+                    <Button variant="ghost" onClick={onClose} disabled={isSubmitting}>
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="submit"
+                        form="change-password-form"
+                        variant="primary"
+                        leftIcon={KeyRound}
+                        loading={isSubmitting}
                     >
-                        ✖
-                    </button>
-                </div>
-
-                {/* FORM */}
-                <form onSubmit={handleSubmit(onSubmit)}>
-
-                    <div className={styles.modalBody}>
-
-                        {/* PASSWORD */}
-                        <div className={styles.fieldGroup}>
-                            <label>Nueva contraseña</label>
-
-                            <div className={styles.inputWrapper}>
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    {...register("password")}
-                                    className={styles.input}
-                                />
-
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className={styles.eyeButton}
-                                >
-                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            </div>
-
-                            {errors.password && (
-                                <span className={styles.error}>
-                                    {errors.password.message}
-                                </span>
-                            )}
-                        </div>
-
-                        {/* CONFIRM PASSWORD */}
-                        <div className={styles.fieldGroup}>
-                            <label>Confirmar contraseña</label>
-
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                {...register("confirmPassword")}
-                                className={styles.input}
-                            />
-
-                            {errors.confirmPassword && (
-                                <span className={styles.error}>
-                                    {errors.confirmPassword.message}
-                                </span>
-                            )}
-                        </div>
-
-                    </div>
-
-                    {/* FOOTER */}
-                    <div className={styles.modalFooter}>
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className={styles.secondaryBtn}
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="submit"
-                            className={styles.primaryBtn}
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting ? "Guardando..." : "Guardar"}
-                        </button>
-                    </div>
-
-                </form>
-            </div>
-        </div>,
-        document.body
+                        Guardar
+                    </Button>
+                </>
+            }
+        >
+            <form
+                id="change-password-form"
+                onSubmit={handleSubmit(onSubmit)}
+                noValidate
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "var(--space-md)",
+                }}
+            >
+                <Input
+                    label="Nueva contraseña"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    rightIcon={ToggleIcon}
+                    error={errors.password?.message}
+                    {...register("password")}
+                />
+                <Input
+                    label="Confirmar contraseña"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    error={errors.confirmPassword?.message}
+                    {...register("confirmPassword")}
+                />
+                <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowPassword((s) => !s)}
+                    leftIcon={ToggleIcon}
+                >
+                    {showPassword ? "Ocultar contraseñas" : "Mostrar contraseñas"}
+                </Button>
+            </form>
+        </Modal>
     );
 }

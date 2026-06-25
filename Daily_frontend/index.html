@@ -2,12 +2,55 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" href="./src//assets/logo.png" type="image/x-icon">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DAILY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Primary -->
+    <title>DAILY · Sistema de Visibilidad para equipos</title>
+    <meta
+      name="description"
+      content="DAILY es la herramienta interna que da a líderes y equipos visibilidad en tiempo real del trabajo, los bloqueos y la ocupación semanal. Decide con datos, no con reuniones."
+    />
+    <meta name="application-name" content="DAILY" />
+    <meta name="theme-color" content="#0a0d12" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#15803d" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://daily-periferia.vercel.app/" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph (para enlaces compartidos en Slack/Teams/WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DAILY" />
+    <meta property="og:title" content="DAILY · Sistema de Visibilidad para equipos" />
+    <meta
+      property="og:description"
+      content="Visibilidad en tiempo real de dailys, bloqueos y ocupación semanal del equipo. Acceso interno."
+    />
+    <meta property="og:url" content="https://daily-periferia.vercel.app/" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="DAILY · Sistema de Visibilidad" />
+    <meta
+      name="twitter:description"
+      content="Dailys, bloqueos y ocupación semanal del equipo en una sola pantalla."
+    />
+
+    <!-- Preconnect Supabase para acelerar primera consulta -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Inter font (single weight axis) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
+  <body data-theme="oscuro">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

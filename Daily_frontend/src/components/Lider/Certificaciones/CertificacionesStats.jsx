@@ -1,3 +1,13 @@
+import {
+    PieChart,
+    Award,
+    Users as UsersIcon,
+    CheckCircle2,
+    Clock,
+    Trophy,
+} from "lucide-react";
+import { Card } from "../../ui/Card";
+import { Badge } from "../../ui/Badge";
 import styles from "../../../assets/css/Lider/CertificacionesLider.module.scss";
 
 export default function CertificacionesStats({
@@ -10,159 +20,168 @@ export default function CertificacionesStats({
     equipoActivo,
     setEquipoActivo,
 }) {
-    /* =========================
-       FILTRO CATEGORÍAS
-    ========================= */
     const categoriasFiltradas = categoriaActiva
         ? categorias.filter((c) => c.id === categoriaActiva)
         : categorias;
 
-    /* =========================
-       FLATTEN CERTS
-    ========================= */
     const certificaciones = categoriasFiltradas.flatMap(
-        (cat) => cat.certificaciones || []
+        (cat) => cat.certificaciones || [],
     );
 
     const totalCerts = certificaciones.length;
     const totalPersonas = personas.length;
 
-    /* =========================
-       TOTAL ASIGNADAS
-    ========================= */
     let totalAsignadas = 0;
+    let vigentes = 0;
+    let pendientes = 0;
 
     categoriasFiltradas.forEach((cat) => {
         (cat.certificaciones || []).forEach((cert) => {
             totalAsignadas += cert.personas?.size || 0;
-        });
-    });
-
-    const totalPosible = totalCerts * totalPersonas;
-
-    const porcentajeGlobal =
-        totalPosible > 0
-            ? Math.round((totalAsignadas / totalPosible) * 100)
-            : 0;
-
-    /* =========================
-       RANKING (TOP 5)
-    ========================= */
-    const ranking = typeof getRanking === "function"
-        ? getRanking().slice(0, 5)
-        : [];
-
-    let vigentes = 0;
-    let pendientes = 0;
-
-    categoriasFiltradas.forEach(cat => {
-        cat.certificaciones.forEach(cert => {
-            cert.personas?.forEach(rel => {
+            cert.personas?.forEach((rel) => {
                 if (rel.estado === "vigente") vigentes++;
                 if (rel.estado === "pendiente") pendientes++;
             });
         });
     });
 
+    const totalPosible = totalCerts * totalPersonas;
+    const porcentajeGlobal =
+        totalPosible > 0
+            ? Math.round((totalAsignadas / totalPosible) * 100)
+            : 0;
+
+    const ranking =
+        typeof getRanking === "function" ? getRanking().slice(0, 5) : [];
+
     return (
         <div className={styles.statsWrapper}>
-
-            {/* FILTROS */}
+            {/* Filtros segmentados */}
             <div className={styles.filterContainer}>
                 {equipos.length > 1 && (
-                    <div className={styles.filters}>
-                        <h2 className={styles.titleFilter}>equipos</h2>
-
-                        <button
-                            className={!equipoActivo ? styles.active : ""}
-                            onClick={() => setEquipoActivo(null)}
-                        >
-                            Todos
-                        </button>
-
-                        {equipos.map(eq => (
-                            <button
-                                key={eq.id}
-                                className={equipoActivo === eq.id ? styles.active : ""}
-                                onClick={() => setEquipoActivo(eq.id)}
-                            >
-                                {eq.nombre}
-                            </button>
-                        ))}
-                    </div>
+                    <FilterRow
+                        label="Equipos"
+                        active={equipoActivo}
+                        items={equipos}
+                        onAll={() => setEquipoActivo(null)}
+                        onSelect={(id) => setEquipoActivo(id)}
+                    />
                 )}
 
-                <div className={styles.filters}>
-                    <h2 className={styles.titleFilter}>Categorías</h2>
-
-                    <button
-                        className={!categoriaActiva ? styles.active : ""}
-                        onClick={() => setCategoriaActiva(null)}
-                    >
-                        Todas
-                    </button>
-
-                    {categorias.map(cat => (
-                        <button
-                            key={cat.id}
-                            className={categoriaActiva === cat.id ? styles.active : ""}
-                            onClick={() => setCategoriaActiva(cat.id)}
-                        >
-                            {cat.nombre}
-                        </button>
-                    ))}
-                </div>
+                <FilterRow
+                    label="Categorías"
+                    active={categoriaActiva}
+                    items={categorias}
+                    onAll={() => setCategoriaActiva(null)}
+                    onSelect={(id) => setCategoriaActiva(id)}
+                />
             </div>
 
-            {/* STATS */}
+            {/* Stats grid */}
             <div className={styles.statsContainer}>
+                <StatCard
+                    icon={PieChart}
+                    label="Cobertura"
+                    value={`${porcentajeGlobal}%`}
+                    sub={`${totalAsignadas} / ${totalPosible}`}
+                    accent="primary"
+                    big
+                />
 
-                <div className={`${styles.cardStat} ${styles.kpiInfo}`}>
-                    <span className={styles.cardTitle}>Cobertura</span>
-                    <span className={styles.big}>{porcentajeGlobal}%</span>
-                    <span className={styles.sub}>
-                        {totalAsignadas} / {totalPosible}
-                    </span>
-                </div>
+                <StatCard
+                    icon={Award}
+                    label="Certificaciones"
+                    value={totalCerts}
+                />
 
-                <div className={styles.cardStat}>
-                    <span className={styles.cardTitle}>Certificaciones</span>
-                    <span className={styles.big}>{totalCerts}</span>
-                </div>
+                <StatCard
+                    icon={UsersIcon}
+                    label="Personas"
+                    value={totalPersonas}
+                />
 
-                <div className={styles.cardStat}>
-                    <span className={styles.cardTitle}>Personas</span>
-                    <span className={styles.big}>{totalPersonas}</span>
-                </div>
+                <StatCard
+                    icon={CheckCircle2}
+                    label="Vigentes"
+                    value={vigentes}
+                    accent="success"
+                />
 
-                <div className={`${styles.cardStat} ${styles.kpiSuccess}`}>
-                    <span className={styles.cardTitle}>Vigentes</span>
-                    <span className={styles.big}>{vigentes}</span>
-                </div>
+                <StatCard
+                    icon={Clock}
+                    label="Pendientes"
+                    value={pendientes}
+                    accent="warning"
+                />
 
-                <div className={`${styles.cardStat} ${styles.kpiWarning}`}>
-                    <span className={styles.cardTitle}>Pendientes</span>
-                    <span className={styles.big}>{pendientes}</span>
-                </div>
-
-                <div className={styles.cardStat}>
-                    <span className={styles.cardTitle}>Top certificados</span>
-
+                <Card padding="md" className={styles.rankingCard}>
+                    <div className={styles.statHead}>
+                        <span className={styles.statIcon}>
+                            <Trophy size={14} aria-hidden="true" />
+                        </span>
+                        <span className={styles.statLabel}>Top certificados</span>
+                    </div>
                     {ranking.length ? (
-                        <ul className={styles.ranking}>
-                            {ranking.map(p => (
+                        <ol className={styles.ranking}>
+                            {ranking.map((p, idx) => (
                                 <li key={p.id}>
-                                    <span>{p.nombre}</span>
-                                    <strong>{p.obtenidas}</strong>
+                                    <span className={styles.rankPos}>{idx + 1}</span>
+                                    <span className={styles.rankName}>{p.nombre}</span>
+                                    <Badge variant="primary" size="sm">
+                                        {p.obtenidas}
+                                    </Badge>
                                 </li>
                             ))}
-                        </ul>
+                        </ol>
                     ) : (
-                        <span className={styles.sub}>Sin datos</span>
+                        <p className={styles.muted}>Sin datos.</p>
                     )}
-                </div>
-
+                </Card>
             </div>
         </div>
+    );
+}
+
+function FilterRow({ label, items, active, onAll, onSelect }) {
+    return (
+        <div className={styles.filters}>
+            <span className={styles.titleFilter}>{label}</span>
+            <div className={styles.filterPills}>
+                <button
+                    type="button"
+                    className={`${styles.pill} ${!active ? styles.pillActive : ""}`}
+                    onClick={onAll}
+                >
+                    Todos
+                </button>
+                {items.map((it) => (
+                    <button
+                        type="button"
+                        key={it.id}
+                        className={`${styles.pill} ${active === it.id ? styles.pillActive : ""}`}
+                        onClick={() => onSelect(it.id)}
+                    >
+                        {it.nombre}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function StatCard({ icon: Icon, label, value, sub, accent = "neutral", big }) {
+    return (
+        <Card padding="md" className={`${styles.statCard} ${styles[`a_${accent}`]}`}>
+            <div className={styles.statHead}>
+                <span className={styles.statIcon}>
+                    <Icon size={14} aria-hidden="true" />
+                </span>
+                <span className={styles.statLabel}>{label}</span>
+            </div>
+            <span className={`${styles.statValue} ${big ? styles.statBig : ""}`}>
+                {value}
+            </span>
+            {sub && <span className={styles.statSub}>{sub}</span>}
+        </Card>
     );
 }

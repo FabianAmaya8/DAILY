@@ -1,33 +1,42 @@
-import styles from "../../assets/css/Lider/CertificacionesLider.module.scss";
+import { ShieldCheck, AlertOctagon } from "lucide-react";
 import { useCertificaciones } from "../../hooks/useCertificaciones";
-
 import CertificacionesMatrix from "../../components/Lider/Certificaciones/CertificacionesMatrix";
 import CertificacionesStats from "../../components/Lider/Certificaciones/CertificacionesStats.jsx";
-
-import Cargando from "../../components/Depen/Cargando";
 import CertificacionModal from "../../components/Lider/Certificaciones/CertificacionModal.jsx";
+import Cargando from "../../components/Depen/Cargando";
+import { EmptyState } from "../../components/ui/EmptyState";
+import styles from "../../assets/css/Lider/CertificacionesLider.module.scss";
 
 export default function CertificacionesLider() {
     const certHook = useCertificaciones();
-
     const { loading, error } = certHook;
 
     if (loading) return <Cargando />;
-    if (error) return <p>Error: {error}</p>;
+
+    if (error) {
+        return (
+            <div className={styles.container}>
+                <EmptyState
+                    icon={AlertOctagon}
+                    title="No se pudo cargar la matriz de certificaciones"
+                    description={error.message || error}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <h2 className={styles.title}>
-                    Matriz de Certificaciones
-                </h2>
-
+            <header className={styles.header}>
+                <h1 className={styles.title}>
+                    <ShieldCheck size={20} aria-hidden="true" />
+                    Matriz de certificaciones
+                </h1>
                 <p className={styles.subtitle}>
-                    Asigna, analiza y gestiona certificaciones del equipo
+                    Asigna, analiza y gestiona las certificaciones del equipo.
                 </p>
-            </div>
+            </header>
 
-            {/* 🔥 NUEVO: STATS */}
             <CertificacionesStats
                 categorias={certHook.categorias}
                 personas={certHook.personas}
@@ -39,7 +48,6 @@ export default function CertificacionesLider() {
                 setEquipoActivo={certHook.setEquipoActivo}
             />
 
-            {/* 🔥 MATRIZ */}
             <CertificacionesMatrix
                 categoriasFiltradas={certHook.categoriasFiltradas}
                 personas={certHook.personas}

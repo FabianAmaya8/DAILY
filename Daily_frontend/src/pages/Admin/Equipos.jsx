@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { RefreshCcw, Plus, UsersRound } from "lucide-react";
 import { useEquipos } from "../../hooks/useEquipos";
-import { RefreshCcw } from "lucide-react";
 import EquipoCard from "../../components/Admin/Equipos/EquipoCard";
 import FormAddEquipos from "../../components/Admin/Equipos/FormAddEquipos";
 import ModalEquipo from "../../components/Admin/Equipos/ModalEquipo";
-import styles from "../../assets/css/Admin/Equipos.module.scss";
 import Cargando from "../../components/Depen/Cargando";
+import { Button } from "../../components/ui/Button";
+import { EmptyState } from "../../components/ui/EmptyState";
+import styles from "../../assets/css/Admin/Equipos.module.scss";
 
 export default function EquiposPage() {
     const {
@@ -20,45 +22,76 @@ export default function EquiposPage() {
         usuario,
         refetch,
     } = useEquipos();
+
     const [equipoActivoID, setEquipoActivoID] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-    const equipoActivo = equipos.find((e) => e.id === equipoActivoID);
     const [equipoEditar, setEquipoEditar] = useState(null);
+
+    const equipoActivo = equipos.find((e) => e.id === equipoActivoID);
 
     if (loading) return <Cargando />;
 
     return (
         <div className={styles.page}>
-            <div className={styles.header}>
-                <h1 className={styles.title}>Equipos</h1>
-
+            <header className={styles.pageHeader}>
+                <div>
+                    <h1 className={styles.title}>
+                        <UsersRound size={20} aria-hidden="true" />
+                        Equipos
+                    </h1>
+                    <p className={styles.subtitle}>
+                        Estructura de equipos y responsables.
+                    </p>
+                </div>
                 <div className={styles.actions}>
-                    <button
+                    <Button
+                        variant="ghost"
+                        size="md"
+                        leftIcon={RefreshCcw}
                         onClick={refetch}
-                        className={styles.actualizarButton}
+                        aria-label="Actualizar"
                     >
-                        <RefreshCcw size={14} />
-                    </button>
-                    <button
+                        Actualizar
+                    </Button>
+                    <Button
+                        variant="primary"
+                        size="md"
+                        leftIcon={Plus}
                         onClick={() => setOpenModal(true)}
-                        className={styles.createButton}
                     >
                         Crear equipo
-                    </button>
+                    </Button>
                 </div>
-            </div>
+            </header>
 
-            <div className={styles.grid}>
-                {equipos.map((equipo) => (
-                    <EquipoCard
-                        key={equipo.id}
-                        equipo={equipo}
-                        editarEquipo={() => setEquipoEditar(equipo)}
-                        eliminarEquipo={eliminarEquipo}
-                        onView={() => setEquipoActivoID(equipo.id)}
-                    />
-                ))}
-            </div>
+            {equipos.length === 0 ? (
+                <EmptyState
+                    icon={UsersRound}
+                    title="Aún no hay equipos"
+                    description="Crea el primer equipo para empezar a asignar miembros."
+                    action={
+                        <Button
+                            variant="primary"
+                            leftIcon={Plus}
+                            onClick={() => setOpenModal(true)}
+                        >
+                            Crear primer equipo
+                        </Button>
+                    }
+                />
+            ) : (
+                <div className={styles.grid}>
+                    {equipos.map((equipo) => (
+                        <EquipoCard
+                            key={equipo.id}
+                            equipo={equipo}
+                            editarEquipo={() => setEquipoEditar(equipo)}
+                            eliminarEquipo={eliminarEquipo}
+                            onView={() => setEquipoActivoID(equipo.id)}
+                        />
+                    ))}
+                </div>
+            )}
 
             {openModal && (
                 <FormAddEquipos

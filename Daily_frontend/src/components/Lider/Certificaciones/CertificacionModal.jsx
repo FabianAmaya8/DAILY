@@ -1,6 +1,28 @@
 import { useEffect, useState } from "react";
-import styles from "../../../assets/css/Lider/CertificacionesLider.module.scss";
+import { Save } from "lucide-react";
+import { Modal } from "../../ui/Modal";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
 import Avatar from "../../Depen/Avatar";
+import styles from "../../../assets/css/Lider/CertificacionesLider.module.scss";
+
+const ESTADOS = [
+    { value: "vigente", label: "Vigente" },
+    { value: "pendiente", label: "Pendiente" },
+    { value: "por_vencer", label: "Por vencer" },
+    { value: "expirada", label: "Expirada" },
+];
+
+const NIVELES = ["Básico", "Intermedio", "Avanzado", "Experto"];
+
+function todayISO() {
+    return new Date().toISOString().split("T")[0];
+}
+function nextYearISO() {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    return d.toISOString().split("T")[0];
+}
 
 export default function CertificacionModal({
     seleccion,
@@ -8,162 +30,145 @@ export default function CertificacionModal({
     onSave,
     getRelacion,
 }) {
-    const [visible, setVisible] = useState(false);
     const [formData, setFormData] = useState(null);
 
     useEffect(() => {
-        if (seleccion) {
-            const { persona, cert } = seleccion;
-            const relacion = getRelacion(persona.id, cert.id);
-
-            // 🔥 fechas helper
-            const hoy = new Date();
-            const hoyStr = hoy.toISOString().split("T")[0];
-
-            const nextYear = new Date();
-            nextYear.setFullYear(hoy.getFullYear() + 1);
-            const nextYearStr = nextYear.toISOString().split("T")[0];
-
-            // 🔥 DEFAULTS INTELIGENTES
-            setFormData({
-                estado: relacion?.estado || "pendiente",
-                fecha_obtencion: relacion?.fecha_obtencion || hoyStr,
-                fecha_expiracion: relacion?.fecha_expiracion || nextYearStr,
-                credencial_url: relacion?.credencial_url || "",
-                validado: relacion?.validado ? "false" : "true",
-                nivel: relacion?.nivel || "Básico",
-            });
-
-            setTimeout(() => setVisible(true), 10);
-        }
-    }, [seleccion]);
+        if (!seleccion) return;
+        const { persona, cert } = seleccion;
+        const relacion = getRelacion(persona.id, cert.id);
+        setFormData({
+            estado: relacion?.estado || "pendiente",
+            fecha_obtencion: relacion?.fecha_obtencion || todayISO(),
+            fecha_expiracion: relacion?.fecha_expiracion || nextYearISO(),
+            credencial_url: relacion?.credencial_url || "",
+            validado: relacion?.validado ? "true" : "false",
+            nivel: relacion?.nivel || "Básico",
+        });
+    }, [seleccion, getRelacion]);
 
     if (!seleccion || !formData) return null;
 
     const { persona, cert } = seleccion;
 
-    const handleClose = () => {
-        setVisible(false);
-        setTimeout(() => onClose(), 200);
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+    const set = (key) => (e) =>
+        setFormData((prev) => ({ ...prev, [key]: e.target.value }));
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         onSave(persona.id, cert.id, formData);
-        handleClose();
+        onClose();
     };
 
     return (
-        <div
-            className={`${styles.modalOverlay} ${
-                visible ? styles.overlayShow : ""
-            }`}
-            onClick={handleClose}
+        <Modal
+            open={!!seleccion}
+            onClose={onClose}
+            title={persona.nombre}
+            description={`${cert.codigo} — ${cert.nombre}`}
+            size="md"
+            footer={
+                <>
+                    <Button variant="ghost" onClick={onClose}>
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="submit"
+                        form="cert-modal-form"
+                        variant="primary"
+                        leftIcon={Save}
+                    >
+                        Guardar
+                    </Button>
+                </>
+            }
         >
-            <div
-                className={`${styles.modal} ${
-                    visible ? styles.modalShow : ""
-                }`}
-                onClick={(e) => e.stopPropagation()}
+            <div className={styles.modalIdentity}>
+                <Avatar
+                    userId={persona.id}
+                    Nombre={persona.nombre}
+                    size="lg"
+                />
+            </div>
+
+            <form
+                id="cert-modal-form"
+                onSubmit={handleSubmit}
+                className={styles.modalForm}
+                noValidate
             >
-                <div className={styles.modalHeader}>
-                    <Avatar userId={persona.id} Nombre={persona.nombre} />
-                    <div>
-                        <div className={styles.modalTitle}>{persona.nombre}</div>
-                        <div className={styles.sub}>
-                            {cert.codigo} — {cert.nombre}
-                        </div>
-                    </div>
+                <Field label="Estado">
+                    <select
+                        value={formData.estado}
+                        onChange={set("estado")}
+                        className={styles.select}
+                    >
+                        {ESTADOS.map((s) => (
+                            <option key={s.value} value={s.value}>
+                                {s.label}
+                            </option>
+                        ))}
+                    </select>
+                </Field>
+
+                <div className={styles.fieldRow}>
+                    <Input
+                        type="date"
+                        label="Obtención"
+                        value={formData.fecha_obtencion}
+                        onChange={set("fecha_obtencion")}
+                    />
+                    <Input
+                        type="date"
+                        label="Expiración"
+                        value={formData.fecha_expiracion}
+                        onChange={set("fecha_expiracion")}
+                    />
                 </div>
 
-                <button 
-                    onClick={handleClose} 
-                    className={styles.btnClose}
-                >
-                    X
-                </button>
-
-                <form onSubmit={handleSubmit} className={styles.modalForm}>
-                    {/* ESTADO */}
-                    <div className={styles.field}>
-                        <label>Estado</label>
+                <div className={styles.fieldRow}>
+                    <Field label="Nivel">
                         <select
-                            name="estado"
-                            value={formData.estado}
-                            onChange={handleChange}
+                            value={formData.nivel}
+                            onChange={set("nivel")}
+                            className={styles.select}
                         >
-                            <option value="vigente">Vigente</option>
-                            <option value="pendiente">Pendiente</option>
-                            <option value="expirada">Expirada</option>
-                            <option value="por_vencer">Por vencer</option>
+                            {NIVELES.map((n) => (
+                                <option key={n} value={n}>
+                                    {n}
+                                </option>
+                            ))}
                         </select>
-                    </div>
+                    </Field>
 
-                    {/* FECHAS */}
-                    <div className={styles.fieldRow}>
-                        <div className={styles.field}>
-                            <label>Obtención</label>
-                            <input
-                                type="date"
-                                name="fecha_obtencion"
-                                value={formData.fecha_obtencion}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className={styles.field}>
-                            <label>Expiración</label>
-                            <input
-                                type="date"
-                                name="fecha_expiracion"
-                                value={formData.fecha_expiracion}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </div>
-
-                    {/* VALIDADO */}
-                    <div className={styles.field}>
-                        <label>Validación</label>
+                    <Field label="Validación">
                         <select
-                            name="validado"
                             value={formData.validado}
-                            onChange={handleChange}
+                            onChange={set("validado")}
+                            className={styles.select}
                         >
                             <option value="false">No validado</option>
                             <option value="true">Validado</option>
                         </select>
-                    </div>
+                    </Field>
+                </div>
 
-                    {/* ACTIONS */}
-                    <div className={styles.modalActions}>
-                        <button
-                            type="button"
-                            onClick={handleClose}
-                            className={styles.btnCancel}
-                        >
-                            Cancelar
-                        </button>
+                <Input
+                    type="url"
+                    label="URL de credencial (opcional)"
+                    placeholder="https://..."
+                    value={formData.credencial_url}
+                    onChange={set("credencial_url")}
+                />
+            </form>
+        </Modal>
+    );
+}
 
-                        <button
-                            type="submit"
-                            className={styles.btnSave}
-                        >
-                            Guardar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+function Field({ label, children }) {
+    return (
+        <label className={styles.field}>
+            <span className={styles.fieldLabel}>{label}</span>
+            {children}
+        </label>
     );
 }

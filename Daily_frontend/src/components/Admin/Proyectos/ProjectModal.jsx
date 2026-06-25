@@ -1,21 +1,35 @@
 import { useEffect, useState } from "react";
-import styles from "../../../assets/css/Admin/Proyectos.module.scss";
+import { Save } from "lucide-react";
+import { Modal } from "../../ui/Modal";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
+
+const TIPOS = [
+    { value: "", label: "Seleccionar tipo…" },
+    { value: "RPA", label: "RPA" },
+    { value: "BI", label: "BI" },
+    { value: "PP", label: "Power Platform" },
+];
+
+const PRIORIDADES = ["Alta", "Media", "Baja"];
+
+const EMPTY_FORM = {
+    nombre: "",
+    cliente_area: "",
+    tipo: "",
+    estado: "Activo",
+    prioridad: "Media",
+    lider_proyecto_id: "",
+};
 
 export default function ProjectModal({
     isOpen,
     onClose,
     onSave,
     project,
-    people,
+    people = [],
 }) {
-    const [form, setForm] = useState({
-        nombre: "",
-        cliente_area: "",
-        tipo: "",
-        estado: "Activo",
-        prioridad: "Media",
-        lider_proyecto_id: "",
-    });
+    const [form, setForm] = useState(EMPTY_FORM);
 
     useEffect(() => {
         if (project) {
@@ -27,17 +41,15 @@ export default function ProjectModal({
                 prioridad: project.prioridad || "Media",
                 lider_proyecto_id: project.lider_proyecto_id || "",
             });
+        } else {
+            setForm(EMPTY_FORM);
         }
     }, [project]);
 
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value,
-        });
-    };
+    const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         onSave(form);
         onClose();
     };
@@ -45,96 +57,119 @@ export default function ProjectModal({
     if (!isOpen) return null;
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-                <div className={styles.modalHeader}>
-                    <h2>{project ? "Editar Proyecto" : "Nuevo Proyecto"}</h2>
+        <Modal
+            open={isOpen}
+            onClose={onClose}
+            title={project ? "Editar proyecto" : "Nuevo proyecto"}
+            description={
+                project
+                    ? "Modifica los campos y guarda los cambios."
+                    : "Crea un nuevo proyecto y asigna su líder."
+            }
+            size="md"
+            footer={
+                <>
+                    <Button variant="ghost" onClick={onClose}>
+                        Cancelar
+                    </Button>
+                    <Button
+                        type="submit"
+                        form="project-form"
+                        variant="primary"
+                        leftIcon={Save}
+                    >
+                        Guardar
+                    </Button>
+                </>
+            }
+        >
+            <form
+                id="project-form"
+                onSubmit={handleSubmit}
+                noValidate
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "var(--space-md)",
+                }}
+            >
+                <Input
+                    label="Nombre"
+                    value={form.nombre}
+                    onChange={set("nombre")}
+                    required
+                />
 
-                    <button onClick={onClose} className={styles.closeButton}>
-                        ✕
-                    </button>
-                </div>
+                <Input
+                    label="Cliente / Área"
+                    value={form.cliente_area}
+                    onChange={set("cliente_area")}
+                />
 
-                <div className={styles.form}>
-                    <div className={styles.field}>
-                        <label>Nombre</label>
-                        <input
-                            name="nombre"
-                            value={form.nombre}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className={styles.field}>
-                        <label>Cliente / Área</label>
-                        <input
-                            name="cliente_area"
-                            value={form.cliente_area}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className={styles.field}>
-                        <label>Tipo</label>
-                        <select
-                            name="tipo"
-                            value={form.tipo}
-                            onChange={handleChange}
-                        >
-                            <option value="">Tipo</option>
-                            <option value="RPA">RPA</option>
-                            <option value="BI">BI</option>
-                            <option value="PP">Power Platform</option>
-                        </select>
-                    </div>
-
-                    <div className={styles.field}>
-                        <label>Prioridad</label>
-                        <select
-                            name="prioridad"
-                            value={form.prioridad}
-                            onChange={handleChange}
-                        >
-                            <option value="Alta">Alta</option>
-                            <option value="Media">Media</option>
-                            <option value="Baja">Baja</option>
-                        </select>
-                    </div>
-
-                    <div className={styles.field}>
-                        <label>Líder</label>
-                        <select
-                            name="lider_proyecto_id"
-                            value={form.lider_proyecto_id || ""}
-                            onChange={handleChange}
-                        >
-                            <option value="">Asignar líder</option>
-
-                            {people.map((p) => (
-                                <option key={p.id} value={p.id}>
-                                    {p.nombre}
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "var(--space-md)",
+                    }}
+                >
+                    <Field label="Tipo">
+                        <select value={form.tipo} onChange={set("tipo")}>
+                            {TIPOS.map((t) => (
+                                <option key={t.value} value={t.value}>
+                                    {t.label}
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </Field>
 
-                    <div className={styles.modalActions}>
-                        <button
-                            onClick={onClose}
-                            className={styles.cancelButton}
+                    <Field label="Prioridad">
+                        <select
+                            value={form.prioridad}
+                            onChange={set("prioridad")}
                         >
-                            Cancelar
-                        </button>
-
-                        <button
-                            onClick={handleSubmit}
-                            className={styles.saveButton}
-                        >
-                            Guardar
-                        </button>
-                    </div>
+                            {PRIORIDADES.map((p) => (
+                                <option key={p} value={p}>
+                                    {p}
+                                </option>
+                            ))}
+                        </select>
+                    </Field>
                 </div>
-            </div>
-        </div>
+
+                <Field label="Líder del proyecto">
+                    <select
+                        value={form.lider_proyecto_id || ""}
+                        onChange={set("lider_proyecto_id")}
+                    >
+                        <option value="">Sin asignar</option>
+                        {people.map((p) => (
+                            <option key={p.id} value={p.id}>
+                                {p.nombre}
+                            </option>
+                        ))}
+                    </select>
+                </Field>
+            </form>
+        </Modal>
+    );
+}
+
+function Field({ label, children }) {
+    return (
+        <label
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px",
+                fontSize: "var(--font-xs)",
+                fontWeight: "var(--weight-medium)",
+                color: "var(--color-text-secondary)",
+                letterSpacing: "var(--tracking-tight)",
+            }}
+        >
+            {label}
+            {children}
+        </label>
     );
 }

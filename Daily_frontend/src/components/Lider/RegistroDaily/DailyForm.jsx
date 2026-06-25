@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Send, Users } from "lucide-react";
+import { Card } from "../../ui/Card";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
+import { Badge } from "../../ui/Badge";
 import styles from "../../../assets/css/Lider/RegistrarDaily.module.scss";
 
-export default function DailyForm({ 
-    equipos, 
+export default function DailyForm({
+    equipos,
     personas,
-    seleccionarEquipo, 
-    onSubmit, 
-    loading 
+    seleccionarEquipo,
+    onSubmit,
+    loading,
 }) {
     const [form, setForm] = useState({
         content: "",
@@ -15,20 +20,19 @@ export default function DailyForm({
         team_name: "",
         language: "es",
         duration_minutes: 30,
-        participants_count: 1,
     });
 
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value,
-        });
+    const handleChange = (key) => (e) =>
+        setForm({ ...form, [key]: e.target.value });
+
+    const handleTeamChange = (e) => {
+        handleChange("team_name")(e);
+        seleccionarEquipo(e.target.value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // 🔥 FORMATEAR MIEMBROS DEL EQUIPO
         const members_team = personas.map((p) => ({
             id: p.id,
             nombre: p.nombre,
@@ -53,63 +57,82 @@ export default function DailyForm({
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit} className={styles.form}>
-                <h2 className={styles.title}>Registrar Daily</h2>
-
+        <Card padding="lg" as="form" onSubmit={handleSubmit}>
+            <div className={styles.formGroup}>
+                <label htmlFor="dailyform-content" className={styles.label}>
+                    Transcripción de la reunión
+                </label>
                 <textarea
-                    name="content"
-                    placeholder="Texto de la reunión..."
-                    onChange={handleChange}
+                    id="dailyform-content"
+                    rows={8}
+                    value={form.content}
+                    onChange={handleChange("content")}
+                    placeholder="Pega aquí la transcripción de la reunión de daily…"
                     required
                     className={styles.textarea}
                 />
+            </div>
 
-                <input
+            <div className={styles.row2}>
+                <Input
                     type="date"
-                    name="meeting_date"
-                    onChange={handleChange}
+                    label="Fecha de la reunión"
+                    value={form.meeting_date}
+                    onChange={handleChange("meeting_date")}
                     required
-                    className={styles.input}
                 />
 
-                <select
-                    name="team_name"
-                    onChange={(e) => {
-                        handleChange(e);
-                        seleccionarEquipo(e.target.value);
-                    }}
-                    required
-                    className={styles.input}
-                >
-                    <option value="">Selecciona equipo</option>
-                    {equipos?.map((e) => (
-                        <option key={e.id} value={e.nombre}>
-                            {e.nombre}
-                        </option>
-                    ))}
-                </select>
+                <div className={styles.formGroup}>
+                    <label htmlFor="dailyform-team" className={styles.label}>
+                        Equipo
+                    </label>
+                    <select
+                        id="dailyform-team"
+                        value={form.team_name}
+                        onChange={handleTeamChange}
+                        required
+                        className={styles.select}
+                    >
+                        <option value="">Selecciona equipo…</option>
+                        {equipos?.map((e) => (
+                            <option key={e.id} value={e.nombre}>
+                                {e.nombre}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
 
-                {/* 🔥 VISUALIZAR MIEMBROS */}
-                {personas?.length > 0 && (
-                    <div className={styles.membersPreview}>
-                        <h4>Miembros del equipo</h4>
-                        <ul>
-                            {personas.map((p) => (
-                                <li key={p.id}>{p.nombre}</li>
-                            ))}
-                        </ul>
+            {personas?.length > 0 && (
+                <div className={styles.membersPreview}>
+                    <div className={styles.membersHeader}>
+                        <Users size={14} aria-hidden="true" />
+                        <span className={styles.membersTitle}>
+                            Miembros del equipo
+                        </span>
+                        <Badge variant="primary" size="sm">
+                            {personas.length}
+                        </Badge>
                     </div>
-                )}
+                    <ul className={styles.membersList}>
+                        {personas.map((p) => (
+                            <li key={p.id}>{p.nombre}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
-                <button
+            <div className={styles.actions}>
+                <Button
                     type="submit"
-                    className={styles.button}
-                    disabled={loading}
+                    variant="primary"
+                    size="lg"
+                    leftIcon={Send}
+                    loading={loading}
                 >
-                    {loading ? "Procesando..." : "Enviar"}
-                </button>
-            </form>
-        </>
+                    {loading ? "Procesando…" : "Procesar transcripción"}
+                </Button>
+            </div>
+        </Card>
     );
 }

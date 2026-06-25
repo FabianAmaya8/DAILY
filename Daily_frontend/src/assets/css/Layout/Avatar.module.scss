@@ -1,316 +1,50 @@
-/* =========================
-   AVATAR
-   ========================= */
 .avatar {
-    width: 40px;
-    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    
-    font-weight: 700;
-    font-size: var(--font-sm);
-    cursor: pointer;
+    border-radius: var(--radius-full);
     border: 2px solid transparent;
-    transition: var(--transition-base);
-}
-
-.avatar:hover {
-    transform: scale(1.12);
-    box-shadow: var(--shadow-md);
-    border-color: var(--color-primary-soft);
-}
-
-/* =========================
-   MODAL OVERLAY
-   ========================= */
-.modalOverlay {
-    position: fixed;
-    inset: 0;
-    background: var(--color-overlay);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: var(--z-modal);
-    backdrop-filter: blur(6px);
-    animation: fadeIn var(--transition-base);
-    z-index: 999;
-}
-
-/* =========================
-   MODAL
-   ========================= */
-.modal {
-    width: 520px;
-    max-width: 95%;
-    max-height: 85vh;
-    overflow-y: auto;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    padding: var(--space-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    animation: modalIn var(--transition-base);
-}
-
-/* =========================
-   HEADER
-   ========================= */
-.modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: var(--space-sm);
-    border-bottom: 1px solid var(--color-divider);
-}
-
-.modalHeader h2 {
-    font-size: var(--font-lg);
-    font-weight: 600;
-    color: var(--color-text-primary);
-}
-
-.modalHeader button {
-    background: transparent;
-    border: none;
-    font-size: var(--font-lg);
+    font-weight: var(--weight-semibold);
     cursor: pointer;
-    color: var(--color-text-muted);
-    transition: var(--transition-fast);
+    flex-shrink: 0;
+    transition:
+        transform var(--motion-fast) var(--ease-out),
+        border-color var(--motion-fast) var(--ease-out),
+        box-shadow var(--motion-fast) var(--ease-out);
+
+    &:hover {
+        transform: scale(1.06);
+        border-color: var(--color-primary);
+        box-shadow: var(--glow-primary);
+    }
+
+    &:focus-visible {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-soft);
+    }
 }
 
-.modalHeader button:hover {
-    color: var(--color-danger);
-    transform: scale(1.1);
+.s_sm {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-2xs);
 }
 
-/* =========================
-   BODY
-   ========================= */
-.modalBody {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    font-size: var(--font-sm);
-    color: var(--color-text-secondary);
-}
-
-.modalBody p {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-sm);
-    margin: 0;
-}
-
-.modalBody b {
-    color: var(--color-text-primary);
-}
-
-/* =========================
-   DIVIDER
-   ========================= */
-.modalBody hr {
-    border: none;
-    height: 1px;
-    background: var(--color-divider);
-    margin: var(--space-sm) 0;
-}
-
-/* =========================
-   LISTA CERTIFICACIONES
-   ========================= */
-.modalBody ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-}
-
-.modalBody li {
-    background: var(--color-bg-tertiary);
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: var(--radius-sm);
+.s_md {
+    width: 36px;
+    height: 36px;
     font-size: var(--font-xs);
-    border: 1px solid var(--color-border);
 }
 
-/* =========================
-   SCROLL MODAL
-   ========================= */
-.modal::-webkit-scrollbar {
-    width: 6px;
+.s_lg {
+    width: 48px;
+    height: 48px;
+    font-size: var(--font-md);
 }
 
-.modal::-webkit-scrollbar-thumb {
-    background: var(--color-border-strong);
-    border-radius: 10px;
-}
-
-/* =========================
-   ANIMACIONES
-   ========================= */
-@keyframes modalIn {
-    from {
-        transform: translateY(12px) scale(0.95);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* =========================
-   FORM CAMPOS
-========================= */
-.fieldGroup {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-}
-
-.fieldGroup label {
-    font-size: var(--font-xs);
-    color: var(--color-text-secondary);
-}
-
-/* =========================
-   INPUT WRAPPER (ICON)
-========================= */
-.inputWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-/* input base (usa tu system) */
-.input {
-    width: 100%;
-    padding-right: 36px; /* espacio para icono */
-}
-
-/* botón ojo */
-.eyeButton {
-    position: absolute;
-    right: var(--space-xs);
-    top: 50%;
-    transform: translateY(-50%);
-
-    background: transparent;
-    border: none;
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--color-text-muted);
-    transition: var(--transition-fast);
-}
-
-.eyeButton:hover {
-    color: var(--color-primary);
-}
-
-/* =========================
-   ERRORES
-========================= */
-.error {
-    font-size: var(--font-xs);
-    color: var(--color-danger);
-    margin-top: 2px;
-}
-
-/* =========================
-   FOOTER
-========================= */
-.modalFooter {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-sm);
-
-    padding-top: var(--space-sm);
-    border-top: 1px solid var(--color-divider);
-}
-
-/* =========================
-   BOTONES
-========================= */
-.primaryBtn {
-    background: var(--color-primary);
-    color: var(--color-text-inverse);
-
-    border: none;
-    border-radius: var(--radius-sm);
-
-    padding: var(--space-xs) var(--space-md);
-
-    font-size: var(--font-sm);
-    font-weight: 600;
-
-    cursor: pointer;
-    transition: var(--transition-base);
-}
-
-.primaryBtn:hover {
-    background: var(--color-primary-hover);
-    transform: translateY(-1px);
-}
-
-.primaryBtn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* botón secundario */
-.secondaryBtn {
-    background: var(--color-secondary-soft);
-    color: var(--color-text-primary);
-
-    border: none;
-    border-radius: var(--radius-sm);
-
-    padding: var(--space-xs) var(--space-md);
-
-    font-size: var(--font-sm);
-
-    cursor: pointer;
-    transition: var(--transition-fast);
-}
-
-.secondaryBtn:hover {
-    background: var(--color-bg-hover);
-}
-
-/* =========================
-   CLOSE BUTTON
-========================= */
-.closeButton {
-    background: transparent;
-    border: none;
-
-    font-size: var(--font-lg);
-    cursor: pointer;
-
-    color: var(--color-text-muted);
-    transition: var(--transition-fast);
-}
-
-.closeButton:hover {
-    color: var(--color-danger);
-    transform: scale(1.1);
+.s_xl {
+    width: 64px;
+    height: 64px;
+    font-size: var(--font-xl);
 }

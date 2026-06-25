@@ -1,70 +1,41 @@
 .layout {
     display: flex;
-    min-height: 100vh;
+    min-height: 100dvh;
     background: var(--color-bg);
+    color: var(--color-text-primary);
 }
 
 .contentWrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .main {
-    padding: var(--space-md);
-    overflow-y: auto;
-    width: 100%;
-    height: calc(100vh - 102px);
+    flex: 1;
+    padding: var(--space-xl) var(--space-lg);
+    background: var(--color-bg);
+    min-width: 0;
+
+    @media (max-width: 600px) {
+        padding: var(--space-md);
+    }
 }
 
-/* OVERLAY */
 .overlay {
     position: fixed;
     inset: 0;
-
-    background: var(--color-overlay);
+    z-index: calc(var(--z-overlay) - 1);
+    background: var(--color-overlay-soft);
     backdrop-filter: blur(2px);
-
-    z-index: var(--z-modal);
-}
-
-/* Cambio de diseño */
-.button {
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    -webkit-backdrop-filter: blur(2px);
     border: none;
-    border-radius: 50%;
-    background: var(--color-bg-secondary);
-    color: var(--color-text-primary);
     cursor: pointer;
-    transition: all 0.2s ease;
-    svg {
-        transition: transform 0.25s ease;
-    }
-    &:hover {
-        svg {
-            transform: rotate(20deg) scale(1.1);
-        }
-    }
-    &:active {
-        transform: scale(0.95);
-    }
+    animation: overlayFade var(--motion-base) var(--ease-out);
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-    .layout {
-        flex-direction: column;
-    }
-}
-
-.cargando {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 80dvh;
+@keyframes overlayFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
