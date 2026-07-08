@@ -8,6 +8,24 @@
     gap: var(--space-xl);
 }
 
+.pageHeader{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+
+    h1{
+        display: flex;
+        gap: var(--space-xs);
+    }
+}
+
+.toolbar{
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
 .title {
     font-size: var(--font-2xl);
     font-weight: 600;

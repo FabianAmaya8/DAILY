@@ -35,8 +35,11 @@
     gap: var(--space-md);
 }
 
-.statCard {
+.statCard ,
+.statCard > div {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: var(--space-md);
 }
@@ -63,6 +66,7 @@
 .statBody {
     display: flex;
     flex-direction: column;
+    align-items: center;
     min-width: 0;
 }
 

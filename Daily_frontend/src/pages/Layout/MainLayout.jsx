@@ -17,11 +17,6 @@ export default function MainLayout({ Roles }) {
     return (
         <ProtectedRoute allowedRoles={Roles}>
             <div className={styles.layout}>
-                <Sidebar
-                    open={sidebarOpen}
-                    onClose={() => setSidebarOpen(false)}
-                />
-
                 {sidebarOpen && (
                     <button
                         type="button"
@@ -30,6 +25,11 @@ export default function MainLayout({ Roles }) {
                         aria-label="Cerrar menú"
                     />
                 )}
+
+                    <Sidebar
+                        open={sidebarOpen}
+                        onClose={() => setSidebarOpen(false)}
+                    />
 
                 <div className={styles.contentWrapper}>
                     <Header

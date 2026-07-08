@@ -107,7 +107,7 @@
     gap: var(--space-md);
 }
 
-.statCard {
+.statCard > div {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -229,7 +229,7 @@
     gap: var(--space-md);
 }
 
-.cardPersona {
+.cardPersona > div {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);

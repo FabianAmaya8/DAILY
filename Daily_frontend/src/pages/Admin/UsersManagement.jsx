@@ -83,7 +83,7 @@ export default function UsersManagement() {
                     description={error.message}
                 />
             ) : (
-                <Card padding="none">
+                <Card padding="sm">
                     <div className={styles.tableWrap}>
                         <table className={styles.table}>
                             <thead>

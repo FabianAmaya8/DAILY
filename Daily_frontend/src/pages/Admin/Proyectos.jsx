@@ -91,7 +91,7 @@ export default function Proyectos() {
                     description="Crea el primer proyecto para asociarlo a dailys y tareas."
                 />
             ) : (
-                <Card padding="none">
+                <Card padding="sm">
                     <div className={styles.tableContainer}>
                         <table className={styles.table}>
                             <thead>

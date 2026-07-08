@@ -12,6 +12,7 @@ import {
     ShieldCheck,
     ArrowLeftToLine,
     LogOut,
+    DatabaseZap,
 } from "lucide-react";
 import { authService } from "../../utils/contexts/auth/authService";
 import styles from "../../assets/css/Layout/Sidebar.module.scss";
@@ -45,6 +46,8 @@ const ADMIN_LINKS = [
     { to: "/admin/usuarios", label: "Usuarios", icon: Users },
     { to: "/lider/registrar-persona", label: "Registrar persona", icon: ClipboardList },
     { to: "/admin/auditorias", label: "Auditorías", icon: FileSearchCorner },
+    // Actualizar azure devops rutas nuevas
+    { to: "/admin/datosAzure", label: "Actualizar datos Azure", icon: DatabaseZap },
 ];
 
 function getRoleHome(rol) {
@@ -100,20 +103,23 @@ export default function Sidebar({ open, onClose }) {
                           : "Miembro"}
                 </div>
                 <nav className={styles.nav}>
-                    {links.map(({ to, label, icon: Icon }) => (
-                        <NavLink
-                            key={to}
-                            to={to}
-                            onClick={onClose}
-                            className={({ isActive }) =>
-                                `${styles.link} ${isActive ? styles.active : ""}`
-                            }
-                            end
-                        >
-                            <Icon size={16} aria-hidden="true" />
-                            <span>{label}</span>
-                        </NavLink>
-                    ))}
+                    {links.map(({ to, label, icon }) => {
+                        const LinkIcon = icon;
+                        return (
+                            <NavLink
+                                key={to}
+                                to={to}
+                                onClick={onClose}
+                                className={({ isActive }) =>
+                                    `${styles.link} ${isActive ? styles.active : ""}`
+                                }
+                                end
+                            >
+                                <LinkIcon size={16} aria-hidden="true" />
+                                <span>{label}</span>
+                            </NavLink>
+                        );
+                    })}
                 </nav>
             </div>
 

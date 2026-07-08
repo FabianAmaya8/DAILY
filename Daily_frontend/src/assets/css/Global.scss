@@ -255,14 +255,15 @@ body[data-theme="claro"] {
    ========================= */
 
 :root {
-    --space-xxs: 0.25rem;
-    --space-xs: 0.5rem;
-    --space-sm: 0.75rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
-    --space-3xl: 4rem;
+    --space-xxs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 72px;
+    --space-4xl: 96px;
 }
 
 /* =========================
@@ -330,9 +331,11 @@ body[data-theme="claro"] {
 :root {
     --z-base: 1;
     --z-dropdown: 50;
-    --z-modal: 100;
     --z-toast: 200;
     --z-tooltip: 300;
+    --z-sticky: 400;
+    --z-sticky-plus: 500;
+    --z-modal: 600;
 }
 
 /* =========================

@@ -10,6 +10,7 @@
     gap: var(--space-md);
     position: sticky;
     top: 0;
+    z-index: var(--z-sticky-plus);
 }
 
 /* Logo */
@@ -138,7 +139,6 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: var(--z-overlay);
         transform: translateX(-100%);
         transition: transform var(--motion-base) var(--ease-out);
         box-shadow: var(--shadow-xl);

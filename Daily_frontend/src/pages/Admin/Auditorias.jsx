@@ -37,7 +37,10 @@ export default function Auditorias() {
                     description="Cuando se modifiquen entidades clave aparecerán aquí."
                 />
             ) : (
-                <Card padding="none">
+                <Card 
+                    padding="none"
+                    
+                >
                     <AuditoriaTable logs={logs} />
                 </Card>
             )}

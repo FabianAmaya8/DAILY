@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Cargando from "./components/Depen/Cargando";
@@ -31,12 +32,16 @@ const UsersManagement = lazy(() => import("./pages/Admin/UsersManagement"));
 const EquiposPage = lazy(() => import("./pages/Admin/Equipos"));
 const Auditorias = lazy(() => import("./pages/Admin/Auditorias"));
 const Proyectos = lazy(() => import("./pages/Admin/Proyectos"));
+const DatosAzure = lazy(() => import("./pages/Admin/DatosAzure.jsx"));
 
-const Lazy = (Component) => (
-    <Suspense fallback={<Cargando />}>
-        <Component />
-    </Suspense>
-);
+const Lazy = (RouteComponent) => {
+    const Component = RouteComponent;
+    return (
+        <Suspense fallback={<Cargando />}>
+            <Component />
+        </Suspense>
+    );
+};
 
 /**
  * URLs kebab-case (Fase 3) + retrocompat con las antiguas
@@ -109,6 +114,9 @@ const router = createBrowserRouter([
             { path: "/admin/equipos", element: Lazy(EquiposPage) },
             { path: "/admin/proyectos", element: Lazy(Proyectos) },
             { path: "/admin/auditorias", element: Lazy(Auditorias) },
+
+            // actualizar azure devops
+            { path: "/admin/datosAzure", element: Lazy(DatosAzure) },
 
             // Retrocompat
             {
