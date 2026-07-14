@@ -13,6 +13,7 @@ import {
     ArrowLeftToLine,
     LogOut,
     DatabaseZap,
+    UsersRound as UsersAzure,
 } from "lucide-react";
 import { authService } from "../../utils/contexts/auth/authService";
 import styles from "../../assets/css/Layout/Sidebar.module.scss";
@@ -46,6 +47,7 @@ const ADMIN_LINKS = [
     { to: "/admin/usuarios", label: "Usuarios", icon: Users },
     { to: "/lider/registrar-persona", label: "Registrar persona", icon: ClipboardList },
     { to: "/admin/auditorias", label: "Auditorías", icon: FileSearchCorner },
+    { to: "/admin/azure-miembros", label: "Miembros Azure", icon: UsersAzure },
     // Actualizar azure devops rutas nuevas
     { to: "/admin/datosAzure", label: "Actualizar datos Azure", icon: DatabaseZap },
 ];

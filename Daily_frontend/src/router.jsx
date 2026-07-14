@@ -33,6 +33,7 @@ const EquiposPage = lazy(() => import("./pages/Admin/Equipos"));
 const Auditorias = lazy(() => import("./pages/Admin/Auditorias"));
 const Proyectos = lazy(() => import("./pages/Admin/Proyectos"));
 const DatosAzure = lazy(() => import("./pages/Admin/DatosAzure.jsx"));
+const AzureMiembros = lazy(() => import("./pages/Admin/AzureMiembros.jsx"));
 
 const Lazy = (RouteComponent) => {
     const Component = RouteComponent;
@@ -117,6 +118,7 @@ const router = createBrowserRouter([
 
             // actualizar azure devops
             { path: "/admin/datosAzure", element: Lazy(DatosAzure) },
+            { path: "/admin/azure-miembros", element: Lazy(AzureMiembros) },
 
             // Retrocompat
             {
